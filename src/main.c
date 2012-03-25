@@ -8,11 +8,11 @@ int main(int argc, char* argv[]){
     printf("pointer size = %d bytes\n", sizeof(&plop));
     printf("unsigned char = %d\n", sizeof(unsigned char));
     printf("int size = %d\n", sizeof(int));
-    usbdevice_t* myDev = usbdevice_alloc();
+    usbdevice_t* myDev = Usbdevice_alloc();
     printf("sizeof usbdev = %d\n", sizeof(usbdevice_t));
     printf("%s\n", myDev->vendor);
-    printf("dev connect: %d\n", usbdevice_connect(myDev));
-    usbdevice_free(myDev);
+    printf("dev connect: %d\n", Usbdevice_connect(myDev));
+    Usbdevice_free(myDev);
 
     return(0);
 }

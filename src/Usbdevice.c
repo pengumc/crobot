@@ -10,12 +10,12 @@
  * Also set the default values. No connection is attempted.
  * @return A pointer to a new device.
  */
-usbdevice_t* usbdevice_alloc(){
+usbdevice_t* Usbdevice_alloc(){
     usbdevice_t* tempDev = calloc(1, sizeof(usbdevice_t));
     //alloc mem for strings
     tempDev->vendor = calloc(USB_CFG_VENDOR_NAME_LEN+1, sizeof(char));
     tempDev->product = calloc(USB_CFG_DEVICE_NAME_LEN+1, sizeof(char));
-    usbdevice_init(tempDev);
+    Usbdevice_init(tempDev);
     usb_init();
     return(tempDev);
 }
@@ -25,7 +25,7 @@ usbdevice_t* usbdevice_alloc(){
 /** Delete a usbdevice from memory.
  * @param usbdevice The device to delete
  */
-void usbdevice_free(usbdevice_t* usbdevice){
+void Usbdevice_free(usbdevice_t* usbdevice){
     if(usbdevice->handle) usb_close(usbdevice->handle);
     free(usbdevice->vendor);
     free(usbdevice->product);
@@ -37,7 +37,7 @@ void usbdevice_free(usbdevice_t* usbdevice){
 /** Set default values for a usbdevice.
  * Values are defined in i2c_header.h file as well as usbconfig.h
  */
-void usbdevice_init(usbdevice_t* usbdevice){
+void Usbdevice_init(usbdevice_t* usbdevice){
     //use vid and pid from usbconfig.h
     unsigned char tempVID[2] = {USB_CFG_VENDOR_ID};
     usbdevice->vid = tempVID[0] + tempVID[1] * 256;
@@ -62,7 +62,7 @@ void usbdevice_init(usbdevice_t* usbdevice){
  * @returns The new value of connected (so you should try to connect again
 if it's not 0).
  */
-int usbdevice_connect(usbdevice_t* usbdevice){
+int Usbdevice_connect(usbdevice_t* usbdevice){
     if (usbOpenDevice(
         &(usbdevice->handle),
         usbdevice->vid, usbdevice->vendor,
@@ -75,7 +75,7 @@ int usbdevice_connect(usbdevice_t* usbdevice){
             s,
             "USB device \"%s\" with vid=0x%x pid=0x%x\n  NOT FOUND",
             usbdevice->product, usbdevice->vid, usbdevice->pid);
-        report_err(s);
+        Report_err(s);
         usbdevice->connected = 0;
     }else usbdevice->connected = USBDEV_RETRY;
     return usbdevice->connected;
@@ -95,7 +95,7 @@ int usbdevice_connect(usbdevice_t* usbdevice){
  * @return Number of bytes written or read.
  
  */
-int _usbdevice_sendCtrlMsg(
+int _Usbdevice_sendCtrlMsg(
     usbdevice_t* usbdevice, int request, usbdevice_reqType reqType,
     int wval, int wind, char* buffer)
 {
@@ -112,7 +112,7 @@ int _usbdevice_sendCtrlMsg(
         if(cnt < 0){
             char s[256];
             sprintf("usb_control_msg: %s", usb_strerror());
-            report_err(s);
+            Report_err(s);
         }else{
             //success full msg
             usbdevice->connected = USBDEV_RETRY;

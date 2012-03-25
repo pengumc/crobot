@@ -29,11 +29,11 @@ typedef enum{
     USBDEV_WRITE = USB_ENDPOINT_OUT
 } usbdevice_reqType;
 
-usbdevice_t* usbdevice_alloc();
-void usbdevice_free(usbdevice_t* usbdevice);
+usbdevice_t* Usbdevice_alloc();
+void Usbdevice_free(usbdevice_t* usbdevice);
 
-void usbdevice_init(usbdevice_t* usbdevice);
-int usbdevice_connect(usbdevice_t* usbdevice);
+void Usbdevice_init(usbdevice_t* usbdevice);
+int Usbdevice_connect(usbdevice_t* usbdevice);
 
 #endif
 
