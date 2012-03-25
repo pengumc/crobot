@@ -1,0 +1,48 @@
+/**
+ * @file Solver.h
+ */
+ 
+#ifndef __SOLVER__
+#define __SOLVER__
+#include <stdlib.h>
+#include <stdint.h>
+
+#include <math.h>
+#ifndef M_PI
+/** defenition of PI if it's not defined in math.h*/
+#define M_PI		3.14159265358979323846
+/** defenition of PI/2 if it's not defined in math.h*/
+#define M_PI_2		1.57079632679489661923	
+#endif
+#include "gsl/gsl_vector.h"
+#include "gsl/gsl_multiroots.h"
+#include "rotation.h"
+#include "Angle.h"
+
+/** Leg parameters to be used in the solver*/
+typedef struct PARAMS{
+    double A;/**< Distance between servo 0 and 1 in cm.*/
+    double B;/**< Distance between servo 1 and 2 in cm.*/
+    double C;/**< Distance between servo 2 and the endpoint in cm.*/
+    double X;/**< Target x coordinate of the endpoint.*/
+    double Y;/**< Target Y coordinate of the endpoint.*/
+    double Z;/**< Target Z coordinate of the endpoint.*/
+} solverParams_t;
+
+typedef struct{
+    solverParams_t* params; /**< Parameters to use in solving stuff*/
+    rot_vector_t* lastResult; /**< Holds the last result of a solve call*/
+    //rot_vector_t* tempVector; /**< Temp vector?
+    gsl_vector* _initVector; /**< The initial starting point of our solving function*/
+    gsl_multiroot_fsolver* _fsolver; /**< The solver */
+} solver_t;
+
+solver_t* Solver_alloc();
+void Solver_free(solver_t* solver);
+
+angle_t Solver_calculateAlpha(solver_t* solver);
+int Solver_solve(solver_t* solver);
+void Solver_setLegLengths(double* lengths);
+void Solver_setTargetCoords(double* coords);
+#endif
+

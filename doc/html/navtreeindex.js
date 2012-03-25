@@ -1,0 +1,27 @@
+var NAVTREEINDEX =
+{
+"index.html":[],
+"annotated.html":[0,0],
+"structleg__t.html":[0,0,0],
+"struct_p_a_r_a_m_s.html":[0,0,1],
+"structservo__t.html":[0,0,2],
+"structsolver__t.html":[0,0,3],
+"structusbdevice__t.html":[0,0,4],
+"functions.html":[0,1,0],
+"functions_vars.html":[0,1,1],
+"files.html":[1,0],
+"_angle_8h.html":[1,0,0],
+"_leg_8h.html":[1,0,2],
+"_report_8h.html":[1,0,4],
+"_servo_8h.html":[1,0,7],
+"_solver_8h.html":[1,0,8],
+"_angle_8c.html":[1,0,11],
+"_report_8c.html":[1,0,12],
+"_servo_8c.html":[1,0,13],
+"_solver_8c.html":[1,0,14],
+"_usbdevice_8c.html":[1,0,15],
+"globals.html":[1,1,0],
+"globals_func.html":[1,1,1],
+"globals_type.html":[1,1,2],
+"globals_defs.html":[1,1,3]
+};

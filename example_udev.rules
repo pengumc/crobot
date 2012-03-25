@@ -1,0 +1,6 @@
+
+
+#place in /etc/udev/rules.d/
+#set group to wheel for all usb devices which have penguMC as manufacturer
+#wheel is not a very good group to use, this is just an example.
+SUBSYSTEM=="usb", ATTRS{manufacturer}=="penguMC", GROUP="wheel"
