@@ -105,7 +105,7 @@ void Pscontroller_saveMid(pscontroller_t* pscontroller){
 
 
 /*=============================== ANAGLOG ON? ===============================*/
-//unused?
+/** deprecated.*/
 int Pscontroller_isAnalogOn(pscontroller_t* pscontroller){
 	const int mid = pscontroller->rx_mid
 		+ pscontroller->ry_mid

@@ -22,28 +22,37 @@
 #ifndef __ACCELEROMETER__
 #define __ACCELEROMETER__
 
-#define ACC_FILTER_COUNT 2
+/** Number of filters to use.*/
+#define ACC_FILTER_COUNT 3
+
+/** Adc values to keep track of.*/
 #define ACC_ADC_COUNT 3
+
+/** Default mid value for an adc.*/
 #define ACC_MID 128
 
 #include <stdint.h>
+#include <time.h>
+#include <math.h>
 #include "rotation.h"
-//#include "Filter.h"
+#include "Filter.h"
 
 
+/** Accelerometer data.*/
 typedef struct {
-    rot_vector_t* tilt_angles,
-    uint8_t adc_values[ACC_ADC_COUNT],
-    //filter_t filter[ACC_FILTER_COUNT],
-    time_t lastUpdateTime;
+    rot_vector_t* tilt_angles; /**<Holds the calculated tilt angles.*/
+    filter_t* filters[ACC_FILTER_COUNT];/**<The filters.*/
+    time_t lastUpdateTime; /**<Timestamp of last update. (not implemented)*/
+    uint8_t adc_values[ACC_ADC_COUNT]; /**<Holds the latest adc values.*/
 } accelerometer_t;
 
 accelerometer_t* Accelerometer_alloc();
 void Accelerometer_free(accelerometer_t* acc);
 
-void Accelerometer_updateAdcValues(uint8_t x, uint8_t y, uint8_t z);
-void Accelerometer_calulateTilt(accelerometer_t* acc);
+void Accelerometer_updateValues(accelerometer_t* acc,
+    uint8_t x, uint8_t y, uint8_t z);
+void _Accelerometer_calcTilt(accelerometer_t* acc);
 void _Accelerometer_updateFilters(accelerometer_t* acc);
-time_t _Accelerometer_getTimeDelta(accelerometer_t* acc);
+//time_t _Accelerometer_getTimeDelta(accelerometer_t* acc);
 
 #endif

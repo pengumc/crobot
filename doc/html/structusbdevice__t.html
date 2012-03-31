@@ -97,7 +97,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Defines</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -113,23 +113,77 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">usbdevice_t Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Usbdevice data.  
+ <a href="structusbdevice__t.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="_usbdevice_8h_source.html">Usbdevice.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a40e6d9dea14c356db53e3445f9bb7076"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a40e6d9dea14c356db53e3445f9bb7076"></a>
-usb_dev_handle *&#160;</td><td class="memItemRight" valign="bottom"><b>handle</b></td></tr>
-<tr class="memitem:af1cae64e47ec410dab67cb572e4acd36"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af1cae64e47ec410dab67cb572e4acd36"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>vid</b></td></tr>
-<tr class="memitem:af500917c052066b40cf47f96b43c607b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af500917c052066b40cf47f96b43c607b"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>pid</b></td></tr>
+<tr class="memitem:a40e6d9dea14c356db53e3445f9bb7076"><td class="memItemLeft" align="right" valign="top">usb_dev_handle *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusbdevice__t.html#a40e6d9dea14c356db53e3445f9bb7076">handle</a></td></tr>
+<tr class="memdesc:a40e6d9dea14c356db53e3445f9bb7076"><td class="mdescLeft">&#160;</td><td class="mdescRight">libusb device handle.  <a href="#a40e6d9dea14c356db53e3445f9bb7076"></a><br/></td></tr>
+<tr class="memitem:af1cae64e47ec410dab67cb572e4acd36"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusbdevice__t.html#af1cae64e47ec410dab67cb572e4acd36">vid</a></td></tr>
+<tr class="memdesc:af1cae64e47ec410dab67cb572e4acd36"><td class="mdescLeft">&#160;</td><td class="mdescRight">vendor id.  <a href="#af1cae64e47ec410dab67cb572e4acd36"></a><br/></td></tr>
+<tr class="memitem:af500917c052066b40cf47f96b43c607b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusbdevice__t.html#af500917c052066b40cf47f96b43c607b">pid</a></td></tr>
+<tr class="memdesc:af500917c052066b40cf47f96b43c607b"><td class="mdescLeft">&#160;</td><td class="mdescRight">product id.  <a href="#af500917c052066b40cf47f96b43c607b"></a><br/></td></tr>
 <tr class="memitem:af8aeeeac33cb3d69a5bd1640e138f238"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusbdevice__t.html#af8aeeeac33cb3d69a5bd1640e138f238">vendor</a></td></tr>
 <tr class="memdesc:af8aeeeac33cb3d69a5bd1640e138f238"><td class="mdescLeft">&#160;</td><td class="mdescRight">vendor string.  <a href="#af8aeeeac33cb3d69a5bd1640e138f238"></a><br/></td></tr>
 <tr class="memitem:a2d9e3764aa4346c152499041349ec01f"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusbdevice__t.html#a2d9e3764aa4346c152499041349ec01f">product</a></td></tr>
 <tr class="memdesc:a2d9e3764aa4346c152499041349ec01f"><td class="mdescLeft">&#160;</td><td class="mdescRight">product string.  <a href="#a2d9e3764aa4346c152499041349ec01f"></a><br/></td></tr>
-<tr class="memitem:a9709aefe4930807392898aecb0cb8a79"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9709aefe4930807392898aecb0cb8a79"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>connected</b></td></tr>
+<tr class="memitem:a9709aefe4930807392898aecb0cb8a79"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusbdevice__t.html#a9709aefe4930807392898aecb0cb8a79">connected</a></td></tr>
+<tr class="memdesc:a9709aefe4930807392898aecb0cb8a79"><td class="mdescLeft">&#160;</td><td class="mdescRight">connection state.  <a href="#a9709aefe4930807392898aecb0cb8a79"></a><br/></td></tr>
+<tr class="memitem:ad72e1c56294e596c858196428d601cce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpscontroller__t.html">pscontroller_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusbdevice__t.html#ad72e1c56294e596c858196428d601cce">pscon</a></td></tr>
+<tr class="memdesc:ad72e1c56294e596c858196428d601cce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Playstation controller data.  <a href="#ad72e1c56294e596c858196428d601cce"></a><br/></td></tr>
 </table>
-<hr/><h2>Field Documentation</h2>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<div class="textblock"><p>Usbdevice data. </p>
+</div><hr/><h2>Field Documentation</h2>
+<a class="anchor" id="a9709aefe4930807392898aecb0cb8a79"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="structusbdevice__t.html#a9709aefe4930807392898aecb0cb8a79">connected</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>connection state. </p>
+
+</div>
+</div>
+<a class="anchor" id="a40e6d9dea14c356db53e3445f9bb7076"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">usb_dev_handle* <a class="el" href="structusbdevice__t.html#a40e6d9dea14c356db53e3445f9bb7076">handle</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>libusb device handle. </p>
+
+</div>
+</div>
+<a class="anchor" id="af500917c052066b40cf47f96b43c607b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="structusbdevice__t.html#af500917c052066b40cf47f96b43c607b">pid</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>product id. </p>
+
+</div>
+</div>
 <a class="anchor" id="a2d9e3764aa4346c152499041349ec01f"></a>
 <div class="memitem">
 <div class="memproto">
@@ -142,6 +196,21 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>connected</b></td></tr
 <div class="memdoc">
 
 <p>product string. </p>
+
+</div>
+</div>
+<a class="anchor" id="ad72e1c56294e596c858196428d601cce"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpscontroller__t.html">pscontroller_t</a> <a class="el" href="structusbdevice__t.html#ad72e1c56294e596c858196428d601cce">pscon</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Playstation controller data. </p>
 
 </div>
 </div>
@@ -160,6 +229,21 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>connected</b></td></tr
 
 </div>
 </div>
+<a class="anchor" id="af1cae64e47ec410dab67cb572e4acd36"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="structusbdevice__t.html#af1cae64e47ec410dab67cb572e4acd36">vid</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>vendor id. </p>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>include/crobot/<a class="el" href="_usbdevice_8h_source.html">Usbdevice.h</a></li>
 </ul>
@@ -169,7 +253,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>connected</b></td></tr
     <ul>
       <li class="navelem"><a class="el" href="structusbdevice__t.html">usbdevice_t</a>      </li>
 
-    <li class="footer">Generated on Sat Mar 24 2012 10:32:17 for crobot by
+    <li class="footer">Generated on Sat Mar 31 2012 15:25:41 for crobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.0 </li>
    </ul>

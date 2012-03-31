@@ -97,7 +97,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Defines</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -111,57 +111,76 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">include/crobot/rotation.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#include &lt;stdlib.h&gt;</span>
-<a name="l00002"></a>00002 <span class="preprocessor">#include &lt;stdio.h&gt;</span>
-<a name="l00003"></a>00003 <span class="preprocessor">#include &lt;stdint.h&gt;</span>
-<a name="l00004"></a>00004 <span class="preprocessor">#include &lt;math.h&gt;</span> 
-<a name="l00005"></a>00005 <span class="preprocessor">#ifndef M_PI</span>
-<a name="l00006"></a>00006 <span class="preprocessor"></span><span class="preprocessor">#define M_PI            3.14159265358979323846</span>
-<a name="l00007"></a>00007 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
-<a name="l00008"></a>00008 <span class="preprocessor"></span>
-<a name="l00009"></a>00009 <span class="comment">//no changes in these 2 are supported</span>
-<a name="l00010"></a>00010 <span class="preprocessor">#define ROT_MATRIX_DIMENSION 3</span>
-<a name="l00011"></a>00011 <span class="preprocessor"></span><span class="preprocessor">#define ROT_MATRIX_SIZE ROT_MATRIX_DIMENSION * ROT_MATRIX_DIMENSION</span>
-<a name="l00012"></a>00012 <span class="preprocessor"></span>
-<a name="l00013"></a>00013 <span class="keyword">typedef</span> <span class="keywordtype">double</span> rot_matrix_t; <span class="comment">//either float or double</span>
-<a name="l00014"></a>00014 <span class="keyword">typedef</span> <span class="keywordtype">double</span> rot_vector_t;
-<a name="l00015"></a>00015 
-<a name="l00017"></a>00017 rot_vector_t *rot_vector_alloc();
-<a name="l00019"></a>00019 <span class="keywordtype">void</span> rot_vector_set(rot_vector_t *v, uint8_t n, rot_vector_t a);
-<a name="l00020"></a>00020 <span class="keywordtype">void</span> rot_vector_change(rot_vector_t *v, uint8_t n, rot_vector_t a);
-<a name="l00021"></a>00021 <span class="keywordtype">void</span> rot_vector_setAll(rot_vector_t *v, rot_vector_t x, rot_vector_t y, rot_vector_t z);
-<a name="l00022"></a>00022 <span class="keywordtype">void</span> rot_vector_changeAll(rot_vector_t *v, rot_vector_t a, rot_vector_t b, rot_vector_t c);
-<a name="l00024"></a>00024 <span class="keywordtype">void</span> rot_vector_copy(rot_vector_t *source, rot_vector_t *target);
-<a name="l00026"></a>00026 rot_vector_t rot_vector_get(rot_vector_t *v, uint8_t n);
-<a name="l00028"></a>00028 <span class="keywordtype">void</span> rot_vector_print(rot_vector_t *v);
-<a name="l00030"></a>00030 <span class="keywordtype">double</span> rot_vector_get_length_xz(rot_vector_t *v);
-<a name="l00032"></a>00032 <span class="keywordtype">double</span> rot_vector_get_length_yz(rot_vector_t *v);
-<a name="l00034"></a>00034 <span class="keywordtype">double</span> rot_vector_get_length(rot_vector_t *v);
-<a name="l00036"></a>00036 <span class="keywordtype">void</span> rot_vector_add(rot_vector_t *v1, rot_vector_t *v2);
-<a name="l00038"></a>00038 <span class="keywordtype">void</span> rot_vector_minus(rot_vector_t *v1, rot_vector_t *v2);
-<a name="l00040"></a>00040 rot_matrix_t *rot_matrix_alloc();
-<a name="l00042"></a>00042 <span class="keywordtype">void</span> rot_free(<span class="keywordtype">void</span> *x);
-<a name="l00044"></a>00044 <span class="keywordtype">int</span> rot_matrix_fill(rot_matrix_t *M, rot_matrix_t *array, <span class="keywordtype">size_t</span> size);
-<a name="l00046"></a>00046 <span class="keywordtype">void</span> rot_matrix_print(rot_matrix_t *M);
-<a name="l00048"></a>00048 <span class="keywordtype">void</span> rot_matrix_scale(rot_matrix_t* M, <span class="keywordtype">double</span> factor);
-<a name="l00050"></a>00050 <span class="keywordtype">void</span> rot_matrix_set_all(rot_matrix_t *M, rot_matrix_t a);
-<a name="l00052"></a>00052 <span class="keywordtype">void</span> rot_matrix_set(rot_matrix_t *M, uint8_t row, uint8_t col, rot_matrix_t a);
-<a name="l00053"></a>00053 
-<a name="l00055"></a>00055 <span class="keywordtype">void</span> rot_matrix_dot_vector(rot_matrix_t *M, rot_vector_t *x, rot_vector_t *y);
-<a name="l00056"></a>00056 
-<a name="l00058"></a>00058 <span class="keywordtype">void</span> rot_matrix_build_from_angles(rot_matrix_t *M, rot_vector_t *v );
-<a name="l00059"></a>00059 
-<a name="l00060"></a>00060 <span class="comment">//invert a 3d matrix</span>
-<a name="l00061"></a>00061 <span class="keywordtype">void</span> rot_matrix_invert(rot_matrix_t *M, rot_matrix_t *result);
-<a name="l00062"></a>00062 
-<a name="l00063"></a>00063 
+<a href="rotation_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 
+<a name="l00005"></a>00005 <span class="comment">/* Copyright (c) 2012 Michiel van der Coelen</span>
+<a name="l00006"></a>00006 <span class="comment"></span>
+<a name="l00007"></a>00007 <span class="comment">    This file is part of Crobot</span>
+<a name="l00008"></a>00008 <span class="comment"></span>
+<a name="l00009"></a>00009 <span class="comment">    Crobot is free software: you can redistribute it and/or modify</span>
+<a name="l00010"></a>00010 <span class="comment">    it under the terms of the GNU General Public License as published by</span>
+<a name="l00011"></a>00011 <span class="comment">    the Free Software Foundation, either version 3 of the License, or</span>
+<a name="l00012"></a>00012 <span class="comment">    (at your option) any later version.</span>
+<a name="l00013"></a>00013 <span class="comment"></span>
+<a name="l00014"></a>00014 <span class="comment">    Crobot is distributed in the hope that it will be useful,</span>
+<a name="l00015"></a>00015 <span class="comment">    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="l00016"></a>00016 <span class="comment">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="l00017"></a>00017 <span class="comment">    GNU General Public License for more details.</span>
+<a name="l00018"></a>00018 <span class="comment"></span>
+<a name="l00019"></a>00019 <span class="comment">    You should have received a copy of the GNU General Public License</span>
+<a name="l00020"></a>00020 <span class="comment">    along with Crobot.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="l00021"></a>00021 <span class="comment">*/</span>
+<a name="l00022"></a>00022 
+<a name="l00023"></a>00023 <span class="preprocessor">#include &lt;stdlib.h&gt;</span>
+<a name="l00024"></a>00024 <span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<a name="l00025"></a>00025 <span class="preprocessor">#include &lt;stdint.h&gt;</span>
+<a name="l00026"></a>00026 <span class="preprocessor">#include &lt;math.h&gt;</span> 
+<a name="l00027"></a>00027 <span class="preprocessor">#ifndef M_PI</span>
+<a name="l00028"></a>00028 <span class="preprocessor"></span><span class="preprocessor">#define M_PI            3.14159265358979323846</span>
+<a name="l00029"></a>00029 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
+<a name="l00030"></a>00030 <span class="preprocessor"></span>
+<a name="l00031"></a>00031 <span class="comment">//no changes in these 2 are supported</span>
+<a name="l00032"></a>00032 <span class="preprocessor">#define ROT_MATRIX_DIMENSION 3</span>
+<a name="l00033"></a>00033 <span class="preprocessor"></span><span class="preprocessor">#define ROT_MATRIX_SIZE ROT_MATRIX_DIMENSION * ROT_MATRIX_DIMENSION</span>
+<a name="l00034"></a>00034 <span class="preprocessor"></span>
+<a name="l00035"></a>00035 <span class="keyword">typedef</span> <span class="keywordtype">double</span> rot_matrix_t; <span class="comment">//either float or double</span>
+<a name="l00036"></a>00036 <span class="keyword">typedef</span> <span class="keywordtype">double</span> rot_vector_t;
+<a name="l00037"></a>00037 
+<a name="l00039"></a>00039 rot_vector_t *<a class="code" href="rotation_8c.html#a0a9236461026257fa76ebcbb02e8da3c" title="alocate vector">rot_vector_alloc</a>();
+<a name="l00041"></a>00041 <span class="keywordtype">void</span> <a class="code" href="rotation_8c.html#a84a104612bca7484607507ff0c53d9c2" title="set vector value">rot_vector_set</a>(rot_vector_t *v, uint8_t n, rot_vector_t a);
+<a name="l00042"></a>00042 <span class="keywordtype">void</span> <a class="code" href="rotation_8c.html#ad67e92ff36a8cec4fc7bc72a9951b89a" title="change">rot_vector_change</a>(rot_vector_t *v, uint8_t n, rot_vector_t a);
+<a name="l00043"></a>00043 <span class="keywordtype">void</span> rot_vector_setAll(rot_vector_t *v, rot_vector_t x, rot_vector_t y, rot_vector_t z);
+<a name="l00044"></a>00044 <span class="keywordtype">void</span> rot_vector_changeAll(rot_vector_t *v, rot_vector_t a, rot_vector_t b, rot_vector_t c);
+<a name="l00046"></a>00046 <span class="keywordtype">void</span> <a class="code" href="rotation_8c.html#a9644b5279eeb5606bc65f337072839b8" title="copy">rot_vector_copy</a>(rot_vector_t *source, rot_vector_t *target);
+<a name="l00048"></a>00048 rot_vector_t <a class="code" href="rotation_8c.html#ad6659df440d7dbc542ae29ed65835621" title="get vector entry">rot_vector_get</a>(rot_vector_t *v, uint8_t n);
+<a name="l00050"></a>00050 <span class="keywordtype">void</span> <a class="code" href="rotation_8c.html#a7e10fc9f65e07e14f22568a4a3adb9f0" title="print vector">rot_vector_print</a>(rot_vector_t *v);
+<a name="l00052"></a>00052 <span class="keywordtype">double</span> <a class="code" href="rotation_8c.html#ad1f78a1dc5ecdb379c5bc37e3f2ed66c" title="return vector length in xz plane;">rot_vector_get_length_xz</a>(rot_vector_t *v);
+<a name="l00054"></a>00054 <span class="keywordtype">double</span> <a class="code" href="rotation_8c.html#a6989f5abb121875c78a08bcedf7a562d" title="get lengths? unsused">rot_vector_get_length_yz</a>(rot_vector_t *v);
+<a name="l00056"></a>00056 <span class="keywordtype">double</span> <a class="code" href="rotation_8c.html#af669cb23c7906c09c0231ccea48235f7" title="return vector length">rot_vector_get_length</a>(rot_vector_t *v);
+<a name="l00058"></a>00058 <span class="keywordtype">void</span> <a class="code" href="rotation_8c.html#abd523785b286e5705264fef5f2beeedd" title="add vectors v1 = v1 + v2">rot_vector_add</a>(rot_vector_t *v1, rot_vector_t *v2);
+<a name="l00060"></a>00060 <span class="keywordtype">void</span> <a class="code" href="rotation_8c.html#ac4e414861150c1f9e4cc1b9eacb67fd6" title="minus vectors v1=v1-v2">rot_vector_minus</a>(rot_vector_t *v1, rot_vector_t *v2);
+<a name="l00062"></a>00062 rot_matrix_t *<a class="code" href="rotation_8c.html#a7c914af90b6358c361895dc34f81d6b1" title="allocate matrix">rot_matrix_alloc</a>();
+<a name="l00064"></a>00064 <span class="keywordtype">void</span> <a class="code" href="rotation_8c.html#ad12e66e7f039625e5929663f4b596f0b" title="free a vector or matrix">rot_free</a>(<span class="keywordtype">void</span> *x);
+<a name="l00066"></a>00066 <span class="keywordtype">int</span> <a class="code" href="rotation_8c.html#a914aa84a57763e1e0736aef7247301eb" title="fill matrix with an array">rot_matrix_fill</a>(rot_matrix_t *M, rot_matrix_t *array, <span class="keywordtype">size_t</span> size);
+<a name="l00068"></a>00068 <span class="keywordtype">void</span> <a class="code" href="rotation_8c.html#a1f99435e317dace435d262ce6a7ae64c" title="print matrix">rot_matrix_print</a>(rot_matrix_t *M);
+<a name="l00070"></a>00070 <span class="keywordtype">void</span> <a class="code" href="rotation_8c.html#a1853338592754b419b23c7d147b41566" title="scale the entire array with factor">rot_matrix_scale</a>(rot_matrix_t* M, <span class="keywordtype">double</span> factor);
+<a name="l00072"></a>00072 <span class="keywordtype">void</span> <a class="code" href="rotation_8c.html#a2881494dc823d693e9e5d57bd6f4a8bf" title="set all values in an array to a">rot_matrix_set_all</a>(rot_matrix_t *M, rot_matrix_t a);
+<a name="l00074"></a>00074 <span class="keywordtype">void</span> <a class="code" href="rotation_8c.html#aab793836dba1d127b8f28d855d2ae485" title="set a value in a matrix to a">rot_matrix_set</a>(rot_matrix_t *M, uint8_t row, uint8_t col, rot_matrix_t a);
+<a name="l00075"></a>00075 
+<a name="l00077"></a>00077 <span class="keywordtype">void</span> <a class="code" href="rotation_8c.html#a34eb73f3be4cb8ea9e54afe468b98ca0" title="do a matrix*vector = vector">rot_matrix_dot_vector</a>(rot_matrix_t *M, rot_vector_t *x, rot_vector_t *y);
+<a name="l00078"></a>00078 
+<a name="l00080"></a>00080 <span class="keywordtype">void</span> <a class="code" href="rotation_8c.html#aaae73741ed4adfdd41a4076139459373" title="create a rotation matrix from the euler angles in v">rot_matrix_build_from_angles</a>(rot_matrix_t *M, rot_vector_t *v );
+<a name="l00081"></a>00081 
+<a name="l00082"></a>00082 <span class="comment">//invert a 3d matrix</span>
+<a name="l00083"></a>00083 <span class="keywordtype">void</span> rot_matrix_invert(rot_matrix_t *M, rot_matrix_t *result);
+<a name="l00084"></a>00084 
+<a name="l00085"></a>00085 
 </pre></div></div><!-- contents -->
 </div>
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="navelem"><b>rotation.h</b>      </li>
+      <li class="navelem"><a class="el" href="rotation_8h.html">rotation.h</a>      </li>
 
-    <li class="footer">Generated on Sat Mar 24 2012 10:32:17 for crobot by
+    <li class="footer">Generated on Sat Mar 31 2012 15:25:41 for crobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.0 </li>
    </ul>

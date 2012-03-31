@@ -97,7 +97,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Defines</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -113,29 +113,31 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">src/Usbdevice.c File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;Usbdevice.h&quot;</code><br/>
+<div class="textblock"><code>#include &quot;<a class="el" href="_usbdevice_8h_source.html">Usbdevice.h</a>&quot;</code><br/>
 </div><table class="memberdecls">
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a838197f854ecb0b4466783683339ccab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structusbdevice__t.html">usbdevice_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_usbdevice_8c.html#a838197f854ecb0b4466783683339ccab">usbdevice_alloc</a> ()</td></tr>
-<tr class="memdesc:a838197f854ecb0b4466783683339ccab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate memory for a usbdevice.  <a href="#a838197f854ecb0b4466783683339ccab"></a><br/></td></tr>
-<tr class="memitem:aee12e42e74dd9e8f78e8038f46521dfc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_usbdevice_8c.html#aee12e42e74dd9e8f78e8038f46521dfc">usbdevice_free</a> (<a class="el" href="structusbdevice__t.html">usbdevice_t</a> *usbdevice)</td></tr>
-<tr class="memdesc:aee12e42e74dd9e8f78e8038f46521dfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete a usbdevice from memory.  <a href="#aee12e42e74dd9e8f78e8038f46521dfc"></a><br/></td></tr>
-<tr class="memitem:a4decbd145aba7033d0b6f0a3b66ac7b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_usbdevice_8c.html#a4decbd145aba7033d0b6f0a3b66ac7b1">usbdevice_init</a> (<a class="el" href="structusbdevice__t.html">usbdevice_t</a> *usbdevice)</td></tr>
-<tr class="memdesc:a4decbd145aba7033d0b6f0a3b66ac7b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set default values for a usbdevice.  <a href="#a4decbd145aba7033d0b6f0a3b66ac7b1"></a><br/></td></tr>
-<tr class="memitem:acb77692103c026b2b1515e894f98b886"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_usbdevice_8c.html#acb77692103c026b2b1515e894f98b886">usbdevice_connect</a> (<a class="el" href="structusbdevice__t.html">usbdevice_t</a> *usbdevice)</td></tr>
-<tr class="memdesc:acb77692103c026b2b1515e894f98b886"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connect the device.  <a href="#acb77692103c026b2b1515e894f98b886"></a><br/></td></tr>
-<tr class="memitem:a3ecf706cdb47486957d334b345466928"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_usbdevice_8c.html#a3ecf706cdb47486957d334b345466928">_usbdevice_sendCtrlMsg</a> (<a class="el" href="structusbdevice__t.html">usbdevice_t</a> *usbdevice, int request, usbdevice_reqType reqType, int wval, int wind, char *buffer)</td></tr>
-<tr class="memdesc:a3ecf706cdb47486957d334b345466928"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a control message to a device.  <a href="#a3ecf706cdb47486957d334b345466928"></a><br/></td></tr>
+<tr class="memitem:a6541068db275cb3acf050fcd77d3e728"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structusbdevice__t.html">usbdevice_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_usbdevice_8c.html#a6541068db275cb3acf050fcd77d3e728">Usbdevice_alloc</a> ()</td></tr>
+<tr class="memdesc:a6541068db275cb3acf050fcd77d3e728"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate memory for a usbdevice.  <a href="#a6541068db275cb3acf050fcd77d3e728"></a><br/></td></tr>
+<tr class="memitem:a67e86349f557e302178dddda80ade12b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_usbdevice_8c.html#a67e86349f557e302178dddda80ade12b">Usbdevice_free</a> (<a class="el" href="structusbdevice__t.html">usbdevice_t</a> *usbdevice)</td></tr>
+<tr class="memdesc:a67e86349f557e302178dddda80ade12b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete a usbdevice from memory.  <a href="#a67e86349f557e302178dddda80ade12b"></a><br/></td></tr>
+<tr class="memitem:aefe2a73e2e6d35a26c423cf7d386dfeb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_usbdevice_8c.html#aefe2a73e2e6d35a26c423cf7d386dfeb">Usbdevice_init</a> (<a class="el" href="structusbdevice__t.html">usbdevice_t</a> *usbdevice)</td></tr>
+<tr class="memdesc:aefe2a73e2e6d35a26c423cf7d386dfeb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set default values for a usbdevice.  <a href="#aefe2a73e2e6d35a26c423cf7d386dfeb"></a><br/></td></tr>
+<tr class="memitem:ad9e5d91f579f56f940885588a40ec104"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_usbdevice_8c.html#ad9e5d91f579f56f940885588a40ec104">Usbdevice_connect</a> (<a class="el" href="structusbdevice__t.html">usbdevice_t</a> *usbdevice)</td></tr>
+<tr class="memdesc:ad9e5d91f579f56f940885588a40ec104"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connect the device.  <a href="#ad9e5d91f579f56f940885588a40ec104"></a><br/></td></tr>
+<tr class="memitem:af08646c2daa1109cbb335fc65786d428"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_usbdevice_8c.html#af08646c2daa1109cbb335fc65786d428">_Usbdevice_sendCtrlMsg</a> (<a class="el" href="structusbdevice__t.html">usbdevice_t</a> *usbdevice, int request, <a class="el" href="_usbdevice_8h.html#afd19dc83ca82875d15aa0e167bee8cab">usbdevice_reqType</a> reqType, int wval, int wind, char *buffer)</td></tr>
+<tr class="memdesc:af08646c2daa1109cbb335fc65786d428"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a control message to a device.  <a href="#af08646c2daa1109cbb335fc65786d428"></a><br/></td></tr>
+<tr class="memitem:a57357fbfd5912dd8e3e02298df52d641"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_usbdevice_8c.html#a57357fbfd5912dd8e3e02298df52d641">Usbdevice_getData</a> (<a class="el" href="structusbdevice__t.html">usbdevice_t</a> *usbdevice, char *buffer)</td></tr>
+<tr class="memdesc:a57357fbfd5912dd8e3e02298df52d641"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get general data from usbdevice and update everything that uses that data.  <a href="#a57357fbfd5912dd8e3e02298df52d641"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"></div><hr/><h2>Function Documentation</h2>
-<a class="anchor" id="a3ecf706cdb47486957d334b345466928"></a>
+<a class="anchor" id="af08646c2daa1109cbb335fc65786d428"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="_usbdevice_8c.html#a3ecf706cdb47486957d334b345466928">_usbdevice_sendCtrlMsg</a> </td>
+          <td class="memname">int <a class="el" href="_usbdevice_8c.html#af08646c2daa1109cbb335fc65786d428">_Usbdevice_sendCtrlMsg</a> </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structusbdevice__t.html">usbdevice_t</a> *&#160;</td>
           <td class="paramname"><em>usbdevice</em>, </td>
@@ -149,7 +151,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">usbdevice_reqType&#160;</td>
+          <td class="paramtype"><a class="el" href="_usbdevice_8h.html#afd19dc83ca82875d15aa0e167bee8cab">usbdevice_reqType</a>&#160;</td>
           <td class="paramname"><em>reqType</em>, </td>
         </tr>
         <tr>
@@ -187,7 +189,7 @@ Functions</h2></td></tr>
     <tr><td class="paramname">reqType</td><td>One of usbdevice_reqType. </td></tr>
     <tr><td class="paramname">wval</td><td>Special value to send (1 byte). </td></tr>
     <tr><td class="paramname">wind</td><td>Special value to send (1 byte). </td></tr>
-    <tr><td class="paramname">buffer</td><td>A buffer with room for BUFLEN_SERVO_DATA bytes, see <a class="el" href="i2c__header_8h_source.html">i2c_header.h</a>. </td></tr>
+    <tr><td class="paramname">buffer</td><td>A buffer with room for BUFLEN_SERVO_DATA bytes, see <a class="el" href="i2c__header_8h.html">i2c_header.h</a>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -195,12 +197,12 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a838197f854ecb0b4466783683339ccab"></a>
+<a class="anchor" id="a6541068db275cb3acf050fcd77d3e728"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structusbdevice__t.html">usbdevice_t</a>* <a class="el" href="_usbdevice_8c.html#a838197f854ecb0b4466783683339ccab">usbdevice_alloc</a> </td>
+          <td class="memname"><a class="el" href="structusbdevice__t.html">usbdevice_t</a>* <a class="el" href="_usbdevice_8h.html#a6541068db275cb3acf050fcd77d3e728">Usbdevice_alloc</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -215,12 +217,12 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="acb77692103c026b2b1515e894f98b886"></a>
+<a class="anchor" id="ad9e5d91f579f56f940885588a40ec104"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="_usbdevice_8c.html#acb77692103c026b2b1515e894f98b886">usbdevice_connect</a> </td>
+          <td class="memname">int <a class="el" href="_usbdevice_8h.html#ad9e5d91f579f56f940885588a40ec104">Usbdevice_connect</a> </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structusbdevice__t.html">usbdevice_t</a> *&#160;</td>
           <td class="paramname"><em>usbdevice</em></td><td>)</td>
@@ -243,12 +245,12 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aee12e42e74dd9e8f78e8038f46521dfc"></a>
+<a class="anchor" id="a67e86349f557e302178dddda80ade12b"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="_usbdevice_8c.html#aee12e42e74dd9e8f78e8038f46521dfc">usbdevice_free</a> </td>
+          <td class="memname">void <a class="el" href="_usbdevice_8h.html#a67e86349f557e302178dddda80ade12b">Usbdevice_free</a> </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structusbdevice__t.html">usbdevice_t</a> *&#160;</td>
           <td class="paramname"><em>usbdevice</em></td><td>)</td>
@@ -268,12 +270,49 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a4decbd145aba7033d0b6f0a3b66ac7b1"></a>
+<a class="anchor" id="a57357fbfd5912dd8e3e02298df52d641"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="_usbdevice_8c.html#a4decbd145aba7033d0b6f0a3b66ac7b1">usbdevice_init</a> </td>
+          <td class="memname">int <a class="el" href="_usbdevice_8h.html#a57357fbfd5912dd8e3e02298df52d641">Usbdevice_getData</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structusbdevice__t.html">usbdevice_t</a> *&#160;</td>
+          <td class="paramname"><em>usbdevice</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>buffer</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Get general data from usbdevice and update everything that uses that data. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">usbdevice</td><td>The usbdevice data to use. </td></tr>
+    <tr><td class="paramname">buffer</td><td>The buffer to use. size should be BUFLEN_SERVO_DATA * byte. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns:</dt><dd>The number of bytes read. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aefe2a73e2e6d35a26c423cf7d386dfeb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="_usbdevice_8h.html#aefe2a73e2e6d35a26c423cf7d386dfeb">Usbdevice_init</a> </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structusbdevice__t.html">usbdevice_t</a> *&#160;</td>
           <td class="paramname"><em>usbdevice</em></td><td>)</td>
@@ -284,7 +323,13 @@ Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Set default values for a usbdevice. </p>
-<p>Values are defined in <a class="el" href="i2c__header_8h_source.html">i2c_header.h</a> file as well as <a class="el" href="usbconfig_8h_source.html">usbconfig.h</a> </p>
+<p>Values are defined in <a class="el" href="i2c__header_8h.html">i2c_header.h</a> file as well as <a class="el" href="usbconfig_8h_source.html">usbconfig.h</a> </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">usbdevice</td><td>The usbdevice data to use. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -294,7 +339,7 @@ Functions</h2></td></tr>
     <ul>
       <li class="navelem"><a class="el" href="_usbdevice_8c.html">Usbdevice.c</a>      </li>
 
-    <li class="footer">Generated on Sat Mar 24 2012 10:32:17 for crobot by
+    <li class="footer">Generated on Sat Mar 31 2012 15:25:41 for crobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.0 </li>
    </ul>

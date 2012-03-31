@@ -29,9 +29,12 @@
  */
 usbdevice_t* Usbdevice_alloc(){
     usbdevice_t* tempDev = calloc(1, sizeof(usbdevice_t));
+    //pscon doesn't need an alloc
+    tempDev->acc = Accelerometer_alloc();
     //alloc mem for strings
     tempDev->vendor = calloc(USB_CFG_VENDOR_NAME_LEN+1, sizeof(char));
     tempDev->product = calloc(USB_CFG_DEVICE_NAME_LEN+1, sizeof(char));
+
     Usbdevice_init(tempDev);
     usb_init();
     return(tempDev);
@@ -46,6 +49,7 @@ void Usbdevice_free(usbdevice_t* usbdevice){
     if(usbdevice->handle) usb_close(usbdevice->handle);
     free(usbdevice->vendor);
     free(usbdevice->product);
+    Accelerometer_free(usbdevice->acc);
     free(usbdevice);
 }
 
@@ -53,6 +57,7 @@ void Usbdevice_free(usbdevice_t* usbdevice){
 /*============================== INIT =======================================*/
 /** Set default values for a usbdevice.
  * Values are defined in i2c_header.h file as well as usbconfig.h
+ * @param usbdevice The usbdevice data to use.
  */
 void Usbdevice_init(usbdevice_t* usbdevice){
     //use vid and pid from usbconfig.h
@@ -148,6 +153,11 @@ int _Usbdevice_sendCtrlMsg(
 
 
 /*=========================READ GENERAL DATA ================================*/
+/** Get general data from usbdevice and update everything that uses that data.
+ * @param usbdevice The usbdevice data to use.
+ * @param buffer The buffer to use. size should be BUFLEN_SERVO_DATA * byte.
+ * @return The number of bytes read.
+ */
 int Usbdevice_getData(usbdevice_t* usbdevice, char* buffer){
     int cnt = _Usbdevice_sendCtrlMsg(usbdevice, CUSTOM_RQ_GET_DATA, 
         USBDEV_READ, 0, 0, buffer);
@@ -159,6 +169,7 @@ int Usbdevice_getData(usbdevice_t* usbdevice, char* buffer){
 			buffer[5], buffer[6], buffer[7], buffer[8] //axis
 		);
 		//and adc
+        Accelerometer_updateValues(usbdevice->acc, buffer[0], buffer[3], buffer[4]);
 
     }
 	return(cnt);

@@ -83,6 +83,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>All</span></a></li>
       <li><a href="globals_func.html"><span>Functions</span></a></li>
       <li><a href="globals_type.html"><span>Typedefs</span></a></li>
+      <li><a href="globals_enum.html"><span>Enumerations</span></a></li>
+      <li><a href="globals_eval.html"><span>Enumerator</span></a></li>
       <li class="current"><a href="globals_defs.html"><span>Defines</span></a></li>
     </ul>
   </div>
@@ -105,7 +107,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Defines</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -116,6 +118,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div class="contents">
 &#160;<ul>
+<li>ACC_ADC_COUNT
+: <a class="el" href="_accelerometer_8h.html#a522a32b84e1b31975d62974737aee3cb">Accelerometer.h</a>
+</li>
+<li>ACC_FILTER_COUNT
+: <a class="el" href="_accelerometer_8h.html#a07bf3d1ab5d44ee629ab5eeba839ae77">Accelerometer.h</a>
+</li>
+<li>ACC_MID
+: <a class="el" href="_accelerometer_8h.html#a9d08b750692e6337bf09ca67d2909b90">Accelerometer.h</a>
+</li>
+<li>BUFLEN_SERVO_DATA
+: <a class="el" href="i2c__header_8h.html#a1de5e162d548d941337ffd826a31d2f1">i2c_header.h</a>
+</li>
+<li>CHK
+: <a class="el" href="_pscontroller_8h.html#af1ffa2b7554f4e88da3e39f5e7d9053d">Pscontroller.h</a>
+</li>
+<li>FILTER_GRAPH_LENGTH
+: <a class="el" href="_filter_8h.html#a7292779f30fbff846dfb5edf492c82c9">Filter.h</a>
+</li>
+<li>I2C_SLAVE_ADDRESS
+: <a class="el" href="i2c__header_8h.html#a2ec7e67680ed0484be8a3521db910f04">i2c_header.h</a>
+</li>
 <li>LEG_DOF
 : <a class="el" href="_leg_8h.html#ae645a99363ef3ade0da9da082ff61b16">Leg.h</a>
 </li>
@@ -125,6 +148,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>M_PI_2
 : <a class="el" href="_solver_8h.html#a958e4508ed28ee5cc04249144312c15f">Solver.h</a>
+</li>
+<li>PS_DEFAULT_ANALOG
+: <a class="el" href="_pscontroller_8h.html#a45c1d1a4fa084c9bdf9c475f76c7d2e3">Pscontroller.h</a>
+</li>
+<li>SERVO_DATA_EMPTY
+: <a class="el" href="i2c__header_8h.html#a67a91dc1d6abeec0257fde15440fdf85">i2c_header.h</a>
 </li>
 <li>SERVO_DEF_DIR
 : <a class="el" href="_servo_8h.html#a4f542cca65e40bb878829ed4634f3cf2">Servo.h</a>
@@ -144,13 +173,40 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>SERVO_DEF_OFFSET
 : <a class="el" href="_servo_8h.html#ad674dc9a933b866079e30ad5d1fac331">Servo.h</a>
 </li>
+<li>SLA_R
+: <a class="el" href="i2c__header_8h.html#ae4af1f304be9d3202a445e7d6c235eaa">i2c_header.h</a>
+</li>
+<li>SLA_W
+: <a class="el" href="i2c__header_8h.html#a3df22e1e7b66be8b74b33ce077824292">i2c_header.h</a>
+</li>
+<li>TWACK
+: <a class="el" href="i2c__header_8h.html#a1f54914019d4313ea60e8a524a99fd91">i2c_header.h</a>
+</li>
+<li>TWNACK
+: <a class="el" href="i2c__header_8h.html#a6a4900bbe8e17a165dc214f599454a93">i2c_header.h</a>
+</li>
+<li>TWRESET
+: <a class="el" href="i2c__header_8h.html#a7d5c26860d9f56f86ac60d021ae0e148">i2c_header.h</a>
+</li>
+<li>TWSTART
+: <a class="el" href="i2c__header_8h.html#a94e7ec874fb85cca2ef7866b2ca2fc95">i2c_header.h</a>
+</li>
+<li>TWSTOSTA
+: <a class="el" href="i2c__header_8h.html#acfcc9bfcb236267b7276337d5992c61d">i2c_header.h</a>
+</li>
+<li>USBDEV_RETRY
+: <a class="el" href="_usbdevice_8h.html#a649b0ae2f6a7a987a39a8bf0f1513108">Usbdevice.h</a>
+</li>
+<li>USBDEV_TIMEOUT_MS
+: <a class="el" href="_usbdevice_8h.html#aabfac2996ecb418c7bcc8445f9f83b7d">Usbdevice.h</a>
+</li>
 </ul>
 </div><!-- contents -->
 </div>
   <div id="nav-path" class="navpath">
     <ul>
 
-    <li class="footer">Generated on Sat Mar 24 2012 10:32:17 for crobot by
+    <li class="footer">Generated on Sat Mar 31 2012 15:25:41 for crobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.0 </li>
    </ul>

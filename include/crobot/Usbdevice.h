@@ -26,28 +26,36 @@
 
 #include <usb.h>
 #include <string.h>
+#include <unistd.h> //for usleep
+//#include <time.h>
 #include "opendevice.h"
 #include "usbconfig.h"
 #include "i2c_header.h"
 #include "requests.h"
 #include "Report.h"
 #include "Pscontroller.h"
+#include "Accelerometer.h"
 
-
+/** Number of times to allow a failed comminication.*/
 #define USBDEV_RETRY 3
+
+/** Timeout for communication.*/
 #define USBDEV_TIMEOUT_MS 500
 
+/** Usbdevice data.*/
 typedef struct{
-    usb_dev_handle* handle;
-    int vid;
-    int pid;
+    usb_dev_handle* handle; /**<libusb device handle.*/
+    int vid; /**<vendor id.*/
+    int pid; /**<product id.*/
 //    char servoDataBuffer[BUFLEN_SERVO_DATA];
     char* vendor; /**< vendor string. */
     char* product; /**< product string. */
-    int connected;
-	pscontroller_t pscon;
+    int connected; /**<connection state.*/
+	pscontroller_t pscon; /**<Playstation controller data.*/
+    accelerometer_t* acc; /**<Accelerometer data.*/
 } usbdevice_t;
 
+/** control message request types*/
 typedef enum{
     USBDEV_READ = USB_ENDPOINT_IN,
     USBDEV_WRITE = USB_ENDPOINT_OUT

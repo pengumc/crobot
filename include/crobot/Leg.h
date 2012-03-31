@@ -30,6 +30,7 @@
 /** Number of servos per leg*/
 #define LEG_DOF 3
 
+/** Leg data.*/
 typedef struct{
 	servo_t* servos[LEG_DOF]; /**< Servo data for the servo in this leg.*/
 	rot_vector_t* servoLocations[LEG_DOF+1]; /**< Location relative to servo0.*/

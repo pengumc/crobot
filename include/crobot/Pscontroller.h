@@ -25,49 +25,68 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+/** Default mid value for an analog stick.*/
 #define PS_DEFAULT_ANALOG 128
+
+/** Bit checking macro.
+ * @param x The variable to check.
+ * @param y The bit to check
+ * 
+ * Example:
+ * @code
+ *  CHK(0xF0, 4); 
+ *  //will check the fifth bit of 0b11110000.
+ *  //---------------------------------^
+ * @endcode
+*/
 #define CHK(x,y) (x&(1<<y)) 
 
-//buttons
+/** Buttons on a Playstation 1 controller.
+ * And their bit position in our data.
+ */
 typedef enum{
-	PS_SELECT = 0,
-	PS_START = 3,
-	PS_UP = 4,
-	PS_RIGHT = 5,
-	PS_DOWN = 6,
-	PS_LEFT = 7,
+	PS_SELECT = 0, /**< Select.*/
+	PS_START = 3,/**<Start. */
+	PS_UP = 4,/**<Up. */
+	PS_RIGHT = 5,/**<Down. */
+	PS_DOWN = 6,/**<Righ. */
+	PS_LEFT = 7,/**<Left. */
 	//substract 8 from these to get the bit numbers
-	PS_L2 = 8,
-	PS_R2 = 9,
-	PS_L1 = 10,
-	PS_R1 = 11,
-	PS_TRIANGLE = 12,
-	PS_CIRCLE = 13,
-	PS_CROSS = 14,
-	PS_SQUARE = 15,
+	PS_L2 = 8,/**<L2. */
+	PS_R2 = 9,/**<R2. */
+	PS_L1 = 10,/**<L1. */
+	PS_R1 = 11,/**<R1. */
+	PS_TRIANGLE = 12,/**<Triangle. */
+	PS_CIRCLE = 13,/**<Circle. */
+	PS_CROSS = 14,/**<Cross. */
+	PS_SQUARE = 15,/**<Square. */
 } pscontroller_button;
 
-//axis
+/** Axis on a Playstation 1 controller.
+ */
 typedef enum{
-	PS_RX = 0,
-	PS_RY = 1,
-	PS_LX = 2,
-	PS_LY = 3
+	PS_RX = 0,/**<Right x-axis.*/
+	PS_RY = 1,/**<Right y-axis.*/
+	PS_LX = 2,/**<Left x-axis.*/
+	PS_LY = 3 /**<Left y-axis.*/
 } pscontroller_axis;
 
+
+/** Playstation controller data.*/
 typedef struct {
-  uint8_t ss_dpad;
-  uint8_t shoulder_shapes;
-  uint8_t previous_ss_dpad;
-  uint8_t previous_shoulder_shapes;
-  uint8_t rx;
-  uint8_t ry;
-  uint8_t lx;
-  uint8_t ly;
-  uint8_t rx_mid;
-  uint8_t ry_mid;
-  uint8_t lx_mid;
-  uint8_t ly_mid;
+  uint8_t ss_dpad; /**< Start, select and dpad buttons.*/
+  uint8_t shoulder_shapes; /**< Shoulder buttons and circle,
+                                triangle, square, cross.*/
+  uint8_t previous_ss_dpad;/**< Previous state of ss_dpad.*/
+  uint8_t previous_shoulder_shapes;/**< Previous state of shoulder_shapes.*/
+  uint8_t rx; /**< Right x-axis value.*/
+  uint8_t ry; /**< Right y-axis value.*/
+  uint8_t lx; /**< Left x-axis value.*/
+  uint8_t ly; /**< Lefy y-axis value.*/
+  uint8_t rx_mid; /**< Right x-axis mid value.*/
+  uint8_t ry_mid; /**< Right y-axis mid value.*/
+  uint8_t lx_mid; /**< Left x-axis mid value.*/
+  uint8_t ly_mid; /**< Left y-axis mid value.*/
 }pscontroller_t ;
 
 pscontroller_t* Pscontroller_alloc();

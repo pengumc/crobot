@@ -1,4 +1,3 @@
-#ifndef I2C_HEADER_H
 /**
  * @file i2c_header.h
  */
@@ -23,22 +22,40 @@
 
 
 
+#ifndef I2C_HEADER_H
 #define I2C_HEADER_H
+
 #ifndef USBCOMMANDLINE
   #include <util/twi.h>
 #endif
 
+/** I2C address of the servocontroller.*/
 #define I2C_SLAVE_ADDRESS 0x01
+
+/** register value for writing I2C (atmega).*/
 #define SLA_W ((I2C_SLAVE_ADDRESS<<1) | TW_WRITE)
+
+/** register value for reading I2C (atmega).*/
 #define SLA_R ((I2C_SLAVE_ADDRESS<<1) | TW_READ)
+
+/** Length of the buffer that holds servo positions.*/
 #define BUFLEN_SERVO_DATA 12
-// #define SERVO_DATA_EMPTY {68,92,54,72,92,60,68,98,64,72,88,58}
+
+/** Default servo positions.*/
 	#define SERVO_DATA_EMPTY {72,72,72,72,72,72,72,72,72,72,72,72}
-#define BUFLEN_ACC_DATA 3
-  #define ACC_DATA_EMPTY {0,0,0}
+
+/** ack*/
 #define TWACK (TWCR=(1<<TWINT)|(1<<TWEN)|(1<<TWEA))
+
+/** nack*/
 #define TWNACK (TWCR=(1<<TWINT)|(1<<TWEN))
+
+/** start*/
 #define TWSTART (TWCR=(1<<TWINT)|(1<<TWEN)|(1<<TWSTA))
+
+/** reset*/
 #define TWRESET (TWCR=(1<<TWINT)|(1<<TWEN)|(1<<TWSTO)|(1<<TWEA))
+
+/** stop start*/
 #define TWSTOSTA (TWCR=(1<<TWINT)|(1<<TWEN)|(1<<TWSTA)|(1<<TWSTO))
 #endif

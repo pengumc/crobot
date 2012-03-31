@@ -5,6 +5,7 @@
 NAME = crobot
 #change bits according to your system
 BITS=64
+#c99 std prevents usleep?
 CFLAGS = -fPIC -Iinclude -Isrc -Iinclude/$(NAME) -Iinclude/gsl$(BITS) -I. -std=c99
 #USBLIBS = $(shell libusb-config --libs)
 USBLIBS = -lusb
@@ -12,7 +13,7 @@ CLIBS = -Llib/gsl$(BITS) -Llib/crobot -lgslcblas -lgsl $(USBLIBS) -lm
 CC = gcc
 OUTPUTNAME = $(NAME)
 LIBUSB_OBJECTS = opendevice.o
-OBJECTS = $(LIBUSB_OBJECTS) Pscontroller.o Report.o Usbdevice.o Leg.o Solver.o Servo.o rotation.o Angle.o main.o
+OBJECTS = $(LIBUSB_OBJECTS) Quadruped.o Accelerometer.o Filter.o Pscontroller.o Report.o Usbdevice.o Leg.o Solver.o Servo.o rotation.o Angle.o main.o
 UNAME:= $(shell uname -s)
 
 .PHONY:all clean library

@@ -27,7 +27,8 @@
  */
 leg_t* Leg_alloc(){
 	leg_t* tempLeg = (leg_t*) calloc(1, sizeof(leg_t));
-	for(int i = 0; i < LEG_DOF; i++){
+    char i;
+	for(i = 0; i < LEG_DOF; i++){
 		tempLeg->servos[i] = Servo_alloc();
 		tempLeg->servoLocations[i] = rot_vector_alloc();
 	}
@@ -48,7 +49,8 @@ leg_t* Leg_alloc(){
 void Leg_free(leg_t* leg){
 	Solver_free(leg->legSolver);
 	rot_free(leg->offsetFromCOB);
-	for(int i=0; i<LEG_DOF; i++){
+    char i;
+	for(i=0; i<LEG_DOF; i++){
 		rot_free(leg->servoLocations[i]);
 		Servo_free(leg->servos[i]);
 	}
