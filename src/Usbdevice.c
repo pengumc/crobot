@@ -67,6 +67,8 @@ void Usbdevice_init(usbdevice_t* usbdevice){
 
     memcpy(usbdevice->vendor, tempVendor, USB_CFG_VENDOR_NAME_LEN+1);
     memcpy(usbdevice->product, tempProduct, USB_CFG_DEVICE_NAME_LEN+1);
+	
+	Pscontroller_init(&usbdevice->pscon);
 }
 
 
@@ -116,7 +118,8 @@ int _Usbdevice_sendCtrlMsg(
     usbdevice_t* usbdevice, int request, usbdevice_reqType reqType,
     int wval, int wind, char* buffer)
 {
-    int cnt, i;
+    int cnt = 0;
+    int i;
     //only send if we're connected
     if(usbdevice->handle && usbdevice->connected){
         cnt = usb_control_msg(
@@ -144,4 +147,19 @@ int _Usbdevice_sendCtrlMsg(
 }
 
 
-/*=========================READ SERVO DATA ==================================*/
+/*=========================READ GENERAL DATA ================================*/
+int Usbdevice_getData(usbdevice_t* usbdevice, char* buffer){
+    int cnt = _Usbdevice_sendCtrlMsg(usbdevice, CUSTOM_RQ_GET_DATA, 
+        USBDEV_READ, 0, 0, buffer);
+    if(cnt > 0){
+        //store correct values in pscontroller 
+		Pscontroller_updateData(&usbdevice->pscon, 
+			buffer[1], //ss_dpad
+			buffer[2], //shoulder_shapes
+			buffer[5], buffer[6], buffer[7], buffer[8] //axis
+		);
+		//and adc
+
+    }
+	return(cnt);
+}

@@ -31,6 +31,7 @@
 #include "i2c_header.h"
 #include "requests.h"
 #include "Report.h"
+#include "Pscontroller.h"
 
 
 #define USBDEV_RETRY 3
@@ -43,7 +44,8 @@ typedef struct{
 //    char servoDataBuffer[BUFLEN_SERVO_DATA];
     char* vendor; /**< vendor string. */
     char* product; /**< product string. */
-    int connected;    
+    int connected;
+	pscontroller_t pscon;
 } usbdevice_t;
 
 typedef enum{
@@ -56,6 +58,7 @@ void Usbdevice_free(usbdevice_t* usbdevice);
 
 void Usbdevice_init(usbdevice_t* usbdevice);
 int Usbdevice_connect(usbdevice_t* usbdevice);
+int Usbdevice_getData(usbdevice_t* usbdevice, char* buffer);
 
 #endif
 

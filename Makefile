@@ -12,7 +12,8 @@ CLIBS = -Llib/gsl$(BITS) -Llib/crobot -lgslcblas -lgsl $(USBLIBS) -lm
 CC = gcc
 OUTPUTNAME = $(NAME)
 LIBUSB_OBJECTS = opendevice.o
-OBJECTS = $(LIBUSB_OBJECTS) Report.o Usbdevice.o Leg.o Solver.o Servo.o rotation.o Angle.o main.o
+OBJECTS = $(LIBUSB_OBJECTS) Pscontroller.o Report.o Usbdevice.o Leg.o Solver.o Servo.o rotation.o Angle.o main.o
+UNAME:= $(shell uname -s)
 
 .PHONY:all clean library
 
@@ -30,5 +31,9 @@ clean:
 library:lib/lib$(OUTPUTNAME).so.1.0.1
 
 lib/lib$(OUTPUTNAME).so.1.0.1:$(OBJECTS)
-	$(CC) $(CFLAGS) -shared -Wl,-soname,lib$(OUTPUTNAME).so.1 $(CLIBS) -o lib/lib$(OUTPUTNAME).so.1.0.1 $(addprefix lib/$(NAME)/, $(OBJECTS))
-
+ifeq ($(UNAME),Linux)
+	$(CC) $(CLIBS) -shared -Wl,-soname,lib$(OUTPUTNAME).so.1 -o lib/lib$(OUTPUTNAME).so.1.0.1 $(addprefix lib/$(NAME)/, $(OBJECTS))
+endif
+ifeq ($(UNAME),MINGW32_NT-6.1)
+	$(CC) -shared -Wall -o lib/lib$(OUTPUTNAME).dll $(addprefix lib/$(NAME)/, $(OBJECTS)) $(CLIBS)
+endif

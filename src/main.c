@@ -20,6 +20,7 @@
 #define __MAIN__
 #include <stdio.h>
 #include "Usbdevice.h"
+#include "Solver.h"
 #include "Report.h"
 
 int main(int argc, char* argv[]){
@@ -27,10 +28,17 @@ int main(int argc, char* argv[]){
     printf("pointer size = %d bytes\n", sizeof(&plop));
     printf("unsigned char = %d\n", sizeof(unsigned char));
     printf("int size = %d\n", sizeof(int));
+	solver_t* mySolver = Solver_alloc();
     usbdevice_t* myDev = Usbdevice_alloc();
-    printf("sizeof usbdev = %d\n", sizeof(usbdevice_t));
     printf("%s\n", myDev->vendor);
     printf("dev connect: %d\n", Usbdevice_connect(myDev));
+    char buffer[12];
+    printf("getdate: %d\n", Usbdevice_getData(myDev, buffer));
+    for(plop =0;plop<12;plop++){
+        printf("buffer[%d]: %d\n", plop, buffer[plop]);
+    }
+    
+	Solver_free(mySolver);
     Usbdevice_free(myDev);
 
     return(0);
