@@ -24,6 +24,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 /** Default mid value for an analog stick.*/
 #define PS_DEFAULT_ANALOG 128

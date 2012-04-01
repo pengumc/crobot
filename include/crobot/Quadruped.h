@@ -24,6 +24,7 @@
 
 #include "Usbdevice.h"
 #include "Filter.h"
+#include "Pscontroller.h"
 
 /**Quadruped data.*/
 typedef struct QPED{

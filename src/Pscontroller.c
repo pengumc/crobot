@@ -125,7 +125,7 @@ int Pscontroller_isAnalogOn(pscontroller_t* pscontroller){
 int Pscontroller_getButton(pscontroller_t* pscontroller,
 	pscontroller_button button)
 {
-	if(button > PS_LEFT){
+	if(button < PS_L2){
 		//check ss_dpad
 		if(CHK(pscontroller->ss_dpad, button) == 0) return(1);
 		else return(0);
@@ -170,8 +170,10 @@ int8_t Pscontroller_getAxis(pscontroller_t* pscontroller,
 int Pscontroller_getButtonEdge(pscontroller_t* pscontroller,
 	pscontroller_button button)
 {
-	if(button > PS_LEFT){
+	if(button < PS_L2){
+        printf("checking ss_dpad\n");
 		//check ss_dpad
+        printf("0x%X vs 0x%X\n", pscontroller->ss_dpad, pscontroller->previous_ss_dpad);
 		if(CHK(pscontroller->ss_dpad, button) 
 			> CHK(pscontroller->previous_ss_dpad, button))
 		{
@@ -188,13 +190,13 @@ int Pscontroller_getButtonEdge(pscontroller_t* pscontroller,
 		}
 	}else{
 		//check shoulder_shapes
-		if(CHK(pscontroller->shoulder_shapes, button) 
-			> CHK(pscontroller->previous_shoulder_shapes, button))
+		if(CHK(pscontroller->shoulder_shapes, button - PS_L2) 
+			> CHK(pscontroller->previous_shoulder_shapes, button - PS_L2))
 		{
 			return(1);
 		}
-		else if (CHK(pscontroller->shoulder_shapes, button) 
-			< CHK(pscontroller->previous_shoulder_shapes, button))
+		else if (CHK(pscontroller->shoulder_shapes, button - PS_L2) 
+			< CHK(pscontroller->previous_shoulder_shapes, button - PS_L2))
 		{
 			return(-1);
 		}

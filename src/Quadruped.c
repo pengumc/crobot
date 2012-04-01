@@ -70,3 +70,11 @@ void Quadruped_setGraphPointers(quadruped_t* qped,
    Filter_changeGraphPointers(qped->dev->acc->filters[2], inY, outZ);
 }
 
+
+int Quadruped_getPsButton(quadruped_t* qped, pscontroller_button button){
+    return(Pscontroller_getButton(&qped->dev->pscon, button));
+}
+
+int Quadruped_getPsButtonEdge(quadruped_t* qped, pscontroller_button button){
+    return(Pscontroller_getButtonEdge(&qped->dev->pscon, button));
+}
