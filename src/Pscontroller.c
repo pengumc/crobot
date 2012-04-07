@@ -171,9 +171,8 @@ int Pscontroller_getButtonEdge(pscontroller_t* pscontroller,
 	pscontroller_button button)
 {
 	if(button < PS_L2){
-        printf("checking ss_dpad\n");
 		//check ss_dpad
-        printf("0x%X vs 0x%X\n", pscontroller->ss_dpad, pscontroller->previous_ss_dpad);
+        //printf("0x%X vs 0x%X\n", pscontroller->ss_dpad, pscontroller->previous_ss_dpad);
 		if(CHK(pscontroller->ss_dpad, button) 
 			> CHK(pscontroller->previous_ss_dpad, button))
 		{

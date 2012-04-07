@@ -1,4 +1,4 @@
-#! /usr/bin/env python2.7
+#!/usr/bin/env python2
 #"Now go away, or I shall taunt you a second time!"
 
 #string* need to be passed like "plop".encode('ascii')
@@ -16,9 +16,35 @@ def handleSigTERM():
     print("quitting...")
     sys.exit(0)
 
+class Psbutton(gtk.Image):
+    
+    def __init__(self, pixbuf1, pixbuf2):
+        gtk.Image.__init__(self)
+        self.pb_inactive = pixbuf1
+        self.pb_active = pixbuf2
+        self.active = False
+        self.set_from_pixbuf(self.pb_inactive)
+
+    def activate(self):
+        if not self.active:
+            self.set_from_pixbuf(self.pb_active)
+            self.active = True
+
+    def deactivate(self):
+        if self.active:
+            self.set_from_pixbuf(self.pb_inactive)
+            self.active = False
+
+    def set(self, state):
+        if state > 0:
+            self.deactivate()
+        elif state < 0:
+            self.activate()
+
+
 class Screen:
 
-    NUMBER_OF_BUTTONS = 4
+    NUMBER_OF_BUTTONS = 6
     TIMEOUT = 40
     
     def __init__(self, crobot):
@@ -26,12 +52,24 @@ class Screen:
 
         self.window = gtk.Window();
         self.window.connect('delete-event', gtk.main_quit)
-        self.window.set_size_request(300,300)
+        self.window.set_size_request(6*48,300)
+
+        self.maintable = gtk.Table(2, 2)
+
+        #controller
         self.pstable = gtk.Table(Screen.NUMBER_OF_BUTTONS, 1)
         self._generate_pixbufs()
+        self._gen_buttons()
         self._attach_buttons(self.pstable) 
 
-        self.window.add(self.pstable)
+        #big draw area
+        self.bigda = gtk.DrawingArea()
+        
+        #attach to main table
+        self.maintable.attach(self.pstable, 0,1, 1,2, 0,0)
+        self.maintable.attach(self.bigda, 0,1, 0,1, gtk.EXPAND|gtk.FILL,0)
+
+        self.window.add(self.maintable)
         self.window.show_all()
         
         self.crobot = crobot
@@ -44,31 +82,60 @@ class Screen:
                 #print('connected...')
                 #gtk.timeout_add(Screen.TIMEOUT, self.timeout)
             
-
+    def _gen_buttons(self):
+        self.psbuttons = {
+            'cross' : Psbutton(self.pixbufs['cross'], self.pixbufs['across']),
+            'circle' : Psbutton(self.pixbufs['circle'], self.pixbufs['acircle']),
+            'triangle' : Psbutton(self.pixbufs['triangle'], self.pixbufs['atriangle']),
+            'square' : Psbutton(self.pixbufs['square'], self.pixbufs['asquare']),
+            'l1' : Psbutton(self.pixbufs['l1'], self.pixbufs['al1']),
+            'r1' : Psbutton(self.pixbufs['r1'], self.pixbufs['ar1']),
+            'l2' : Psbutton(self.pixbufs['l2'], self.pixbufs['al2']),
+            'r2' : Psbutton(self.pixbufs['r2'], self.pixbufs['ar2']),
+            'select' : Psbutton(self.pixbufs['select'], self.pixbufs['aselect']),
+            'start' : Psbutton(self.pixbufs['start'], self.pixbufs['astart'])
+        }
+    
     def _attach_buttons(self, table):
-        self.images = []
-        for i in range(Screen.NUMBER_OF_BUTTONS):
-            self.images.append(gtk.Image())
-            table.attach(self.images[i], i, i+1, 0, 1, 0, 0)
-        self.images[0].set_from_pixbuf(self.button_bufs['circle'])
-        self.images[1].set_from_pixbuf(self.button_bufs['square'])
-        self.images[2].set_from_pixbuf(self.button_bufs['cross'])
-        self.images[3].set_from_pixbuf(self.button_bufs['triangle'])
+        table.attach(self.psbuttons['l1'], 0,1, 0,1, 0,0)
+        table.attach(self.psbuttons['cross'], 1,2, 0,1, 0,0)
+        table.attach(self.psbuttons['square'], 2,3, 0,1, 0,0)
+        table.attach(self.psbuttons['circle'], 3,4, 0,1, 0,0)
+        table.attach(self.psbuttons['triangle'], 4,5, 0,1, 0,0)
+        table.attach(self.psbuttons['r1'], 5,6, 0,1, 0,0)
+        table.attach(self.psbuttons['l2'], 0,1, 1,2, 0,0)
+        table.attach(self.psbuttons['r2'], 5,6, 1,2, 0,0)
+        table.attach(self.psbuttons['select'], 0,1, 2,3, 0,0)
+        table.attach(self.psbuttons['start'], 5,6, 2,3, 0,0)
+        
 
     def _generate_pixbufs(self):
         mainbuf = gtk.gdk.pixbuf_new_from_file(
             os.path.dirname(__file__) + os.sep + 'psbuttons.png')
-        self.button_bufs = dict()
-        self.button_bufs['cross'] = mainbuf.subpixbuf(0,0,48,48)
-        self.button_bufs['across'] = mainbuf.subpixbuf(48,0,48,48)
-        self.button_bufs['circle'] = mainbuf.subpixbuf(48*2,0,48,48)
-        self.button_bufs['acircle'] = mainbuf.subpixbuf(48*3,0,48,48)
-        self.button_bufs['square'] = mainbuf.subpixbuf(48*4,0,48,48)
-        self.button_bufs['asquare'] = mainbuf.subpixbuf(48*5,0,48,48)
-        self.button_bufs['triangle'] = mainbuf.subpixbuf(48*6,0,48,48)
-        self.button_bufs['atriangle'] = mainbuf.subpixbuf(48*7,0,48,48)
-        self.button_bufs['select'] = mainbuf.subpixbuf(0, 48, 48, 48)
-        self.button_bufs['aselect'] = mainbuf.subpixbuf(48*1, 48, 48, 48)
+        self.pixbufs = dict()
+        self.pixbufs['cross'] = mainbuf.subpixbuf(0,0,48,48)
+        self.pixbufs['across'] = mainbuf.subpixbuf(48,0,48,48)
+        self.pixbufs['circle'] = mainbuf.subpixbuf(48*2,0,48,48)
+        self.pixbufs['acircle'] = mainbuf.subpixbuf(48*3,0,48,48)
+        self.pixbufs['square'] = mainbuf.subpixbuf(48*4,0,48,48)
+        self.pixbufs['asquare'] = mainbuf.subpixbuf(48*5,0,48,48)
+        self.pixbufs['triangle'] = mainbuf.subpixbuf(48*6,0,48,48)
+        self.pixbufs['atriangle'] = mainbuf.subpixbuf(48*7,0,48,48)
+
+        self.pixbufs['select'] = mainbuf.subpixbuf(0, 48, 48, 48)
+        self.pixbufs['aselect'] = mainbuf.subpixbuf(48*1, 48, 48, 48)
+        self.pixbufs['start'] = mainbuf.subpixbuf(48*2, 48, 48, 48)
+        self.pixbufs['astart'] = mainbuf.subpixbuf(48*3, 48, 48, 48)
+        self.pixbufs['l1'] = mainbuf.subpixbuf(48*4, 48, 48, 48)
+        self.pixbufs['al1'] = mainbuf.subpixbuf(48*5, 48, 48, 48)
+        self.pixbufs['r1'] = mainbuf.subpixbuf(48*6, 48, 48, 48)
+        self.pixbufs['ar1'] = mainbuf.subpixbuf(48*7, 48, 48, 48)
+
+        self.pixbufs['l2'] = mainbuf.subpixbuf(48*0, 48*2, 48, 48)
+        self.pixbufs['al2'] = mainbuf.subpixbuf(48*1, 48*2, 48, 48)
+        self.pixbufs['r2'] = mainbuf.subpixbuf(48*2, 48*2, 48, 48)
+        self.pixbufs['ar2'] = mainbuf.subpixbuf(48*3, 48*2, 48, 48)
+
 
     def start(self):
         self.timeout_active = True
@@ -84,29 +151,16 @@ class Screen:
         return(True)
 
     def update_buttons(self):
-        circle = self.crobot.getButtonEdge(13)
-        if circle == -1:
-            self.images[0].set_from_pixbuf(self.button_bufs['acircle'])
-        elif circle == 1:
-            self.images[0].set_from_pixbuf(self.button_bufs['circle'])
-
-        square = self.crobot.getButtonEdge(15)
-        if square == -1:
-            self.images[1].set_from_pixbuf(self.button_bufs['asquare'])
-        elif square == 1:
-            self.images[1].set_from_pixbuf(self.button_bufs['square'])
-        
-        cross = self.crobot.getButtonEdge(14)
-        if cross == -1:
-            self.images[2].set_from_pixbuf(self.button_bufs['across'])
-        elif cross == 1:
-            self.images[2].set_from_pixbuf(self.button_bufs['cross'])
-        
-        triangle = self.crobot.getButtonEdge(12)
-        if triangle == -1:
-            self.images[3].set_from_pixbuf(self.button_bufs['atriangle'])
-        elif triangle == 1:
-            self.images[3].set_from_pixbuf(self.button_bufs['triangle'])
+        self.psbuttons['triangle'].set( self.crobot.getButtonEdge(12))
+        self.psbuttons['circle'].set(self.crobot.getButtonEdge(13))
+        self.psbuttons['cross'].set(self.crobot.getButtonEdge(14))
+        self.psbuttons['square'].set(self.crobot.getButtonEdge(15))
+        self.psbuttons['select'].set(self.crobot.getButtonEdge(0))
+        self.psbuttons['start'].set(self.crobot.getButtonEdge(3))
+        self.psbuttons['l1'].set(self.crobot.getButtonEdge(10))
+        self.psbuttons['l2'].set(self.crobot.getButtonEdge(8))
+        self.psbuttons['r1'].set(self.crobot.getButtonEdge(11))
+        self.psbuttons['r2'].set(self.crobot.getButtonEdge(9))
 
     
 

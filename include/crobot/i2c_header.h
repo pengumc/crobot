@@ -1,5 +1,7 @@
 /**
  * @file i2c_header.h
+ * @brief Some I2C values. Some of these are shared between firmware and 
+ PC software
  */
 
 /* Copyright (c) 2012 Michiel van der Coelen
