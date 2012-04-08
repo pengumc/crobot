@@ -147,7 +147,6 @@ int _Usbdevice_sendCtrlMsg(
         //we're not connected
         usbdevice->connected--;
     }
-    usleep(1);
     return(cnt);
 }
 

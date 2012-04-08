@@ -6,7 +6,8 @@
 
 from ctypes import *
 import signal
-import sys, os
+import sys, os, math
+import platform
 import pygtk
 #pygtk.require(2.0)
 import gtk, gobject, cairo
@@ -15,6 +16,48 @@ def handleSigTERM():
     #gtk.main_quit()
     print("quitting...")
     sys.exit(0)
+
+
+class Psanalog(gtk.DrawingArea):
+    
+    SIZE = 96
+    SCALE = SIZE/255.0
+    __gsignals__ = {"expose-event":"override"}
+
+    def __init__(self):
+        gtk.DrawingArea.__init__(self)
+        self.set_size_request(96, 96)
+        self.X = -4
+        self.Y = 89
+    
+    def do_expose_event(self, event):
+        self.clear()    
+        self.draw_stick()
+
+    def draw_stick(self):
+        self.cr.set_source_rgb(0.0, 0.5, 0.5)
+        x = self.X * Psanalog.SCALE + Psanalog.SIZE / 2
+        y = self.Y * Psanalog.SCALE + Psanalog.SIZE / 2
+        self.cr.arc(x, y, 20, 0.0, 2 * math.pi)
+        self.cr.stroke()
+
+    def clear(self):
+        self.cr = self.window.cairo_create()
+        #empty everything
+        self.cr.set_source_rgb(1.0, 1.0, 1.0)
+        self.cr.rectangle(0, 0, Psanalog.SIZE, Psanalog.SIZE) 
+        self.cr.fill()
+        #draw square with cross
+        self.cr.set_line_width(2.0)
+        self.cr.set_source_rgb(0.0, 0.0, 0.0)
+        self.cr.rectangle(2,2, Psanalog.SIZE-4, Psanalog.SIZE-4)
+        self.cr.move_to(0, Psanalog.SIZE/2)
+        self.cr.rel_line_to(Psanalog.SIZE, 0)
+        self.cr.move_to(Psanalog.SIZE/2, 0)
+        self.cr.rel_line_to(0, Psanalog.SIZE)
+        #stroke
+        self.cr.stroke()
+
 
 class Psbutton(gtk.Image):
     
@@ -61,6 +104,9 @@ class Screen:
         self._generate_pixbufs()
         self._gen_buttons()
         self._attach_buttons(self.pstable) 
+        self.right_analog = Psanalog()
+        self.left_analog = Psanalog()
+        self._attach_analog(self.pstable)
 
         #big draw area
         self.bigda = gtk.DrawingArea()
@@ -107,7 +153,10 @@ class Screen:
         table.attach(self.psbuttons['r2'], 5,6, 1,2, 0,0)
         table.attach(self.psbuttons['select'], 0,1, 2,3, 0,0)
         table.attach(self.psbuttons['start'], 5,6, 2,3, 0,0)
-        
+    
+    def _attach_analog(self, table):
+        table.attach(self.right_analog, 1,3, 1,3, 0,0)        
+        table.attach(self.left_analog, 3,5, 1,3, 0,0)        
 
     def _generate_pixbufs(self):
         mainbuf = gtk.gdk.pixbuf_new_from_file(
@@ -167,10 +216,17 @@ class Screen:
 class Crobot:
     
     def __init__(self):
+        bits = platform.machine()
+        if bits == 'i686':
+            bits = '32'
+        elif bits == 'x86_64':
+            bits = '64'
+       
         if sys.platform == 'linux2':
-            LIBCROBOT = "lib/libcrobot.so.1.0.1"
+            LIBCROBOT = "lib/libcrobot" + bits + ".so.1.0.1"
         elif sys.platform == 'win32':
-            LIBCROBOT = "lib/libcrobot.dll"
+            LIBCROBOT = "lib/libcrobot" + bits + ".dll"
+
         self.crobotlib = CDLL(LIBCROBOT)
         self.crobotlib.Quadruped_alloc.restype = c_void_p
         self.qped = self.crobotlib.Quadruped_alloc()

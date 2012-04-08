@@ -44,6 +44,11 @@ void Quadruped_free(quadruped_t* qped){
 
 
 /*==================== STARTUP ==============================================*/
+/** Startup function (mainly try to connect usb).
+ * @param qped The quadruped data to use.
+ * @retval <1 Not connected.
+ * @retval >1 Connected, numbers of retries left. 
+ */
 int Quadruped_startup(quadruped_t* qped){
     int cnt = Usbdevice_connect(qped->dev);
     return(cnt);
@@ -51,6 +56,12 @@ int Quadruped_startup(quadruped_t* qped){
 
 
 /*======================== UPDATE ===========================================*/
+/** Update function, should be called often to update accelerometer and 
+gamepad data.
+ * brief Every 40 ms is recommended.
+ * @param qped The quadruped data to use.
+ * @returns the connection status.
+ */
 int Quadruped_update(quadruped_t* qped){
     int cnt = Usbdevice_getData(qped->dev, qped->buffer);
     return(cnt);
@@ -71,10 +82,24 @@ void Quadruped_setGraphPointers(quadruped_t* qped,
 }
 
 
+/*======================================= GET BUTTON (EDGE) =================*/
+/** Query button state.
+ * @param qped The quadruped data to use.
+ * @param button The playstation controller button to query.
+ * @retval 1 Button is pressed.
+ * @retval 0 Button is not pressed.
+ */
 int Quadruped_getPsButton(quadruped_t* qped, pscontroller_button button){
     return(Pscontroller_getButton(&qped->dev->pscon, button));
 }
 
+/** Check for a change in the button state.
+ * @param qped The quadruped data to use.
+ * @param button The playstation controller button to query.
+ * @retval 1 There was a rising edge.
+ * @retval 0 No change.
+ * @retval -1 There was a falling edge.
+ */
 int Quadruped_getPsButtonEdge(quadruped_t* qped, pscontroller_button button){
     return(Pscontroller_getButtonEdge(&qped->dev->pscon, button));
 }

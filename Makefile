@@ -4,7 +4,7 @@
 
 NAME = crobot
 #change bits according to your system
-BITS=64
+BITS=32
 #c99 std prevents usleep?
 CFLAGS = -fPIC -Iinclude -Isrc -Iinclude/$(NAME) -Iinclude/gsl$(BITS) -I. -std=c99
 #USBLIBS = $(shell libusb-config --libs)
@@ -29,12 +29,12 @@ bin/$(OUTPUTNAME):$(OBJECTS)
 clean:
 	rm lib/$(NAME)/*.o
 
-library:lib/lib$(OUTPUTNAME).so.1.0.1
+library:lib/lib$(OUTPUTNAME)$(BITS).so.1.0.1
 
-lib/lib$(OUTPUTNAME).so.1.0.1:$(OBJECTS)
+lib/lib$(OUTPUTNAME)$(BITS).so.1.0.1:$(OBJECTS)
 ifeq ($(UNAME),Linux)
-	$(CC) $(CLIBS) -shared -Wl,-soname,lib$(OUTPUTNAME).so.1 -o lib/lib$(OUTPUTNAME).so.1.0.1 $(addprefix lib/$(NAME)/, $(OBJECTS))
+	$(CC) $(CLIBS) -shared -Wl,-soname,lib$(OUTPUTNAME).so.1 -o lib/lib$(OUTPUTNAME)$(BITS).so.1.0.1 $(addprefix lib/$(NAME)/, $(OBJECTS))
 endif
 ifeq ($(UNAME),MINGW32_NT-6.1)
-	$(CC) -shared -Wall -o lib/lib$(OUTPUTNAME).dll $(addprefix lib/$(NAME)/, $(OBJECTS)) $(CLIBS)
+	$(CC) -shared -Wall -o lib/lib$(OUTPUTNAME)$(BITS).dll $(addprefix lib/$(NAME)/, $(OBJECTS)) $(CLIBS)
 endif
