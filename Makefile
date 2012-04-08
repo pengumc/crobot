@@ -4,7 +4,7 @@
 
 NAME = crobot
 #change bits according to your system
-BITS=64
+BITS=32
 #c99 std prevents usleep?
 CFLAGS = -fPIC -Iinclude -Isrc -Iinclude/$(NAME) -Iinclude/gsl$(BITS) -I. -std=c99
 #USBLIBS = $(shell libusb-config --libs)

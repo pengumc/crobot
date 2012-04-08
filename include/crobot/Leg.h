@@ -41,6 +41,8 @@ typedef struct{
 leg_t* Leg_alloc();
 void Leg_free(leg_t* leg);
 void Leg_updateServoLocations(leg_t* leg);
+uint8_t Leg_getServoPw(leg_t* leg, uint8_t servoNo);
+int Leg_setServoPw(leg_t* leg, uint8_t servoNo, uint8_t pw);
 
 #endif
 

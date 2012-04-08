@@ -35,12 +35,16 @@
 #include "Report.h"
 #include "Pscontroller.h"
 #include "Accelerometer.h"
+#include "Leg.h"
 
 /** Number of times to allow a failed comminication.*/
 #define USBDEV_RETRY 3
 
 /** Timeout for communication.*/
 #define USBDEV_TIMEOUT_MS 500
+
+/** Number of legs.*/
+#define USBDEV_LEGNO 4
 
 /** Usbdevice data.*/
 typedef struct{
@@ -53,6 +57,7 @@ typedef struct{
     int connected; /**<connection state.*/
 	pscontroller_t pscon; /**<Playstation controller data.*/
     accelerometer_t* acc; /**<Accelerometer data.*/
+    leg_t* legs[USBDEV_LEGNO]; /**<Legs with servos.*/
 } usbdevice_t;
 
 /** control message request types*/

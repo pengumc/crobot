@@ -27,16 +27,18 @@
  */
 leg_t* Leg_alloc(){
 	leg_t* tempLeg = (leg_t*) calloc(1, sizeof(leg_t));
+    //allocate servos and their positions
     char i;
 	for(i = 0; i < LEG_DOF; i++){
 		tempLeg->servos[i] = Servo_alloc();
 		tempLeg->servoLocations[i] = rot_vector_alloc();
 	}
 	
-	//vector for endpoint
+	//extra vectors
 	tempLeg->servoLocations[LEG_DOF] = rot_vector_alloc();
-	
 	tempLeg->offsetFromCOB = rot_vector_alloc();
+    //the solver
+    //TODO relocate to usbdevice (we only need one)
 	tempLeg->legSolver = Solver_alloc();
 	return(tempLeg);
 }
@@ -57,6 +59,32 @@ void Leg_free(leg_t* leg){
 	rot_free(leg->servoLocations[LEG_DOF]);
 	free(leg);
 }
+
+
+/*================ GET SERVO PW ============================================*/
+/** Get the stored pulsewidth of a servo.
+ * @param leg The leg data to use.
+ * @param servoNo The servo to request (0..2).
+ * @return The stored pulsewidth
+ */
+uint8_t Leg_getServoPw(leg_t* leg, uint8_t servoNo){
+    return(leg->servos[servoNo]->_pw);
+}
+
+
+/*================ SET SERVO PW =============================================*/
+/** Set the pulsewidth of a servo.
+ * @param leg The leg data to use.
+ * @param servoNo The servo to change (0..2).
+ * @param pw The pulsewidth to set.
+ * @retval 1 Pulsewidth was out of bounds, nothing changed.
+ * @retval 0 success
+ */
+int Leg_setServoPw(leg_t* leg, uint8_t servoNo, uint8_t pw){
+    return(Servo_setPw(leg->servos[servoNo], pw));
+}
+
+
 
 /*=============================== CALC COORDS ==============================*/
 /** Calculate coordinates of all servos relative to servo 0.

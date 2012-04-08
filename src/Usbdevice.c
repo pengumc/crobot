@@ -34,6 +34,9 @@ usbdevice_t* Usbdevice_alloc(){
     //alloc mem for strings
     tempDev->vendor = calloc(USB_CFG_VENDOR_NAME_LEN+1, sizeof(char));
     tempDev->product = calloc(USB_CFG_DEVICE_NAME_LEN+1, sizeof(char));
+    //alloc legs
+    unsigned char i;
+    for(i=0;i<USBDEV_LEGNO;i++){ tempDev->legs[i] = Leg_alloc();}
 
     Usbdevice_init(tempDev);
     usb_init();
@@ -50,6 +53,8 @@ void Usbdevice_free(usbdevice_t* usbdevice){
     free(usbdevice->vendor);
     free(usbdevice->product);
     Accelerometer_free(usbdevice->acc);
+    unsigned char i;
+    for(i=0;i<USBDEV_LEGNO;i++){ Leg_free(usbdevice->legs[i]);}
     free(usbdevice);
 }
 
@@ -173,3 +178,58 @@ int Usbdevice_getData(usbdevice_t* usbdevice, char* buffer){
     }
 	return(cnt);
 }
+
+/*============================ UPDATE SERVOS ================================*/
+void _Usbdevice_updateServos(usbdevice_t* dev, char* buffer){
+    unsigned char leg,servo,i=0;
+    for(leg=0;leg<USBDEV_LEGNO;leg++){
+        for(servo=0;servo<LEG_DOF;servo++){
+            Leg_setServoPw(dev->legs[leg], servo, buffer[i]);
+            i++;
+        }
+    }
+}
+
+/*========================= GET SERVO DATA ==================================*/
+/** retrieve current servo settings from the usbdevice and update the pc side
+servo data.
+ * @param usbdevice The device to communicate with.
+ * @param buffer A buffer with room for BUFLEN_SERVO_DATA bytes.
+ * @return The number of bytes read.
+ * @retval -1 Device wasn't ready.
+ * @retval -2 Something went horribly wrong (device disconnected?).
+ */
+int Usbdevice_getServoData(usbdevice_t* usbdevice, char* buffer){
+    int cnt;
+    //tell device to get servodata from servocontroller
+    cnt = _Usbdevice_sendCtrlMsg(usbdevice, CUSTOM_RQ_LOAD_POS_FROM_I2C,
+        USBDEV_READ, 0, 0, buffer);
+    if(cnt>0){
+        //device was not ready
+        return(-1);
+    }
+    
+    signed char trying = USBDEV_RETRY;
+    while(trying >= 0){
+        nanosleep(1000000);
+        cnt = _Usbdevice_sendCtrlMsg(usbdevice, CUSTOM_RQ_GET_POS,
+            USBDEV_READ, 0, 0, buffer);
+        //should have received 12 bytes, even on failure
+        if(cnt < 1) {
+            Report_err("received nothing from GET_POS request.");
+            return(-2);
+        }else if(cnt == BUFLEN_SERVO_DATA){
+            if(buffer[0] == CUSTOM_RQ_GET_POS){
+                //indication the device is still busy
+            }else{
+                break;
+            }
+        }
+    }
+
+    //update the servos
+    _Usbdevice_updateServos(usbdevice, buffer);
+    return(cnt);
+}
+
+

@@ -45,7 +45,7 @@ void Servo_free(servo_t* servo){
 
 /*============================= RESET =======================================*/
 /** Reset all values.
- * The default values are defined in as SERVO_DEF_<VALUENAME>.<br>
+ * The default values are defined in servo.h as SERVO_DEF_<VALUENAME>.<br>
  * The angle is set to 0 and the pulsewidth to the neutral pulse.
  * @param servo The servo to reset.
  */
