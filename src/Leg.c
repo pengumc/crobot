@@ -86,23 +86,56 @@ int Leg_setServoPw(leg_t* leg, uint8_t servoNo, uint8_t pw){
 
 
 
-/*=============================== CALC COORDS ==============================*/
+/*================ GET SERVO ANGLE ==========================================*/
+/** get stored servo angle.
+ * @param leg The leg data to use.
+ * @param servoNo The servo to request (0..2).
+ * @return The servo angle.
+ */
+double Leg_getServoAngle(leg_t* leg, uint8_t servoNo){
+    return(leg->servos[servoNo]->_angle);
+}
+
+/*=============================== CALC COORDS ===============================*/
 /** Calculate coordinates of all servos relative to servo 0.
  * The calculated locations are stored in leg->servoLocations.
  * @param solver The solver to use.
  */
 void Leg_updateServoLocations(leg_t* leg){
-	//location for servo 0 is the 0 vector by defenition
+    //create a vector x that represents the offset to the next servo
+    // then rotate that vector with the servo angle
+    // then add the location of the previous servo
+
+	//location for servo 0 is the 0 vector by definition
 	rot_vector_setAll(leg->servoLocations[0], 0.0, 0.0, 0.0);
 
-    //create some vectors and a rotation matrix
+    //allocate some vectors and a rotation matrix
     rot_vector_t* angles = rot_vector_alloc();
     rot_vector_t* x = rot_vector_alloc();
     rot_matrix_t* M = rot_matrix_alloc();
-	//general idea: move, rotate system, move again
 
 	//servo 1
-	
+    rot_vector_setAll(x, leg->legSolver->params->A, 0.0, 0.0);
+	rot_vector_set(angles, 2, Leg_getServoAngle(leg, 0));
+    rot_matrix_build_from_angles(M, angles);
+    rot_matrix_dot_vector(M, x, leg->servoLocations[1]); //rotate
+    rot_vector_add(leg->servoLocations[1], leg->servoLocations[0]); //add prev
 	//servo 2
+    rot_vector_setAll(x, leg->legSolver->params->B, 0.0, 0.0);
+    rot_vector_change(angles, 2, Leg_getServoAngle(leg, 1));
+    rot_matrix_build_from_angles(M, angles);
+    rot_matrix_dot_vector(M, x, leg->servoLocations[2]);
+    rot_vector_add(leg->servoLocations[2], leg->servoLocations[1]);
+    //endpoint
+    rot_vector_setAll(x, leg->legSolver->params->C, 0.0, 0.0);
+    rot_vector_change(angles, 2, Leg_getServoAngle(leg, 2));
+    rot_matrix_build_from_angles(M, angles);
+    rot_matrix_dot_vector(M, x, leg->servoLocations[3]);
+    rot_vector_add(leg->servoLocations[3], leg->servoLocations[2]);
+    
+    //free vectors and matrix
+    rot_free(x);
+    rot_free(angles);
+    rot_free(M);
 	
 }

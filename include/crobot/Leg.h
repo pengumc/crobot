@@ -33,7 +33,7 @@
 /** Leg data.*/
 typedef struct{
 	servo_t* servos[LEG_DOF]; /**< Servo data for the servo in this leg.*/
-	rot_vector_t* servoLocations[LEG_DOF+1]; /**< Location relative to servo0.*/
+	rot_vector_t* servoLocations[LEG_DOF+1];/**< Location relative to servo0.*/
 	rot_vector_t* offsetFromCOB; /**< The vector from COB to servo 0*/
 	solver_t* legSolver; /**< The solver that will be used by this leg */
 } leg_t;
@@ -42,7 +42,10 @@ leg_t* Leg_alloc();
 void Leg_free(leg_t* leg);
 void Leg_updateServoLocations(leg_t* leg);
 uint8_t Leg_getServoPw(leg_t* leg, uint8_t servoNo);
+double Leg_getServoAngle(leg_t* leg, uint8_t servoNo);
 int Leg_setServoPw(leg_t* leg, uint8_t servoNo, uint8_t pw);
+
+int Leg_changeEndpoint(leg_t* leg, double X, double Y, double Z);
 
 #endif
 
