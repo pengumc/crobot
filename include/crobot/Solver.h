@@ -43,6 +43,7 @@ typedef struct PARAMS{
     double B;/**< Distance between servo 1 and 2 in cm.*/
     double C;/**< Distance between servo 2 and the endpoint in cm.*/
     double X;/**< Target x coordinate of the endpoint.*/
+    double _X;/**< temporary x coordinate of the endpoint Only internal.*/
     double Y;/**< Target Y coordinate of the endpoint.*/
     double Z;/**< Target Z coordinate of the endpoint.*/
 } solverParams_t;
@@ -51,7 +52,8 @@ typedef struct{
     solverParams_t* params; /**< Parameters to use in solving stuff*/
     rot_vector_t* lastResult; /**< Holds the last result of a solve call*/
     //rot_vector_t* tempVector; /**< Temp vector?
-    gsl_vector* _initVector; /**< The initial starting point of our solving function*/
+    gsl_vector* _initVector; /**< The initial starting point of
+    our solving function*/
     gsl_multiroot_fsolver* _fsolver; /**< The solver */
 } solver_t;
 

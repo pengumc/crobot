@@ -33,17 +33,17 @@ int _trig_f2 (const gsl_vector *in, void *params, gsl_vector *out){
     const double A = ((struct PARAMS*)params)->A;
     const double B = ((struct PARAMS*)params)->B;
     const double C = ((struct PARAMS*)params)->C;
-    const double X = ((struct PARAMS*)params)->X;
-    const double Y = ((struct PARAMS*)params)->Y;
+    const double X = ((struct PARAMS*)params)->_X;
+    const double Z = ((struct PARAMS*)params)->Z;
 
     const double b = gsl_vector_get(in, 0);
     const double c = gsl_vector_get(in, 1);
 
     const double x =  A + (B * cos(b)) + (C * cos(c+b)) - X; 
-    const double y = (sin(b) *B) + (sin(c+b) * C) -Y;
+    const double z = (sin(b) *B) + (sin(c+b) * C) -Z;
 
     gsl_vector_set(out, 0, x);
-    gsl_vector_set(out, 1, y);
+    gsl_vector_set(out, 1, z);
 
     return GSL_SUCCESS;
 }
@@ -88,6 +88,9 @@ angle_t Solver_calculateAlpha(solver_t* solver){
     const double X = solver->params->X;
     const double Y = solver->params->Y;
     const double length = sqrt(X * X + Y * Y);
+    //change X in params with lenght
+    solver->params->_X = length;
+
     angle_t alpha = asin(Y / length);
     //account for a negative X
     if (X < 0.0){
@@ -102,7 +105,9 @@ angle_t Solver_calculateAlpha(solver_t* solver){
  * using the parameter given in solver->params, this solves our multiroot
  * system.
  * @param solver The solver to use.
- * @retval A gsl status.
+ * @retval 0 Success.
+ * @retval 27 Could not reach.
+ * @retval other See gsl solver status codes.
  */
 int Solver_solve(solver_t* solver){
     //guess a beta angle
