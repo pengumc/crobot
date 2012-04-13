@@ -1,5 +1,7 @@
 /**
  * @file quadruped.c
+ * @brief The default leg configuration has the rotation of servo 0 in the XY
+ plane and in the XZ plane for 1 and 2.
  */
  /* Copyright (c) 2012 Michiel van der Coelen
 
@@ -29,6 +31,8 @@
 quadruped_t* Quadruped_alloc(){
     quadruped_t* tqped = calloc(1, sizeof(quadruped_t));
     tqped->dev = Usbdevice_alloc();
+    tqped->R = rot_matrix_alloc();
+    tqped->invR = rot_matrix_alloc();
     return(tqped);
 }
 
@@ -39,6 +43,8 @@ quadruped_t* Quadruped_alloc(){
  */
 void Quadruped_free(quadruped_t* qped){
     Usbdevice_free(qped->dev);
+    rot_free(qped->R);
+    rot_free(qped->invR);
     free(qped);
 }
 
@@ -53,6 +59,26 @@ int Quadruped_startup(quadruped_t* qped){
     int cnt = Usbdevice_connect(qped->dev);
     return(cnt);
 }
+
+
+/*================= CONFIG LEG ==============================================*/
+void Quadruped_configureServoOffset(quadruped_t* qped,
+    uint8_t legNo, uint8_t servoNo, angle_t offset)
+{
+    if(legNo < USBDEV_LEGNO && servoNo < LEG_DOF)
+        Servo_setOffset(qped->dev->legs[legNo]->servos[servoNo], offset);
+}
+
+void Quadruped_configureServoDirection(quadruped_t* qped, 
+    uint8_t legNo, uint8_t servoNo, int8_t direction)
+{
+    if(legNo < USBDEV_LEGNO && servoNo < LEG_DOF){
+        if(direction > 0) direction = 1;
+        else direction = -1;
+        Servo_setDirection(qped->dev->legs[legNo]->servos[servoNo], direction);
+    }
+}
+
 
 
 /*======================== UPDATE ===========================================*/
@@ -103,3 +129,28 @@ int Quadruped_getPsButton(quadruped_t* qped, pscontroller_button button){
 int Quadruped_getPsButtonEdge(quadruped_t* qped, pscontroller_button button){
     return(Pscontroller_getButtonEdge(&qped->dev->pscon, button));
 }
+
+
+/*===================== COMMIT TO DEVICE ====================================*/
+int Quadruped_commit(quadruped_t* qped){
+    Usbdevice_sendServoData(qped->dev);
+}
+
+
+
+/*===================== UPDATE ROT MATRIX ===================================*/
+void Quadruped_updateMatricesFromAngles(quadruped_t* qped, rot_vector_t* a){
+    rot_matrix_build_from_angles(qped->R, a);
+    rot_matrix_invert(qped->R, qped->invR);
+}
+
+
+/*================== CHANGE LEG ENDPOINT ===================================+*/
+int Quadruped_changeLegEndpoint(quadruped_t* qped, uint8_t legNo,
+    double X, double Y, double Z)
+{
+    //rotate the requested change with the inverse of our current rotation
+
+}
+
+

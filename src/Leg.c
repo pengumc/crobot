@@ -1,5 +1,7 @@
 /**
  * @file Leg.c
+ * @brief leg data is unaware of the main body. The origin point is servo 0,
+ The plane of rotation is the same as the mainbody plate.
  */
 /* Copyright (c) 2012 Michiel van der Coelen
 
@@ -138,4 +140,44 @@ void Leg_updateServoLocations(leg_t* leg){
     rot_free(angles);
     rot_free(M);
 	
+}
+
+
+/*============== TRY ENDPOINT change ========================================*/
+/** Check if there's a valid solution for a change.
+ * @param leg The leg data to use.
+ * @param delta The change in xyz coords of the endpoint.
+ * retval 1 Success, Valid coordinates can be set with 
+ Leg_commitEndpointChange.
+ * @retval -1 Error, no valid solution, no changes were made. Please not that 
+ the lastResult vector in the solver is not valid now.
+ */
+int Leg_tryEndpointChange(leg_t* leg, rot_vector_t* delta){
+    //setup params
+    leg->legSolver->params->X += rot_vector_get(delta, 0);
+    leg->legSolver->params->Y += rot_vector_get(delta, 1);
+    leg->legSolver->params->Z += rot_vector_get(delta, 2);
+    //check if the solver can find a solution
+    if(Solver_solve(leg->legSolver) == 0){
+        //success
+        //still, check the servos to see if they can handle the angle
+        //TODO
+        return(1);
+    else{
+        //no solution, return params to previous state
+        leg->legSolver->params->X -= rot_vector_get(delta, 0);
+        leg->legSolver->params->Y -= rot_vector_get(delta, 1);
+        leg->legSolver->params->Z -= rot_vector_get(delta, 2);
+        return(-1);
+    }
+
+}
+
+
+/*================= COMMIT CHANGE ===========================================*/
+void Leg_commitEndpointChange(leg_t* leg){
+    if(leg->legSolver->validLastResult){
+        Servo_setAngle(leg->servos[0], 
+            rot_vector_get(leg->legSolver->lastResult, 0));
+    }
 }

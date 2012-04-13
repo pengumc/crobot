@@ -66,6 +66,8 @@ angle_t Servo_convertToAngle(servo_t* servo, uint8_t pulsewidth);
 uint8_t Servo_convertToPulsewidth(servo_t* servo, angle_t value);
 int Servo_checkAngle(servo_t* servo, angle_t value);
 void Servo_printDetails(servo_t* servo, const char* name);
+void Servo_setOffset(servo_t* servo, angle_t offset);
+void Servo_setDirection(servo_t* servo, int8_t direction);
 
 servo_t* Servo_alloc();
 void Servo_free(servo_t* servo);

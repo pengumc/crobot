@@ -164,3 +164,35 @@ void Servo_printDetails(servo_t* servo, const char* name){
         Servo_convertToAngle(servo, servo->minPulse), 
         Servo_convertToAngle(servo, servo->maxPulse));
 }
+
+
+/*========================== SET OFFSET =====================================*/
+/** set offset of servo (for a physical rotation of the servo body).
+ * @brief Also reset the angle to 0.
+ * @param servo The servo settings to use.
+ * @param offset The offset to set in radians.
+ */
+void Servo_setOffset(servo_t* servo, angle_t offset){
+    servo->offset = Angle_normalize(offset);
+    Servo_setAngle(servo, 0.0);
+}
+
+
+/*========================== MIRROR  ALONG SERVOBOTTOM ======================*/
+void Servo_mirrorBottom(servo_t* servo){
+    
+}
+
+
+/*================================ SET DIRECTION ============================*/
+/** Set direction of servo rotation, useful when servo is mirrored.
+ * The angle is reset to 0.
+ * @param servo The servo settings to use.
+ * @param direction The new direction, positive for forward, anything else
+ means backwards.
+ */
+void Servo_setDirection(servo_t* servo, int8_t direction){
+    if(direction) servo->direction = 1.0;
+    else servo->direction = -1.0;
+    Servo_setAngle(servo, 0.0);
+}

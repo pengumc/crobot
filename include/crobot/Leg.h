@@ -45,7 +45,7 @@ uint8_t Leg_getServoPw(leg_t* leg, uint8_t servoNo);
 double Leg_getServoAngle(leg_t* leg, uint8_t servoNo);
 int Leg_setServoPw(leg_t* leg, uint8_t servoNo, uint8_t pw);
 
-int Leg_changeEndpoint(leg_t* leg, double X, double Y, double Z);
-
+int Leg_tryEndpointChange(leg_t* leg, rot_vector_t* delta);
+void Leg_commitEndpointChange(leg_t* leg);
 #endif
 

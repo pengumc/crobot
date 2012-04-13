@@ -30,6 +30,8 @@
 typedef struct QPED{
     usbdevice_t* dev; /**<The usb helper.*/
     uint8_t buffer[BUFLEN_SERVO_DATA]; /**<The usb buffer.*/
+    rot_matrix_t* R;/**<rotation matrix of the main body.*/
+    rot_matrix_t* invR;/**<Inverse of R.*/
 } quadruped_t;
 
 quadruped_t* Quadruped_alloc();

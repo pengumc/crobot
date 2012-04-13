@@ -20,14 +20,20 @@
 #define __MAIN__
 #include <stdio.h>
 #include "Report.h"
-#include "Quadruped.h"
+#include "Servo.h"
 
 int main(int argc, char* argv[]){
     int plop;
     printf("pointer size = %d bytes\n", sizeof(&plop));
-    printf("unsigned char = %d\n", sizeof(unsigned char));
     printf("int size = %d\n", sizeof(int));
-    
+    servo_t* myServo = Servo_alloc();
+    Servo_setOffset(myServo, -M_PI/2.0);
+    Servo_printDetails(myServo, NULL);
+    Servo_setPw(myServo, 70);
+    Servo_printDetails(myServo, NULL);
+    Servo_setPw(myServo, 74);
+    Servo_printDetails(myServo, NULL);
+    Servo_free(myServo);
     
     return(0);
 }

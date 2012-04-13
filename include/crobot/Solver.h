@@ -51,7 +51,7 @@ typedef struct PARAMS{
 typedef struct{
     solverParams_t* params; /**< Parameters to use in solving stuff*/
     rot_vector_t* lastResult; /**< Holds the last result of a solve call*/
-    //rot_vector_t* tempVector; /**< Temp vector?
+    int8_t validLastResult; /**<indicates the last solve was succesful.*/   
     gsl_vector* _initVector; /**< The initial starting point of
     our solving function*/
     gsl_multiroot_fsolver* _fsolver; /**< The solver */

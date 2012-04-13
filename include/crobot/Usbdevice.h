@@ -72,6 +72,7 @@ void Usbdevice_free(usbdevice_t* usbdevice);
 void Usbdevice_init(usbdevice_t* usbdevice);
 int Usbdevice_connect(usbdevice_t* usbdevice);
 int Usbdevice_getData(usbdevice_t* usbdevice, char* buffer);
+int Usbdevice_sendServoData(usbdevice_t* usbdevice);
 
 #endif
 

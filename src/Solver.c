@@ -90,7 +90,8 @@ angle_t Solver_calculateAlpha(solver_t* solver){
     const double length = sqrt(X * X + Y * Y);
     //change X in params with lenght
     solver->params->_X = length;
-
+    //if length is zero, the endpoint would be under servo 0
+    //we'll use nan as an indication that alpha does not matter.
     angle_t alpha = asin(Y / length);
     //account for a negative X
     if (X < 0.0){
@@ -143,8 +144,8 @@ int Solver_solve(solver_t* solver){
             gsl_vector_get(solver->_fsolver->x,1),
             gsl_strerror(status)
         );
-
-    }
+        solver->validLastResult = -1;
+    }else solver->validLastResult = 1;
 
     //store result in lastResult
     rot_vector_set(solver->lastResult,

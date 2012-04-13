@@ -79,6 +79,7 @@ void Usbdevice_init(usbdevice_t* usbdevice){
     memcpy(usbdevice->product, tempProduct, USB_CFG_DEVICE_NAME_LEN+1);
 	
 	Pscontroller_init(&usbdevice->pscon);
+
 }
 
 
@@ -187,6 +188,7 @@ void _Usbdevice_updateServos(usbdevice_t* dev, char* buffer){
             Leg_setServoPw(dev->legs[leg], servo, buffer[i]);
             i++;
         }
+        Leg_updateServoLocations(dev->legs[leg]);
     }
 }
 
@@ -229,7 +231,30 @@ int Usbdevice_getServoData(usbdevice_t* usbdevice, char* buffer){
 
     //update the servos
     _Usbdevice_updateServos(usbdevice, buffer);
+
     return(cnt);
 }
 
 
+/*=================== SEND SERVO DATA =======================================*/
+/** Send current servo angles to device.
+ * @param usbdevice The device to communicate with.
+ * @retval 0 Success.
+ * @retval -1 Failure (device disconnected?).
+ */
+int Usbdevice_sendServoData(usbdevice_t* usbdevice){
+    uint8_t buffer[USBDEV_LEGNO * LEG_DOF];
+    unsigned char l, s, i=0;
+    //fill buffer
+    for(l=0;l<USBDEV_LEGNO;l++){
+        for(s=0;s<LEG_DOF;s++){
+            buffer[i] = usbdevice->legs[l]->servos[s]->_pw;
+        }
+    }
+    int cnt = _Usbdevice_sendCtrlMsg(usbdevice, CUSTOM_RQ_SET_DATA,
+        USBDEV_WRITE, 0, 0, buffer);
+    if(cnt != 0){
+        return(-1);
+    }
+    return(cnt);
+}
