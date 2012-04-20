@@ -40,8 +40,11 @@ leg_t* Leg_alloc(){
 	tempLeg->servoLocations[LEG_DOF] = rot_vector_alloc();
 	tempLeg->offsetFromCOB = rot_vector_alloc();
     //the solver
-    //TODO relocate to usbdevice (we only need one)
+    
+	//TODO relocate solver to usbdevice (we only need one)
 	tempLeg->legSolver = Solver_alloc();
+	
+	
 	return(tempLeg);
 }
 
@@ -104,9 +107,13 @@ double Leg_getServoAngle(leg_t* leg, uint8_t servoNo){
  * @param solver The solver to use.
  */
 void Leg_updateServoLocations(leg_t* leg){
-    //create a vector x that represents the offset to the next servo
-    // then rotate that vector with the servo angle
-    // then add the location of the previous servo
+    /*create a vector x that represents the offset to the next servo
+     then rotate that vector with the servo angles
+     then add the location of the previous servo*/
+	
+	/*NOTE because of the way the rotation matrix is defined
+	the z axis actually rotates when you rotate the xy plane
+	so it's better to rotate 1 angle at a time */
 
 	//location for servo 0 is the 0 vector by definition
 	rot_vector_setAll(leg->servoLocations[0], 0.0, 0.0, 0.0);
@@ -115,25 +122,44 @@ void Leg_updateServoLocations(leg_t* leg){
     rot_vector_t* angles = rot_vector_alloc();
     rot_vector_t* x = rot_vector_alloc();
     rot_matrix_t* M = rot_matrix_alloc();
-
+	
+	const double alpha = Leg_getServoAngle(leg, 0);
+	const double beta = Leg_getServoAngle(leg, 1);
+	const double gamma = Leg_getServoAngle(leg, 2);
+	
 	//servo 1
     rot_vector_setAll(x, leg->legSolver->params->A, 0.0, 0.0);
-	rot_vector_set(angles, 2, Leg_getServoAngle(leg, 0));
+	rot_vector_setAll(angles, 0.0, 0.0, alpha);
     rot_matrix_build_from_angles(M, angles);
     rot_matrix_dot_vector(M, x, leg->servoLocations[1]); //rotate
     rot_vector_add(leg->servoLocations[1], leg->servoLocations[0]); //add prev
+	
 	//servo 2
     rot_vector_setAll(x, leg->legSolver->params->B, 0.0, 0.0);
-    rot_vector_change(angles, 2, Leg_getServoAngle(leg, 1));
+		 //y first
+    rot_vector_setAll(angles, 0.0, beta, 0.0);
     rot_matrix_build_from_angles(M, angles);
     rot_matrix_dot_vector(M, x, leg->servoLocations[2]);
+		//next z
+	rot_vector_setAll(angles, 0.0, 0.0, alpha);
+    rot_matrix_build_from_angles(M, angles);
+    rot_matrix_dot_vector(M, leg->servoLocations[2], leg->servoLocations[2]);
+		//and add
     rot_vector_add(leg->servoLocations[2], leg->servoLocations[1]);
-    //endpoint
-    rot_vector_setAll(x, leg->legSolver->params->C, 0.0, 0.0);
-    rot_vector_change(angles, 2, Leg_getServoAngle(leg, 2));
+    
+	//endpoint
+    rot_vector_setAll(x, leg->legSolver->params->B, 0.0, 0.0);
+		 //y first
+    rot_vector_setAll(angles, 0.0, beta+gamma, 0.0);
     rot_matrix_build_from_angles(M, angles);
     rot_matrix_dot_vector(M, x, leg->servoLocations[3]);
+		//next z
+	rot_vector_setAll(angles, 0.0, 0.0, alpha);
+    rot_matrix_build_from_angles(M, angles);
+    rot_matrix_dot_vector(M, leg->servoLocations[3], leg->servoLocations[3]);
+		//and add
     rot_vector_add(leg->servoLocations[3], leg->servoLocations[2]);
+
     
     //free vectors and matrix
     rot_free(x);
@@ -145,12 +171,17 @@ void Leg_updateServoLocations(leg_t* leg){
 
 /*============== TRY ENDPOINT change ========================================*/
 /** Check if there's a valid solution for a change.
+ * After a successful try you should call Leg_commitEndpointChange to
+ finalize the changes. This is to simplify rollbacks when changing multiple
+ legs.
  * @param leg The leg data to use.
  * @param delta The change in xyz coords of the endpoint.
- * retval 1 Success, Valid coordinates can be set with 
+ * retval 0 Success, Valid coordinates can be set with 
  Leg_commitEndpointChange.
- * @retval -1 Error, no valid solution, no changes were made. Please not that 
+ * @retval -3 Error, no valid solution, no changes were made. Please not that 
  the lastResult vector in the solver is not valid now.
+ * @retval -0..2 A valid solution was found but one of the servo's couldn't
+ handle the angle. It's number (negative) is returned.
  */
 int Leg_tryEndpointChange(leg_t* leg, rot_vector_t* delta){
     //setup params
@@ -158,12 +189,21 @@ int Leg_tryEndpointChange(leg_t* leg, rot_vector_t* delta){
     leg->legSolver->params->Y += rot_vector_get(delta, 1);
     leg->legSolver->params->Z += rot_vector_get(delta, 2);
     //check if the solver can find a solution
+	uint8_t returnCode = 0;
     if(Solver_solve(leg->legSolver) == 0){
-        //success
-        //still, check the servos to see if they can handle the angle
-        //TODO
-        return(1);
-    else{
+        //successful solve
+		int8_t i;
+		for(i=0;i<LEG_DOF;i++){
+			//still, check the servos to see if they can handle the angle	
+			if(Servo_checkAngle(leg->servos[i], 
+				rot_vector_get(leg->legSolver->lastResult, i)) == 0)
+			{
+				returnCode = -i;
+			}
+		}
+    }else returnCode = -3;
+	
+	if(returnCode != 0){
         //no solution, return params to previous state
         leg->legSolver->params->X -= rot_vector_get(delta, 0);
         leg->legSolver->params->Y -= rot_vector_get(delta, 1);
@@ -175,9 +215,37 @@ int Leg_tryEndpointChange(leg_t* leg, rot_vector_t* delta){
 
 
 /*================= COMMIT CHANGE ===========================================*/
+/** Commit the previously calculated angles to the servos.
+ * @param leg The leg data to use.
+ */
 void Leg_commitEndpointChange(leg_t* leg){
     if(leg->legSolver->validLastResult){
         Servo_setAngle(leg->servos[0], 
             rot_vector_get(leg->legSolver->lastResult, 0));
     }
+}
+
+
+/*================== PRINT DETAILS ==========================================*/
+/** Print leg details.
+ * @param leg The leg info to print.
+ */
+void Leg_printDetails(leg_t* leg){
+	uint8_t i;
+	char s[80];
+	Report_std("============\nLEG DETAILS\n============");
+	for(i=0;i<LEG_DOF;i++){
+		sprintf(s, "servo %d: %.2f  at %d", i, leg->servos[i]->_angle, leg->servos[i]->_pw);
+		Report_std(s);
+	}
+	Report_std("servo loc:");
+	for(i=0;i<LEG_DOF+1;i++){
+		rot_vector_print(leg->servoLocations[i]);
+	}
+	
+	sprintf(s, "A: %.1f\nB: %.1f\nC: %.1f", 
+		leg->legSolver->params->A, 
+		leg->legSolver->params->B,
+		leg->legSolver->params->C);
+	Report_std(s);
 }

@@ -3,13 +3,13 @@
 #tabsize 4
 
 NAME = crobot
-#change bits according to your system
-BITS=32
+WINDOWSMATCH=MINGW32_NT-6.1
+BITS=64
 #c99 std prevents usleep?
-CFLAGS = -fPIC -Iinclude -Isrc -Iinclude/$(NAME) -Iinclude/gsl$(BITS) -I. -std=c99
+CFLAGS = -Iinclude -Isrc -Iinclude/$(NAME) -Iinclude/gsl$(BITS) -I. -std=c99 -D_POSIX_C_SOURCE=199309L
 #USBLIBS = $(shell libusb-config --libs)
 USBLIBS = -lusb
-CLIBS = -Llib/gsl$(BITS) -Llib/crobot -lgslcblas -lgsl $(USBLIBS) -lm
+CLIBS = -Llib/gsl64 -Llib/crobot -lgslcblas -lgsl $(USBLIBS) -lm
 CC = gcc
 OUTPUTNAME = $(NAME)
 LIBUSB_OBJECTS = opendevice.o
@@ -24,8 +24,12 @@ bin/$(OUTPUTNAME):$(OBJECTS) main.o
 	$(CC) -o bin/$(OUTPUTNAME) $(addprefix lib/$(NAME)/, $(OBJECTS) main.o) $(CLIBS)
 
 %.o:src/%.c
+ifeq ($(UNAME),Linux)
 	$(CC) $(CFLAGS) -c $< -o lib/$(NAME)/$@
-
+endif
+ifeq ($(UNAME),$(WINDOWSMATCH))
+	$(CC) $(CFLAGS) -D__WINDOWSCRAP__ -c $< -o lib/$(NAME)/$@
+endif
 clean:
 	rm lib/$(NAME)/*.o
 
@@ -35,8 +39,8 @@ lib/lib$(OUTPUTNAME)$(BITS).so.1.0.1:$(OBJECTS) main.o
 ifeq ($(UNAME),Linux)
 	$(CC) $(CLIBS) -shared -Wl,-soname,lib$(OUTPUTNAME).so.1 -o lib/lib$(OUTPUTNAME)$(BITS).so.1.0.1 $(addprefix lib/$(NAME)/, $(OBJECTS))
 endif
-ifeq ($(UNAME),MINGW32_NT-6.1)
-	$(CC) -shared -Wall -o lib/lib$(OUTPUTNAME)$(BITS).dll $(addprefix lib/$(NAME)/, $(OBJECTS)) $(CLIBS)
+ifeq ($(UNAME),$(WINDOWSMATCH))
+	$(CC) -D__WINDOWSCRAP__ -shared -Wall -o lib/lib$(OUTPUTNAME)$(BITS).dll $(addprefix lib/$(NAME)/, $(OBJECTS)) $(CLIBS)
 endif
 
 solvertest:$(OBJECTS) solvertest.o

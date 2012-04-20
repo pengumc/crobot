@@ -1,4 +1,6 @@
 bin/solvertest
 *.swp
 *.o
+ctest.c
+a.out
 Doxyfile

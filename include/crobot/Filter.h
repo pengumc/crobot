@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h> //for memset
+#include "Report.h"
 
 /** Number of data points to remember.*/
 #define FILTER_GRAPH_LENGTH 300
@@ -41,6 +42,7 @@ typedef struct FILTER_T {
     double* inputData; /**<Remembered input points.*/
     double* outputData;/**<Remembered output points.*/
     uint16_t dataIndex; /**<Index of input/output Data.*/
+    uint8_t dataset_changed;/**<Indication we should not free Data.*/
 
     double x; /**<Filter output.*/
     double _x_last; /**<Previous filter output.*/
@@ -54,8 +56,9 @@ void Filter_init(filter_t* f);
 
 void Filter_step(filter_t* f, double input);
 
-uint16_t Filter_addInputPoint(filter_t* f, double value);
-uint16_t Filter_addOutputPoint(filter_t* f, double value);
+uint16_t Filter_addPoints(filter_t* f, double in, double out);
+void Filter_addInputPoint(filter_t* f, double value);
+void Filter_addOutputPoint(filter_t* f, double value);
 
 void Filter_changeGraphPointers(filter_t* f, double* in, double* out);
 

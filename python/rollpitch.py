@@ -3,6 +3,7 @@ import pygtk
 import gtk, cairo, gobject
 import math
 
+#recommended width: >200px
 class RollPitch(gtk.DrawingArea):
 
     K = math.pi/180.0
@@ -25,7 +26,10 @@ class RollPitch(gtk.DrawingArea):
         self.setup_cr()
         self.clear()
         self.draw_pitch(self.width/2.0, self.height/2.0, self.pitch)
-        self.draw_base_circle(self.width/2.0, self.height/2.0, self.width/3.0)
+        self.draw_base_circle(
+            self.width/2.0, #x
+            self.height/2.0, #y
+            math.sqrt(self.width*self.height)/3.0) #r
         self.draw_roll(self.width/2, self.height/2, self.width/3, self.roll)
         return(True)
 
@@ -72,15 +76,16 @@ class RollPitch(gtk.DrawingArea):
 
     def draw_text(self, x, y, text):
         self.cr.set_source_rgb(0,0,0)
+        self.cr.set_font_size(22)
         self.cr.move_to(x,y)
         self.cr.show_text(text)
 
-class Screen:
+class RollPitchExampleScreen:
 
     def __init__(self):
         self.window = gtk.Window()
         self.window.connect('delete-event', gtk.main_quit)
-        self.window.set_size_request(300, 300)
+        self.window.set_size_request(200, 200)
         self.rp = RollPitch()
         self.window.add(self.rp)
         self.window.show_all()
@@ -91,6 +96,6 @@ class Screen:
 
 if __name__ == "__main__":
     print('start')
-    screen = Screen()
+    screen = RollPitchExampleScreen()
     screen.run()
     

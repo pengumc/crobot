@@ -26,6 +26,7 @@
 #include "rotation.h"
 #include "Servo.h"
 #include "Solver.h"
+#include "Report.h"
 
 /** Number of servos per leg*/
 #define LEG_DOF 3
@@ -44,6 +45,7 @@ void Leg_updateServoLocations(leg_t* leg);
 uint8_t Leg_getServoPw(leg_t* leg, uint8_t servoNo);
 double Leg_getServoAngle(leg_t* leg, uint8_t servoNo);
 int Leg_setServoPw(leg_t* leg, uint8_t servoNo, uint8_t pw);
+void Leg_printDetails(leg_t* leg);
 
 int Leg_tryEndpointChange(leg_t* leg, rot_vector_t* delta);
 void Leg_commitEndpointChange(leg_t* leg);

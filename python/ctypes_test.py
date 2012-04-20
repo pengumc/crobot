@@ -17,7 +17,8 @@ def handleSigTERM():
     print("quitting...")
     sys.exit(0)
 
-
+#playstation analog stick drawing
+#==================================
 class Psanalog(gtk.DrawingArea):
     
     SIZE = 96
@@ -59,6 +60,8 @@ class Psanalog(gtk.DrawingArea):
         self.cr.stroke()
 
 
+#playstation controller button image
+#====================================
 class Psbutton(gtk.Image):
     
     def __init__(self, pixbuf1, pixbuf2):
@@ -85,6 +88,27 @@ class Psbutton(gtk.Image):
             self.activate()
 
 
+#grapharea
+#===========
+class GraphArea(gtk.DrawingArea):
+
+    
+    def __init__(self):
+        gtk.DrawingArea.__init__(self)
+        self.lines = [GraphLine(), GraphLine(), GraphLine()]
+
+
+
+#GraphLine
+#=============
+class graphLine:
+    
+    def __init__(self):
+        pass
+
+
+#main screen
+#==============
 class Screen:
 
     NUMBER_OF_BUTTONS = 6
@@ -197,6 +221,7 @@ class Screen:
             self.timeout_active = False
             return(False)
         self.update_buttons()
+        print(self.crobot.inX[0:10])
         return(True)
 
     def update_buttons(self):
@@ -211,28 +236,55 @@ class Screen:
         self.psbuttons['r1'].set(self.crobot.getButtonEdge(11))
         self.psbuttons['r2'].set(self.crobot.getButtonEdge(9))
 
-    
 
+#crobot library handler
+#======================
 class Crobot:
     
     def __init__(self):
         bits = platform.machine()
         if bits == 'i686':
             bits = '32'
-        elif bits == 'x86_64':
+        elif bits == 'x86_64' or bits == 'AMD64':
             bits = '64'
        
         if sys.platform == 'linux2':
             LIBCROBOT = "lib/libcrobot" + bits + ".so.1.0.1"
         elif sys.platform == 'win32':
             LIBCROBOT = "lib/libcrobot" + bits + ".dll"
-
+        print("lib: " + LIBCROBOT)
+        #create qped instance
         self.crobotlib = CDLL(LIBCROBOT)
         self.crobotlib.Quadruped_alloc.restype = c_void_p
         self.qped = self.crobotlib.Quadruped_alloc()
+        #set datasets
+        self.inX = (c_double *300)()
+        self.p_inX = cast(self.inX, POINTER(c_double))
+        self.inY = (c_double *300)()
+        self.p_inY = cast(self.inY, POINTER(c_double))
+        self.inZ = (c_double *300)()
+        self.p_inZ = cast(self.inZ, POINTER(c_double))
+        self.outX = (c_double *300)()
+        self.p_outX = cast(self.outX, POINTER(c_double))
+        self.outY = (c_double *300)()
+        self.p_outY = cast(self.outY, POINTER(c_double))
+        self.outZ = (c_double *300)()
+        self.p_outZ = cast(self.outZ, POINTER(c_double))
         self.con =  self.crobotlib.Quadruped_startup(self.qped)
         print('startup: ' + str(self.con))
-            
+        if self.con > 0:
+                print("setting new graph buffers...")
+                self.crobotlib.Quadruped_setGraphPointers(self.qped,
+                    self.inX,
+                    self.p_inY,
+                    self.p_inZ,
+                    self.p_outX,
+                    self.p_outY,
+                    self.p_outZ)
+        
+    def __del__(self):
+        self.crobotlib.Quadruped_free(self.qped)
+    
     def getButton(self, button):
         t = self.crobotlib.Quadruped_getPsButton(self.qped, button)
         #print('button ' + str(button) + ': ' + str(t))

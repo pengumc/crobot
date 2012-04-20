@@ -34,11 +34,16 @@ typedef struct QPED{
     rot_matrix_t* invR;/**<Inverse of R.*/
 } quadruped_t;
 
+typedef struct SERVOINFO{
+    uint8_t pw[BUFLEN_SERVO_DATA];
+    double angle[BUFLEN_SERVO_DATA];
+} servoinfo_t;
+
 quadruped_t* Quadruped_alloc();
 void Quadruped_free(quadruped_t* qped);
 
 int Quadruped_update(quadruped_t* qped);
-
+int Quadruped_startup(quadruped_t* qped);
 void Quadruped_setGraphPointers(quadruped_t* qped,
     double* inX, 
     double* inY, 

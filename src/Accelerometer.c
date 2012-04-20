@@ -82,7 +82,7 @@ void _Accelerometer_calcTilt(accelerometer_t* acc){
     const double y = atan(Ax / sqrt(Ay * Ay + Az * Az));
     //const double z = atan(sqrt(Ax * Ax + Ay * Ay) / Az);
 
-    //rot_vector_setAll(acc->tilt_angles, x, y, 0.0);
+    rot_vector_setAll(acc->tilt_angles, x, y, 0.0);
 }
 
 /*========================== UPDATE FILTERS =================================*/

@@ -38,8 +38,10 @@ filter_t* Filter_alloc(){
  * @param f The filter data to free.
  */
 void Filter_free(filter_t* f){
-    free(f->inputData);
-    free(f->outputData);
+    if(f->dataset_changed == 0){
+        free(f->inputData);
+        free(f->outputData);
+    }
     free(f);
 }
 
@@ -49,6 +51,7 @@ void Filter_free(filter_t* f){
  * @param f The filter data to reset.
  */ 
 void Filter_init(filter_t* f){
+    f->dataset_changed = 0;
     f->x = 0.0;
     f->_x_last = 0.0;
     f->_P = 0.0;
@@ -69,7 +72,6 @@ void Filter_step(filter_t* f, double input){
     double x_temp, P_temp, K;
     
     x_temp = f->_x_last;
-    return;
     P_temp = f->_P_last + f->Sw;
 
     K = (1.0 / (P_temp + f->Sz) + P_temp);
@@ -78,44 +80,51 @@ void Filter_step(filter_t* f, double input){
 
     f->_x_last = f->x;
     f->_P_last = f->_P;
-    Filter_addInputPoint(f, input);
-    Filter_addOutputPoint(f, f->x);
+    Filter_addPoints(f, input, f->x);
 
 }
 
 
 //================================ ADD GRAPHPOINTS ==========================*/
+uint16_t Filter_addPoints(filter_t* f, double in, double out){
+    f->dataIndex++;
+    if(f->dataIndex >= FILTER_GRAPH_LENGTH) f->dataIndex = 0;
+    Filter_addInputPoint(f, in);
+    Filter_addOutputPoint(f, out);
+    return(f->dataIndex);
+}
+
 /** Add a value to the dataset.
  * @param f The filter data to use.
  * @param value The value to add.
  * @return The new dataIndex.
  */
-uint16_t Filter_addInputPoint(filter_t* f, double value){
-    f->dataIndex++;
-    if(f->dataIndex >= FILTER_GRAPH_LENGTH) f->dataIndex = 0;
+void Filter_addInputPoint(filter_t* f, double value){
     f->inputData[f->dataIndex] = value;
-    return(f->dataIndex);
 }
 
 /** Same as Filter_addInputPoint (except for the output set).*/
-uint16_t Filter_addOutputPoint(filter_t* f, double value){
-    f->dataIndex++;
-    if(f->dataIndex >= FILTER_GRAPH_LENGTH) f->dataIndex = 0;
+void Filter_addOutputPoint(filter_t* f, double value){
     f->outputData[f->dataIndex] = value;
-    return(f->dataIndex);
 }
 
 
 /*=========================== CHANGE GRAPH POINTERS =========================*/
 /** Supply your own pointers to double arrays to store data points.
+ * All data in the new arrays is set to zero and the filter is reset.
  * @param f The filter to change.
  * @param in The pointer to use for inputData.
  * @param out The pointer to use for outputData.
  */
 void Filter_changeGraphPointers(filter_t* f, double* in, double* out){
-    free(f->inputData);
+    if(f->dataset_changed == 0){
+        free(f->inputData);
+        free(f->outputData);
+    }
     f->inputData = in;
-    free(f->outputData);
+    f->dataIndex = 1;
     f->outputData = out;
+    f->dataset_changed = 1;
+    Filter_init(f);
 }
 

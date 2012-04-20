@@ -103,7 +103,7 @@ int Usbdevice_connect(usbdevice_t* usbdevice){
                 
         sprintf(
             s,
-            "USB device \"%s\" with vid=0x%x pid=0x%x\n  NOT FOUND",
+            "USB device \"%s\" with vid=0x%x pid=0x%x\n NOT FOUND",
             usbdevice->product, usbdevice->vid, usbdevice->pid);
         Report_err(s);
         usbdevice->connected = 0;
@@ -212,8 +212,16 @@ int Usbdevice_getServoData(usbdevice_t* usbdevice, char* buffer){
     }
     
     signed char trying = USBDEV_RETRY;
+	#ifndef __WINDOWSCRAP__
+		struct timespec sleepy_time;
+		sleepy_time.tv_nsec = 1000000; //1e6 ns = 1 ms
+	#endif
     while(trying >= 0){
-        nanosleep(1000000);
+		#ifndef __WINDOWSCRAP__
+		    nanosleep(&sleepy_time, NULL);
+		#else
+			Sleep(1);
+		#endif
         cnt = _Usbdevice_sendCtrlMsg(usbdevice, CUSTOM_RQ_GET_POS,
             USBDEV_READ, 0, 0, buffer);
         //should have received 12 bytes, even on failure

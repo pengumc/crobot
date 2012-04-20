@@ -27,7 +27,9 @@
 #include <usb.h>
 #include <string.h>
 #include <unistd.h> //for usleep
-//#include <time.h>
+#ifdef __WINDOWSCRAP__
+	#include <windows.h>
+#endif
 #include "opendevice.h"
 #include "usbconfig.h"
 #include "i2c_header.h"
