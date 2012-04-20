@@ -17,8 +17,11 @@ var searchData=
   ['servo_5fprintdetails',['Servo_printDetails',['../_servo_8c.html#a0055a9a3f030e6585235176f32981732',1,'Servo_printDetails(servo_t *servo, const char *name):&#160;Servo.c'],['../_servo_8h.html#a0055a9a3f030e6585235176f32981732',1,'Servo_printDetails(servo_t *servo, const char *name):&#160;Servo.c']]],
   ['servo_5freset',['Servo_reset',['../_servo_8c.html#a70da48d2b4c35c2b01b35df2dbd7e579',1,'Servo_reset(servo_t *servo):&#160;Servo.c'],['../_servo_8h.html#a70da48d2b4c35c2b01b35df2dbd7e579',1,'Servo_reset(servo_t *servo):&#160;Servo.c']]],
   ['servo_5fsetangle',['Servo_setAngle',['../_servo_8c.html#a6399ce0b19989a6412d753999b11ef70',1,'Servo_setAngle(servo_t *servo, angle_t value):&#160;Servo.c'],['../_servo_8h.html#a6399ce0b19989a6412d753999b11ef70',1,'Servo_setAngle(servo_t *servo, angle_t value):&#160;Servo.c']]],
+  ['servo_5fsetdirection',['Servo_setDirection',['../_servo_8c.html#a5fb62d5cb0eb7861cfd8ef62bafc310d',1,'Servo_setDirection(servo_t *servo, int8_t direction):&#160;Servo.c'],['../_servo_8h.html#a5fb62d5cb0eb7861cfd8ef62bafc310d',1,'Servo_setDirection(servo_t *servo, int8_t direction):&#160;Servo.c']]],
+  ['servo_5fsetoffset',['Servo_setOffset',['../_servo_8c.html#a03b6becd72d2e979f95c1859cb5bad29',1,'Servo_setOffset(servo_t *servo, angle_t offset):&#160;Servo.c'],['../_servo_8h.html#a03b6becd72d2e979f95c1859cb5bad29',1,'Servo_setOffset(servo_t *servo, angle_t offset):&#160;Servo.c']]],
   ['servo_5fsetpw',['Servo_setPw',['../_servo_8c.html#ab7b3d74159755fb13b9e79bd41610452',1,'Servo_setPw(servo_t *servo, uint8_t value):&#160;Servo.c'],['../_servo_8h.html#ab7b3d74159755fb13b9e79bd41610452',1,'Servo_setPw(servo_t *servo, uint8_t value):&#160;Servo.c']]],
   ['servo_5ft',['servo_t',['../structservo__t.html',1,'']]],
+  ['servoinfo',['SERVOINFO',['../struct_s_e_r_v_o_i_n_f_o.html',1,'']]],
   ['servolocations',['servoLocations',['../structleg__t.html#aec16989bc7cc8436a92d0a23cd510434',1,'leg_t']]],
   ['servos',['servos',['../structleg__t.html#a150504eff4daa883b241a58ee74ae4fd',1,'leg_t']]],
   ['shoulder_5fshapes',['shoulder_shapes',['../structpscontroller__t.html#a8b34a75e2b84d712402b98f62efda3d4',1,'pscontroller_t']]],
@@ -35,6 +38,6 @@ var searchData=
   ['solver_5ft',['solver_t',['../structsolver__t.html',1,'']]],
   ['solverparams_5ft',['solverParams_t',['../_solver_8h.html#ad9eda1af9988fd53e0b7fb56db441dc5',1,'Solver.h']]],
   ['ss_5fdpad',['ss_dpad',['../structpscontroller__t.html#a76cd62407eb4df8f6ad40e715b69e513',1,'pscontroller_t']]],
-  ['sw',['Sw',['../structfilter__t.html#afa36cff2636c989fe0fa5c30e14d8d01',1,'filter_t']]],
-  ['sz',['Sz',['../structfilter__t.html#a4a79f38e6e513711a586c6931c2654db',1,'filter_t']]]
+  ['sw',['Sw',['../struct_f_i_l_t_e_r___t.html#afa36cff2636c989fe0fa5c30e14d8d01',1,'FILTER_T']]],
+  ['sz',['Sz',['../struct_f_i_l_t_e_r___t.html#a4a79f38e6e513711a586c6931c2654db',1,'FILTER_T']]]
 ];

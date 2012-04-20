@@ -118,12 +118,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 <div class="textblock"><code>#include &lt;usb.h&gt;</code><br/>
 <code>#include &lt;string.h&gt;</code><br/>
+<code>#include &lt;unistd.h&gt;</code><br/>
 <code>#include &quot;opendevice.h&quot;</code><br/>
 <code>#include &quot;usbconfig.h&quot;</code><br/>
 <code>#include &quot;<a class="el" href="i2c__header_8h_source.html">i2c_header.h</a>&quot;</code><br/>
 <code>#include &quot;requests.h&quot;</code><br/>
 <code>#include &quot;<a class="el" href="_report_8h_source.html">Report.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="_pscontroller_8h_source.html">Pscontroller.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="_accelerometer_8h_source.html">Accelerometer.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="_leg_8h_source.html">Leg.h</a>&quot;</code><br/>
 </div>
 <p><a href="_usbdevice_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -139,6 +142,8 @@ Defines</h2></td></tr>
 <tr class="memdesc:a649b0ae2f6a7a987a39a8bf0f1513108"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of times to allow a failed comminication.  <a href="#a649b0ae2f6a7a987a39a8bf0f1513108"></a><br/></td></tr>
 <tr class="memitem:aabfac2996ecb418c7bcc8445f9f83b7d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_usbdevice_8h.html#aabfac2996ecb418c7bcc8445f9f83b7d">USBDEV_TIMEOUT_MS</a>&#160;&#160;&#160;500</td></tr>
 <tr class="memdesc:aabfac2996ecb418c7bcc8445f9f83b7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Timeout for communication.  <a href="#aabfac2996ecb418c7bcc8445f9f83b7d"></a><br/></td></tr>
+<tr class="memitem:a1389b8c0abf620c2c8b68095c35c0f4e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_usbdevice_8h.html#a1389b8c0abf620c2c8b68095c35c0f4e">USBDEV_LEGNO</a>&#160;&#160;&#160;4</td></tr>
+<tr class="memdesc:a1389b8c0abf620c2c8b68095c35c0f4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of legs.  <a href="#a1389b8c0abf620c2c8b68095c35c0f4e"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:afd19dc83ca82875d15aa0e167bee8cab"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_usbdevice_8h.html#afd19dc83ca82875d15aa0e167bee8cab">usbdevice_reqType</a> { <b>USBDEV_READ</b> =  USB_ENDPOINT_IN, 
@@ -157,9 +162,26 @@ Functions</h2></td></tr>
 <tr class="memdesc:ad9e5d91f579f56f940885588a40ec104"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connect the device.  <a href="#ad9e5d91f579f56f940885588a40ec104"></a><br/></td></tr>
 <tr class="memitem:a57357fbfd5912dd8e3e02298df52d641"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_usbdevice_8h.html#a57357fbfd5912dd8e3e02298df52d641">Usbdevice_getData</a> (<a class="el" href="structusbdevice__t.html">usbdevice_t</a> *usbdevice, char *buffer)</td></tr>
 <tr class="memdesc:a57357fbfd5912dd8e3e02298df52d641"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get general data from usbdevice and update everything that uses that data.  <a href="#a57357fbfd5912dd8e3e02298df52d641"></a><br/></td></tr>
+<tr class="memitem:aad88667d324fd367f5e339fb65dd688d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_usbdevice_8h.html#aad88667d324fd367f5e339fb65dd688d">Usbdevice_sendServoData</a> (<a class="el" href="structusbdevice__t.html">usbdevice_t</a> *usbdevice)</td></tr>
+<tr class="memdesc:aad88667d324fd367f5e339fb65dd688d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send current servo angles to device.  <a href="#aad88667d324fd367f5e339fb65dd688d"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"></div><hr/><h2>Define Documentation</h2>
+<a class="anchor" id="a1389b8c0abf620c2c8b68095c35c0f4e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define <a class="el" href="_usbdevice_8h.html#a1389b8c0abf620c2c8b68095c35c0f4e">USBDEV_LEGNO</a>&#160;&#160;&#160;4</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Number of legs. </p>
+
+</div>
+</div>
 <a class="anchor" id="a649b0ae2f6a7a987a39a8bf0f1513108"></a>
 <div class="memitem">
 <div class="memproto">
@@ -317,10 +339,42 @@ Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Set default values for a usbdevice. </p>
-<p>Values are defined in <a class="el" href="i2c__header_8h.html">i2c_header.h</a> file as well as <a class="el" href="usbconfig_8h_source.html">usbconfig.h</a> </p>
+<p>Values are defined in <a class="el" href="i2c__header_8h.html" title="Some I2C values.">i2c_header.h</a> file as well as <a class="el" href="usbconfig_8h_source.html">usbconfig.h</a> </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">usbdevice</td><td>The usbdevice data to use. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="aad88667d324fd367f5e339fb65dd688d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="_usbdevice_8h.html#aad88667d324fd367f5e339fb65dd688d">Usbdevice_sendServoData</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structusbdevice__t.html">usbdevice_t</a> *&#160;</td>
+          <td class="paramname"><em>usbdevice</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Send current servo angles to device. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">usbdevice</td><td>The device to communicate with. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt><b>Return values:</b></dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>Success. </td></tr>
+    <tr><td class="paramname">-1</td><td>Failure (device disconnected?). </td></tr>
   </table>
   </dd>
 </dl>
@@ -333,7 +387,7 @@ Functions</h2></td></tr>
     <ul>
       <li class="navelem"><a class="el" href="_usbdevice_8h.html">Usbdevice.h</a>      </li>
 
-    <li class="footer">Generated on Sat Mar 31 2012 15:25:41 for crobot by
+    <li class="footer">Generated on Sat Apr 14 2012 11:21:40 for crobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.0 </li>
    </ul>

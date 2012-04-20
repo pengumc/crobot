@@ -145,30 +145,31 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00037"></a>00037 <span class="preprocessor">#include &quot;<a class="code" href="rotation_8h.html">rotation.h</a>&quot;</span>
 <a name="l00038"></a>00038 <span class="preprocessor">#include &quot;<a class="code" href="_filter_8h.html" title="Kalman filter.">Filter.h</a>&quot;</span>
 <a name="l00039"></a>00039 
-<a name="l00041"></a><a class="code" href="structaccelerometer__t.html">00041</a> <span class="keyword">typedef</span> <span class="keyword">struct </span>{
-<a name="l00042"></a><a class="code" href="structaccelerometer__t.html#afa0bb951e458a038c8059c4b47f79b5e">00042</a>     rot_vector_t* <a class="code" href="structaccelerometer__t.html#afa0bb951e458a038c8059c4b47f79b5e" title="Holds the calculated tilt angles.">tilt_angles</a>; 
-<a name="l00043"></a><a class="code" href="structaccelerometer__t.html#a1c8615bbe220e14bb87d36ba61fb4a37">00043</a>     uint8_t adc_values[<a class="code" href="_accelerometer_8h.html#a522a32b84e1b31975d62974737aee3cb" title="Adc values to keep track of.">ACC_ADC_COUNT</a>]; 
-<a name="l00044"></a><a class="code" href="structaccelerometer__t.html#a10a154b3007c0f4188591f36f52128c6">00044</a>     <a class="code" href="structfilter__t.html" title="Filter data.">filter_t</a>* filters[<a class="code" href="_accelerometer_8h.html#a07bf3d1ab5d44ee629ab5eeba839ae77" title="Number of filters to use.">ACC_FILTER_COUNT</a>];
+<a name="l00040"></a>00040 
+<a name="l00042"></a><a class="code" href="structaccelerometer__t.html">00042</a> <span class="keyword">typedef</span> <span class="keyword">struct </span>{
+<a name="l00043"></a><a class="code" href="structaccelerometer__t.html#afa0bb951e458a038c8059c4b47f79b5e">00043</a>     rot_vector_t* <a class="code" href="structaccelerometer__t.html#afa0bb951e458a038c8059c4b47f79b5e" title="Holds the calculated tilt angles.">tilt_angles</a>; 
+<a name="l00044"></a><a class="code" href="structaccelerometer__t.html#a10a154b3007c0f4188591f36f52128c6">00044</a>     <a class="code" href="struct_f_i_l_t_e_r___t.html" title="Filter data.">filter_t</a>* filters[<a class="code" href="_accelerometer_8h.html#a07bf3d1ab5d44ee629ab5eeba839ae77" title="Number of filters to use.">ACC_FILTER_COUNT</a>];
 <a name="l00045"></a><a class="code" href="structaccelerometer__t.html#a9dcf765a9f7ad2fbec34b31e30090360">00045</a>     time_t <a class="code" href="structaccelerometer__t.html#a9dcf765a9f7ad2fbec34b31e30090360" title="Timestamp of last update.">lastUpdateTime</a>; 
-<a name="l00046"></a>00046 } <a class="code" href="structaccelerometer__t.html" title="Accelerometer data.">accelerometer_t</a>;
-<a name="l00047"></a>00047 
-<a name="l00048"></a>00048 <a class="code" href="structaccelerometer__t.html" title="Accelerometer data.">accelerometer_t</a>* <a class="code" href="_accelerometer_8c.html#ae0cbf5bd97665afd37b06a1126fdfaf4" title="Allocate Accelerometer memory.">Accelerometer_alloc</a>();
-<a name="l00049"></a>00049 <span class="keywordtype">void</span> <a class="code" href="_accelerometer_8c.html#a63d8067142ec1dc6aa79c12af0ba98d1" title="Free accelerometer data.">Accelerometer_free</a>(<a class="code" href="structaccelerometer__t.html" title="Accelerometer data.">accelerometer_t</a>* acc);
-<a name="l00050"></a>00050 
-<a name="l00051"></a>00051 <span class="keywordtype">void</span> <a class="code" href="_accelerometer_8c.html#a7e1986e8444bf24c6cd68ab8a7f14c0b" title="Update all values based on new adc data.">Accelerometer_updateValues</a>(<a class="code" href="structaccelerometer__t.html" title="Accelerometer data.">accelerometer_t</a>* acc,
-<a name="l00052"></a>00052     uint8_t x, uint8_t y, uint8_t z);
-<a name="l00053"></a>00053 <span class="keywordtype">void</span> <a class="code" href="_accelerometer_8c.html#afec2f6d1c206b5801cc61bf389124ebf" title="Recalculate the tilt based on stored adc values.">_Accelerometer_calcTilt</a>(<a class="code" href="structaccelerometer__t.html" title="Accelerometer data.">accelerometer_t</a>* acc);
-<a name="l00054"></a>00054 <span class="keywordtype">void</span> <a class="code" href="_accelerometer_8c.html#a91b4bf4ddeb647f6bb9ec1658f1c3601" title="Update the filters.">_Accelerometer_updateFilters</a>(<a class="code" href="structaccelerometer__t.html" title="Accelerometer data.">accelerometer_t</a>* acc);
-<a name="l00055"></a>00055 <span class="comment">//time_t _Accelerometer_getTimeDelta(accelerometer_t* acc);</span>
-<a name="l00056"></a>00056 
-<a name="l00057"></a>00057 <span class="preprocessor">#endif</span>
+<a name="l00046"></a><a class="code" href="structaccelerometer__t.html#a1c8615bbe220e14bb87d36ba61fb4a37">00046</a>     uint8_t adc_values[<a class="code" href="_accelerometer_8h.html#a522a32b84e1b31975d62974737aee3cb" title="Adc values to keep track of.">ACC_ADC_COUNT</a>]; 
+<a name="l00047"></a>00047 } <a class="code" href="structaccelerometer__t.html" title="Accelerometer data.">accelerometer_t</a>;
+<a name="l00048"></a>00048 
+<a name="l00049"></a>00049 <a class="code" href="structaccelerometer__t.html" title="Accelerometer data.">accelerometer_t</a>* <a class="code" href="_accelerometer_8c.html#ae0cbf5bd97665afd37b06a1126fdfaf4" title="Allocate Accelerometer memory.">Accelerometer_alloc</a>();
+<a name="l00050"></a>00050 <span class="keywordtype">void</span> <a class="code" href="_accelerometer_8c.html#a63d8067142ec1dc6aa79c12af0ba98d1" title="Free accelerometer data.">Accelerometer_free</a>(<a class="code" href="structaccelerometer__t.html" title="Accelerometer data.">accelerometer_t</a>* acc);
+<a name="l00051"></a>00051 
+<a name="l00052"></a>00052 <span class="keywordtype">void</span> <a class="code" href="_accelerometer_8c.html#a7e1986e8444bf24c6cd68ab8a7f14c0b" title="Update all values based on new adc data.">Accelerometer_updateValues</a>(<a class="code" href="structaccelerometer__t.html" title="Accelerometer data.">accelerometer_t</a>* acc,
+<a name="l00053"></a>00053     uint8_t x, uint8_t y, uint8_t z);
+<a name="l00054"></a>00054 <span class="keywordtype">void</span> <a class="code" href="_accelerometer_8c.html#afec2f6d1c206b5801cc61bf389124ebf" title="Recalculate the tilt based on stored adc values.">_Accelerometer_calcTilt</a>(<a class="code" href="structaccelerometer__t.html" title="Accelerometer data.">accelerometer_t</a>* acc);
+<a name="l00055"></a>00055 <span class="keywordtype">void</span> <a class="code" href="_accelerometer_8c.html#a91b4bf4ddeb647f6bb9ec1658f1c3601" title="Update the filters.">_Accelerometer_updateFilters</a>(<a class="code" href="structaccelerometer__t.html" title="Accelerometer data.">accelerometer_t</a>* acc);
+<a name="l00056"></a>00056 <span class="comment">//time_t _Accelerometer_getTimeDelta(accelerometer_t* acc);</span>
+<a name="l00057"></a>00057 
+<a name="l00058"></a>00058 <span class="preprocessor">#endif</span>
 </pre></div></div><!-- contents -->
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="_accelerometer_8h.html">Accelerometer.h</a>      </li>
 
-    <li class="footer">Generated on Sat Mar 31 2012 15:25:41 for crobot by
+    <li class="footer">Generated on Sat Apr 14 2012 11:21:40 for crobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.0 </li>
    </ul>

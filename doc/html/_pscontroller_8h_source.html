@@ -135,84 +135,85 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00024"></a>00024 <span class="preprocessor"></span>
 <a name="l00025"></a>00025 <span class="preprocessor">#include &lt;stdint.h&gt;</span>
 <a name="l00026"></a>00026 <span class="preprocessor">#include &lt;stdlib.h&gt;</span>
-<a name="l00027"></a>00027 
-<a name="l00029"></a><a class="code" href="_pscontroller_8h.html#a45c1d1a4fa084c9bdf9c475f76c7d2e3">00029</a> <span class="preprocessor">#define PS_DEFAULT_ANALOG 128</span>
-<a name="l00030"></a>00030 <span class="preprocessor"></span>
-<a name="l00042"></a><a class="code" href="_pscontroller_8h.html#af1ffa2b7554f4e88da3e39f5e7d9053d">00042</a> <span class="preprocessor">#define CHK(x,y) (x&amp;(1&lt;&lt;y)) </span>
-<a name="l00043"></a>00043 <span class="preprocessor"></span>
-<a name="l00047"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39cee">00047</a> <span class="keyword">typedef</span> <span class="keyword">enum</span>{
-<a name="l00048"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceeabbb70a917409d495ec4295308f5f554d">00048</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceeabbb70a917409d495ec4295308f5f554d" title="Select.">PS_SELECT</a> = 0, 
-<a name="l00049"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceeab1fe062fc9141cd0a9890a03cbdcd7df">00049</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceeab1fe062fc9141cd0a9890a03cbdcd7df" title="Start.">PS_START</a> = 3,
-<a name="l00050"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea91d63a7c0f24d1681064ca2eaa0416bc">00050</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea91d63a7c0f24d1681064ca2eaa0416bc" title="Up.">PS_UP</a> = 4,
-<a name="l00051"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea5c335b7d42249ed1d756cd783359b239">00051</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea5c335b7d42249ed1d756cd783359b239" title="Down.">PS_RIGHT</a> = 5,
-<a name="l00052"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea622925a0c401e1a81681f945030fd281">00052</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea622925a0c401e1a81681f945030fd281" title="Righ.">PS_DOWN</a> = 6,
-<a name="l00053"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea28361c9a8425c0752f12b8f642df31ad">00053</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea28361c9a8425c0752f12b8f642df31ad" title="Left.">PS_LEFT</a> = 7,
-<a name="l00054"></a>00054         <span class="comment">//substract 8 from these to get the bit numbers</span>
-<a name="l00055"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea51ae28a697e2d0a2ffe793c126b2ee9a">00055</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea51ae28a697e2d0a2ffe793c126b2ee9a" title="L2.">PS_L2</a> = 8,
-<a name="l00056"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea03e5459e068c68437140c41df29f903d">00056</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea03e5459e068c68437140c41df29f903d" title="R2.">PS_R2</a> = 9,
-<a name="l00057"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea5ad9ac6c880ea8fa5a5772fa023b68ab">00057</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea5ad9ac6c880ea8fa5a5772fa023b68ab" title="L1.">PS_L1</a> = 10,
-<a name="l00058"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceeac16e0c9b69a4b1c60d315670efa73c49">00058</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceeac16e0c9b69a4b1c60d315670efa73c49" title="R1.">PS_R1</a> = 11,
-<a name="l00059"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceeabde4ba9e1216f38b443b782995708fdd">00059</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceeabde4ba9e1216f38b443b782995708fdd" title="Triangle.">PS_TRIANGLE</a> = 12,
-<a name="l00060"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea069e2c91cec9d0feb9ab8ac0c9b250f9">00060</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea069e2c91cec9d0feb9ab8ac0c9b250f9" title="Circle.">PS_CIRCLE</a> = 13,
-<a name="l00061"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea7fc6faa1ca372fa72c5ecdb81829caa7">00061</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea7fc6faa1ca372fa72c5ecdb81829caa7" title="Cross.">PS_CROSS</a> = 14,
-<a name="l00062"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea0dece957320945e8b9e2ec3fe66035d7">00062</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea0dece957320945e8b9e2ec3fe66035d7" title="Square.">PS_SQUARE</a> = 15,
-<a name="l00063"></a>00063 } <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39cee" title="Buttons on a Playstation 1 controller.">pscontroller_button</a>;
-<a name="l00064"></a>00064 
-<a name="l00067"></a><a class="code" href="_pscontroller_8h.html#a21858413ba15bd5862f9838737a5c4ee">00067</a> <span class="keyword">typedef</span> <span class="keyword">enum</span>{
-<a name="l00068"></a><a class="code" href="_pscontroller_8h.html#a21858413ba15bd5862f9838737a5c4eeacddbce9e965b8e0e904486983c2c9eb5">00068</a>         <a class="code" href="_pscontroller_8h.html#a21858413ba15bd5862f9838737a5c4eeacddbce9e965b8e0e904486983c2c9eb5" title="Right x-axis.">PS_RX</a> = 0,
-<a name="l00069"></a><a class="code" href="_pscontroller_8h.html#a21858413ba15bd5862f9838737a5c4eead059a17046787120a045ffc304065178">00069</a>         <a class="code" href="_pscontroller_8h.html#a21858413ba15bd5862f9838737a5c4eead059a17046787120a045ffc304065178" title="Right y-axis.">PS_RY</a> = 1,
-<a name="l00070"></a><a class="code" href="_pscontroller_8h.html#a21858413ba15bd5862f9838737a5c4eea19fcae7c179755296336c1003891d7d7">00070</a>         <a class="code" href="_pscontroller_8h.html#a21858413ba15bd5862f9838737a5c4eea19fcae7c179755296336c1003891d7d7" title="Left x-axis.">PS_LX</a> = 2,
-<a name="l00071"></a><a class="code" href="_pscontroller_8h.html#a21858413ba15bd5862f9838737a5c4eea85a777d4ca7da8e1d0482b472ce646ea">00071</a>         <a class="code" href="_pscontroller_8h.html#a21858413ba15bd5862f9838737a5c4eea85a777d4ca7da8e1d0482b472ce646ea" title="Left y-axis.">PS_LY</a> = 3 
-<a name="l00072"></a>00072 } <a class="code" href="_pscontroller_8h.html#a21858413ba15bd5862f9838737a5c4ee" title="Axis on a Playstation 1 controller.">pscontroller_axis</a>;
-<a name="l00073"></a>00073 
+<a name="l00027"></a>00027 <span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<a name="l00028"></a>00028 
+<a name="l00030"></a><a class="code" href="_pscontroller_8h.html#a45c1d1a4fa084c9bdf9c475f76c7d2e3">00030</a> <span class="preprocessor">#define PS_DEFAULT_ANALOG 128</span>
+<a name="l00031"></a>00031 <span class="preprocessor"></span>
+<a name="l00043"></a><a class="code" href="_pscontroller_8h.html#af1ffa2b7554f4e88da3e39f5e7d9053d">00043</a> <span class="preprocessor">#define CHK(x,y) (x&amp;(1&lt;&lt;y)) </span>
+<a name="l00044"></a>00044 <span class="preprocessor"></span>
+<a name="l00048"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39cee">00048</a> <span class="keyword">typedef</span> <span class="keyword">enum</span>{
+<a name="l00049"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceeabbb70a917409d495ec4295308f5f554d">00049</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceeabbb70a917409d495ec4295308f5f554d" title="Select.">PS_SELECT</a> = 0, 
+<a name="l00050"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceeab1fe062fc9141cd0a9890a03cbdcd7df">00050</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceeab1fe062fc9141cd0a9890a03cbdcd7df" title="Start.">PS_START</a> = 3,
+<a name="l00051"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea91d63a7c0f24d1681064ca2eaa0416bc">00051</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea91d63a7c0f24d1681064ca2eaa0416bc" title="Up.">PS_UP</a> = 4,
+<a name="l00052"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea5c335b7d42249ed1d756cd783359b239">00052</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea5c335b7d42249ed1d756cd783359b239" title="Down.">PS_RIGHT</a> = 5,
+<a name="l00053"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea622925a0c401e1a81681f945030fd281">00053</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea622925a0c401e1a81681f945030fd281" title="Righ.">PS_DOWN</a> = 6,
+<a name="l00054"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea28361c9a8425c0752f12b8f642df31ad">00054</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea28361c9a8425c0752f12b8f642df31ad" title="Left.">PS_LEFT</a> = 7,
+<a name="l00055"></a>00055         <span class="comment">//substract 8 from these to get the bit numbers</span>
+<a name="l00056"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea51ae28a697e2d0a2ffe793c126b2ee9a">00056</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea51ae28a697e2d0a2ffe793c126b2ee9a" title="L2.">PS_L2</a> = 8,
+<a name="l00057"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea03e5459e068c68437140c41df29f903d">00057</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea03e5459e068c68437140c41df29f903d" title="R2.">PS_R2</a> = 9,
+<a name="l00058"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea5ad9ac6c880ea8fa5a5772fa023b68ab">00058</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea5ad9ac6c880ea8fa5a5772fa023b68ab" title="L1.">PS_L1</a> = 10,
+<a name="l00059"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceeac16e0c9b69a4b1c60d315670efa73c49">00059</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceeac16e0c9b69a4b1c60d315670efa73c49" title="R1.">PS_R1</a> = 11,
+<a name="l00060"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceeabde4ba9e1216f38b443b782995708fdd">00060</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceeabde4ba9e1216f38b443b782995708fdd" title="Triangle.">PS_TRIANGLE</a> = 12,
+<a name="l00061"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea069e2c91cec9d0feb9ab8ac0c9b250f9">00061</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea069e2c91cec9d0feb9ab8ac0c9b250f9" title="Circle.">PS_CIRCLE</a> = 13,
+<a name="l00062"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea7fc6faa1ca372fa72c5ecdb81829caa7">00062</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea7fc6faa1ca372fa72c5ecdb81829caa7" title="Cross.">PS_CROSS</a> = 14,
+<a name="l00063"></a><a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea0dece957320945e8b9e2ec3fe66035d7">00063</a>         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39ceea0dece957320945e8b9e2ec3fe66035d7" title="Square.">PS_SQUARE</a> = 15,
+<a name="l00064"></a>00064 } <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39cee" title="Buttons on a Playstation 1 controller.">pscontroller_button</a>;
+<a name="l00065"></a>00065 
+<a name="l00068"></a><a class="code" href="_pscontroller_8h.html#a21858413ba15bd5862f9838737a5c4ee">00068</a> <span class="keyword">typedef</span> <span class="keyword">enum</span>{
+<a name="l00069"></a><a class="code" href="_pscontroller_8h.html#a21858413ba15bd5862f9838737a5c4eeacddbce9e965b8e0e904486983c2c9eb5">00069</a>         <a class="code" href="_pscontroller_8h.html#a21858413ba15bd5862f9838737a5c4eeacddbce9e965b8e0e904486983c2c9eb5" title="Right x-axis.">PS_RX</a> = 0,
+<a name="l00070"></a><a class="code" href="_pscontroller_8h.html#a21858413ba15bd5862f9838737a5c4eead059a17046787120a045ffc304065178">00070</a>         <a class="code" href="_pscontroller_8h.html#a21858413ba15bd5862f9838737a5c4eead059a17046787120a045ffc304065178" title="Right y-axis.">PS_RY</a> = 1,
+<a name="l00071"></a><a class="code" href="_pscontroller_8h.html#a21858413ba15bd5862f9838737a5c4eea19fcae7c179755296336c1003891d7d7">00071</a>         <a class="code" href="_pscontroller_8h.html#a21858413ba15bd5862f9838737a5c4eea19fcae7c179755296336c1003891d7d7" title="Left x-axis.">PS_LX</a> = 2,
+<a name="l00072"></a><a class="code" href="_pscontroller_8h.html#a21858413ba15bd5862f9838737a5c4eea85a777d4ca7da8e1d0482b472ce646ea">00072</a>         <a class="code" href="_pscontroller_8h.html#a21858413ba15bd5862f9838737a5c4eea85a777d4ca7da8e1d0482b472ce646ea" title="Left y-axis.">PS_LY</a> = 3 
+<a name="l00073"></a>00073 } <a class="code" href="_pscontroller_8h.html#a21858413ba15bd5862f9838737a5c4ee" title="Axis on a Playstation 1 controller.">pscontroller_axis</a>;
 <a name="l00074"></a>00074 
-<a name="l00076"></a><a class="code" href="structpscontroller__t.html">00076</a> <span class="keyword">typedef</span> <span class="keyword">struct </span>{
-<a name="l00077"></a><a class="code" href="structpscontroller__t.html#a76cd62407eb4df8f6ad40e715b69e513">00077</a>   uint8_t <a class="code" href="structpscontroller__t.html#a76cd62407eb4df8f6ad40e715b69e513" title="Start, select and dpad buttons.">ss_dpad</a>; 
-<a name="l00078"></a><a class="code" href="structpscontroller__t.html#a8b34a75e2b84d712402b98f62efda3d4">00078</a>   uint8_t shoulder_shapes; 
-<a name="l00080"></a><a class="code" href="structpscontroller__t.html#a898d8ea15209d44718d931d3a7d603cc">00080</a>   uint8_t <a class="code" href="structpscontroller__t.html#a898d8ea15209d44718d931d3a7d603cc" title="Previous state of ss_dpad.">previous_ss_dpad</a>;
-<a name="l00081"></a><a class="code" href="structpscontroller__t.html#a0b8b4a5abb304fa589fe8330f40214c8">00081</a>   uint8_t <a class="code" href="structpscontroller__t.html#a0b8b4a5abb304fa589fe8330f40214c8" title="Previous state of shoulder_shapes.">previous_shoulder_shapes</a>;
-<a name="l00082"></a><a class="code" href="structpscontroller__t.html#aa2146da9811399cd856abaef0c545957">00082</a>   uint8_t <a class="code" href="structpscontroller__t.html#aa2146da9811399cd856abaef0c545957" title="Right x-axis value.">rx</a>; 
-<a name="l00083"></a><a class="code" href="structpscontroller__t.html#a21108a28fe30715ffd7f749beaeda434">00083</a>   uint8_t <a class="code" href="structpscontroller__t.html#a21108a28fe30715ffd7f749beaeda434" title="Right y-axis value.">ry</a>; 
-<a name="l00084"></a><a class="code" href="structpscontroller__t.html#aecb21315bbf55abe0d7cdf6404547f92">00084</a>   uint8_t <a class="code" href="structpscontroller__t.html#aecb21315bbf55abe0d7cdf6404547f92" title="Left x-axis value.">lx</a>; 
-<a name="l00085"></a><a class="code" href="structpscontroller__t.html#ab60dac6a688a304987c96312a05243ae">00085</a>   uint8_t <a class="code" href="structpscontroller__t.html#ab60dac6a688a304987c96312a05243ae" title="Lefy y-axis value.">ly</a>; 
-<a name="l00086"></a><a class="code" href="structpscontroller__t.html#a61b8c74bd62a89a9efc52a036a71ac4b">00086</a>   uint8_t <a class="code" href="structpscontroller__t.html#a61b8c74bd62a89a9efc52a036a71ac4b" title="Right x-axis mid value.">rx_mid</a>; 
-<a name="l00087"></a><a class="code" href="structpscontroller__t.html#a0125009c49135027e77a51691138b3f1">00087</a>   uint8_t <a class="code" href="structpscontroller__t.html#a0125009c49135027e77a51691138b3f1" title="Right y-axis mid value.">ry_mid</a>; 
-<a name="l00088"></a><a class="code" href="structpscontroller__t.html#a5c15d23103fd3d4b710f0179366aac1a">00088</a>   uint8_t <a class="code" href="structpscontroller__t.html#a5c15d23103fd3d4b710f0179366aac1a" title="Left x-axis mid value.">lx_mid</a>; 
-<a name="l00089"></a><a class="code" href="structpscontroller__t.html#a23afb0da95b2874337c33987d375399c">00089</a>   uint8_t <a class="code" href="structpscontroller__t.html#a23afb0da95b2874337c33987d375399c" title="Left y-axis mid value.">ly_mid</a>; 
-<a name="l00090"></a>00090 }<a class="code" href="structpscontroller__t.html" title="Playstation controller data.">pscontroller_t</a> ;
-<a name="l00091"></a>00091 
-<a name="l00092"></a>00092 <a class="code" href="structpscontroller__t.html" title="Playstation controller data.">pscontroller_t</a>* <a class="code" href="_pscontroller_8c.html#a4c16e4b3b4c615c079a03847a4ba8ca7" title="Allocate memory for controller data.">Pscontroller_alloc</a>();
-<a name="l00093"></a>00093 <span class="keywordtype">void</span> <a class="code" href="_pscontroller_8c.html#a51715b674180bc17b132b37cccf746a8" title="(re)set all values to default.">Pscontroller_init</a>(<a class="code" href="structpscontroller__t.html" title="Playstation controller data.">pscontroller_t</a>* pscon);
-<a name="l00094"></a>00094 <span class="keywordtype">void</span> <a class="code" href="_pscontroller_8c.html#a9d306cacf82c7f1f08e4a9de2d4a56f4" title="Free controller data from memory.">Pscontroller_free</a>(<a class="code" href="structpscontroller__t.html" title="Playstation controller data.">pscontroller_t</a>* pscontroller);
-<a name="l00095"></a>00095 
-<a name="l00096"></a>00096 <span class="keywordtype">void</span> <a class="code" href="_pscontroller_8c.html#ab219efd5d3960c37d895b8f064707f48" title="Save the current analog stick states as resting positions.">Pscontroller_saveMid</a>(<a class="code" href="structpscontroller__t.html" title="Playstation controller data.">pscontroller_t</a>* pscontroller);
-<a name="l00097"></a>00097 
-<a name="l00098"></a>00098 <span class="keywordtype">int</span> <a class="code" href="_pscontroller_8c.html#af378f222ded0e3801666600905d9be6f" title="deprecated.">Pscontroller_isAnalogOn</a>(<a class="code" href="structpscontroller__t.html" title="Playstation controller data.">pscontroller_t</a>* pscontroller);
-<a name="l00099"></a>00099 
-<a name="l00100"></a>00100 <span class="keywordtype">int</span> <a class="code" href="_pscontroller_8c.html#afad7d61dfd83130b17c5a425477161a3" title="Get button state.">Pscontroller_getButton</a>(<a class="code" href="structpscontroller__t.html" title="Playstation controller data.">pscontroller_t</a>* pscontroller,
-<a name="l00101"></a>00101         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39cee" title="Buttons on a Playstation 1 controller.">pscontroller_button</a> button);
-<a name="l00102"></a>00102 
-<a name="l00103"></a>00103 int8_t <a class="code" href="_pscontroller_8c.html#a5b1621019990a8efd07f3e36c45ba427" title="Get one of the analog axis.">Pscontroller_getAxis</a>(<a class="code" href="structpscontroller__t.html" title="Playstation controller data.">pscontroller_t</a>* pscontroller,
-<a name="l00104"></a>00104         <a class="code" href="_pscontroller_8h.html#a21858413ba15bd5862f9838737a5c4ee" title="Axis on a Playstation 1 controller.">pscontroller_axis</a> axis);
-<a name="l00105"></a>00105 
-<a name="l00106"></a>00106 <span class="keywordtype">int</span> <a class="code" href="_pscontroller_8c.html#aefe83ea38d747fe353b7129c2b48138d" title="Check for rising of falling edge of a button.">Pscontroller_getButtonEdge</a>(<a class="code" href="structpscontroller__t.html" title="Playstation controller data.">pscontroller_t</a>* pscontroller,
-<a name="l00107"></a>00107         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39cee" title="Buttons on a Playstation 1 controller.">pscontroller_button</a> button);
-<a name="l00108"></a>00108         
-<a name="l00109"></a>00109 <span class="keywordtype">void</span> <a class="code" href="_pscontroller_8c.html#a9b0730be41f65ba06758e58024097fdf" title="Update controller state.">Pscontroller_updateData</a>(<a class="code" href="structpscontroller__t.html" title="Playstation controller data.">pscontroller_t</a>* pscontroller, 
-<a name="l00110"></a>00110     uint8_t ss_dpad, uint8_t shoulder_shapes,
-<a name="l00111"></a>00111     uint8_t rx, uint8_t ry, uint8_t lx, uint8_t ly);
-<a name="l00112"></a>00112 
+<a name="l00075"></a>00075 
+<a name="l00077"></a><a class="code" href="structpscontroller__t.html">00077</a> <span class="keyword">typedef</span> <span class="keyword">struct </span>{
+<a name="l00078"></a><a class="code" href="structpscontroller__t.html#a76cd62407eb4df8f6ad40e715b69e513">00078</a>   uint8_t <a class="code" href="structpscontroller__t.html#a76cd62407eb4df8f6ad40e715b69e513" title="Start, select and dpad buttons.">ss_dpad</a>; 
+<a name="l00079"></a><a class="code" href="structpscontroller__t.html#a8b34a75e2b84d712402b98f62efda3d4">00079</a>   uint8_t shoulder_shapes; 
+<a name="l00081"></a><a class="code" href="structpscontroller__t.html#a898d8ea15209d44718d931d3a7d603cc">00081</a>   uint8_t <a class="code" href="structpscontroller__t.html#a898d8ea15209d44718d931d3a7d603cc" title="Previous state of ss_dpad.">previous_ss_dpad</a>;
+<a name="l00082"></a><a class="code" href="structpscontroller__t.html#a0b8b4a5abb304fa589fe8330f40214c8">00082</a>   uint8_t <a class="code" href="structpscontroller__t.html#a0b8b4a5abb304fa589fe8330f40214c8" title="Previous state of shoulder_shapes.">previous_shoulder_shapes</a>;
+<a name="l00083"></a><a class="code" href="structpscontroller__t.html#aa2146da9811399cd856abaef0c545957">00083</a>   uint8_t <a class="code" href="structpscontroller__t.html#aa2146da9811399cd856abaef0c545957" title="Right x-axis value.">rx</a>; 
+<a name="l00084"></a><a class="code" href="structpscontroller__t.html#a21108a28fe30715ffd7f749beaeda434">00084</a>   uint8_t <a class="code" href="structpscontroller__t.html#a21108a28fe30715ffd7f749beaeda434" title="Right y-axis value.">ry</a>; 
+<a name="l00085"></a><a class="code" href="structpscontroller__t.html#aecb21315bbf55abe0d7cdf6404547f92">00085</a>   uint8_t <a class="code" href="structpscontroller__t.html#aecb21315bbf55abe0d7cdf6404547f92" title="Left x-axis value.">lx</a>; 
+<a name="l00086"></a><a class="code" href="structpscontroller__t.html#ab60dac6a688a304987c96312a05243ae">00086</a>   uint8_t <a class="code" href="structpscontroller__t.html#ab60dac6a688a304987c96312a05243ae" title="Lefy y-axis value.">ly</a>; 
+<a name="l00087"></a><a class="code" href="structpscontroller__t.html#a61b8c74bd62a89a9efc52a036a71ac4b">00087</a>   uint8_t <a class="code" href="structpscontroller__t.html#a61b8c74bd62a89a9efc52a036a71ac4b" title="Right x-axis mid value.">rx_mid</a>; 
+<a name="l00088"></a><a class="code" href="structpscontroller__t.html#a0125009c49135027e77a51691138b3f1">00088</a>   uint8_t <a class="code" href="structpscontroller__t.html#a0125009c49135027e77a51691138b3f1" title="Right y-axis mid value.">ry_mid</a>; 
+<a name="l00089"></a><a class="code" href="structpscontroller__t.html#a5c15d23103fd3d4b710f0179366aac1a">00089</a>   uint8_t <a class="code" href="structpscontroller__t.html#a5c15d23103fd3d4b710f0179366aac1a" title="Left x-axis mid value.">lx_mid</a>; 
+<a name="l00090"></a><a class="code" href="structpscontroller__t.html#a23afb0da95b2874337c33987d375399c">00090</a>   uint8_t <a class="code" href="structpscontroller__t.html#a23afb0da95b2874337c33987d375399c" title="Left y-axis mid value.">ly_mid</a>; 
+<a name="l00091"></a>00091 }<a class="code" href="structpscontroller__t.html" title="Playstation controller data.">pscontroller_t</a> ;
+<a name="l00092"></a>00092 
+<a name="l00093"></a>00093 <a class="code" href="structpscontroller__t.html" title="Playstation controller data.">pscontroller_t</a>* <a class="code" href="_pscontroller_8c.html#a4c16e4b3b4c615c079a03847a4ba8ca7" title="Allocate memory for controller data.">Pscontroller_alloc</a>();
+<a name="l00094"></a>00094 <span class="keywordtype">void</span> <a class="code" href="_pscontroller_8c.html#a51715b674180bc17b132b37cccf746a8" title="(re)set all values to default.">Pscontroller_init</a>(<a class="code" href="structpscontroller__t.html" title="Playstation controller data.">pscontroller_t</a>* pscon);
+<a name="l00095"></a>00095 <span class="keywordtype">void</span> <a class="code" href="_pscontroller_8c.html#a9d306cacf82c7f1f08e4a9de2d4a56f4" title="Free controller data from memory.">Pscontroller_free</a>(<a class="code" href="structpscontroller__t.html" title="Playstation controller data.">pscontroller_t</a>* pscontroller);
+<a name="l00096"></a>00096 
+<a name="l00097"></a>00097 <span class="keywordtype">void</span> <a class="code" href="_pscontroller_8c.html#ab219efd5d3960c37d895b8f064707f48" title="Save the current analog stick states as resting positions.">Pscontroller_saveMid</a>(<a class="code" href="structpscontroller__t.html" title="Playstation controller data.">pscontroller_t</a>* pscontroller);
+<a name="l00098"></a>00098 
+<a name="l00099"></a>00099 <span class="keywordtype">int</span> <a class="code" href="_pscontroller_8c.html#af378f222ded0e3801666600905d9be6f" title="deprecated.">Pscontroller_isAnalogOn</a>(<a class="code" href="structpscontroller__t.html" title="Playstation controller data.">pscontroller_t</a>* pscontroller);
+<a name="l00100"></a>00100 
+<a name="l00101"></a>00101 <span class="keywordtype">int</span> <a class="code" href="_pscontroller_8c.html#afad7d61dfd83130b17c5a425477161a3" title="Get button state.">Pscontroller_getButton</a>(<a class="code" href="structpscontroller__t.html" title="Playstation controller data.">pscontroller_t</a>* pscontroller,
+<a name="l00102"></a>00102         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39cee" title="Buttons on a Playstation 1 controller.">pscontroller_button</a> button);
+<a name="l00103"></a>00103 
+<a name="l00104"></a>00104 int8_t <a class="code" href="_pscontroller_8c.html#a5b1621019990a8efd07f3e36c45ba427" title="Get one of the analog axis.">Pscontroller_getAxis</a>(<a class="code" href="structpscontroller__t.html" title="Playstation controller data.">pscontroller_t</a>* pscontroller,
+<a name="l00105"></a>00105         <a class="code" href="_pscontroller_8h.html#a21858413ba15bd5862f9838737a5c4ee" title="Axis on a Playstation 1 controller.">pscontroller_axis</a> axis);
+<a name="l00106"></a>00106 
+<a name="l00107"></a>00107 <span class="keywordtype">int</span> <a class="code" href="_pscontroller_8c.html#aefe83ea38d747fe353b7129c2b48138d" title="Check for rising of falling edge of a button.">Pscontroller_getButtonEdge</a>(<a class="code" href="structpscontroller__t.html" title="Playstation controller data.">pscontroller_t</a>* pscontroller,
+<a name="l00108"></a>00108         <a class="code" href="_pscontroller_8h.html#a602b74e5ed5c1406960e16ffb5d39cee" title="Buttons on a Playstation 1 controller.">pscontroller_button</a> button);
+<a name="l00109"></a>00109         
+<a name="l00110"></a>00110 <span class="keywordtype">void</span> <a class="code" href="_pscontroller_8c.html#a9b0730be41f65ba06758e58024097fdf" title="Update controller state.">Pscontroller_updateData</a>(<a class="code" href="structpscontroller__t.html" title="Playstation controller data.">pscontroller_t</a>* pscontroller, 
+<a name="l00111"></a>00111     uint8_t ss_dpad, uint8_t shoulder_shapes,
+<a name="l00112"></a>00112     uint8_t rx, uint8_t ry, uint8_t lx, uint8_t ly);
 <a name="l00113"></a>00113 
 <a name="l00114"></a>00114 
-<a name="l00115"></a>00115 <span class="preprocessor">#endif</span>
-<a name="l00116"></a>00116 <span class="preprocessor"></span>
+<a name="l00115"></a>00115 
+<a name="l00116"></a>00116 <span class="preprocessor">#endif</span>
+<a name="l00117"></a>00117 <span class="preprocessor"></span>
 </pre></div></div><!-- contents -->
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="_pscontroller_8h.html">Pscontroller.h</a>      </li>
 
-    <li class="footer">Generated on Sat Mar 31 2012 15:25:41 for crobot by
+    <li class="footer">Generated on Sat Apr 14 2012 11:21:40 for crobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.0 </li>
    </ul>

@@ -129,6 +129,12 @@ Functions</h2></td></tr>
 <tr class="memdesc:af08646c2daa1109cbb335fc65786d428"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a control message to a device.  <a href="#af08646c2daa1109cbb335fc65786d428"></a><br/></td></tr>
 <tr class="memitem:a57357fbfd5912dd8e3e02298df52d641"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_usbdevice_8c.html#a57357fbfd5912dd8e3e02298df52d641">Usbdevice_getData</a> (<a class="el" href="structusbdevice__t.html">usbdevice_t</a> *usbdevice, char *buffer)</td></tr>
 <tr class="memdesc:a57357fbfd5912dd8e3e02298df52d641"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get general data from usbdevice and update everything that uses that data.  <a href="#a57357fbfd5912dd8e3e02298df52d641"></a><br/></td></tr>
+<tr class="memitem:a9ac372ea8e7421c6b1f57ee0a222e4b8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ac372ea8e7421c6b1f57ee0a222e4b8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>_Usbdevice_updateServos</b> (<a class="el" href="structusbdevice__t.html">usbdevice_t</a> *dev, char *buffer)</td></tr>
+<tr class="memitem:aab27edb90baa38658664016ddebd54c7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_usbdevice_8c.html#aab27edb90baa38658664016ddebd54c7">Usbdevice_getServoData</a> (<a class="el" href="structusbdevice__t.html">usbdevice_t</a> *usbdevice, char *buffer)</td></tr>
+<tr class="memdesc:aab27edb90baa38658664016ddebd54c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">retrieve current servo settings from the usbdevice and update the pc side servo data.  <a href="#aab27edb90baa38658664016ddebd54c7"></a><br/></td></tr>
+<tr class="memitem:aad88667d324fd367f5e339fb65dd688d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_usbdevice_8c.html#aad88667d324fd367f5e339fb65dd688d">Usbdevice_sendServoData</a> (<a class="el" href="structusbdevice__t.html">usbdevice_t</a> *usbdevice)</td></tr>
+<tr class="memdesc:aad88667d324fd367f5e339fb65dd688d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send current servo angles to device.  <a href="#aad88667d324fd367f5e339fb65dd688d"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"></div><hr/><h2>Function Documentation</h2>
@@ -189,7 +195,7 @@ Functions</h2></td></tr>
     <tr><td class="paramname">reqType</td><td>One of usbdevice_reqType. </td></tr>
     <tr><td class="paramname">wval</td><td>Special value to send (1 byte). </td></tr>
     <tr><td class="paramname">wind</td><td>Special value to send (1 byte). </td></tr>
-    <tr><td class="paramname">buffer</td><td>A buffer with room for BUFLEN_SERVO_DATA bytes, see <a class="el" href="i2c__header_8h.html">i2c_header.h</a>. </td></tr>
+    <tr><td class="paramname">buffer</td><td>A buffer with room for BUFLEN_SERVO_DATA bytes, see <a class="el" href="i2c__header_8h.html" title="Some I2C values.">i2c_header.h</a>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -307,6 +313,50 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="aab27edb90baa38658664016ddebd54c7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="_usbdevice_8c.html#aab27edb90baa38658664016ddebd54c7">Usbdevice_getServoData</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structusbdevice__t.html">usbdevice_t</a> *&#160;</td>
+          <td class="paramname"><em>usbdevice</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>buffer</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>retrieve current servo settings from the usbdevice and update the pc side servo data. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">usbdevice</td><td>The device to communicate with. </td></tr>
+    <tr><td class="paramname">buffer</td><td>A buffer with room for BUFLEN_SERVO_DATA bytes. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns:</dt><dd>The number of bytes read. </dd></dl>
+<dl class="retval"><dt><b>Return values:</b></dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">-1</td><td>Device wasn't ready. </td></tr>
+    <tr><td class="paramname">-2</td><td>Something went horribly wrong (device disconnected?). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="aefe2a73e2e6d35a26c423cf7d386dfeb"></a>
 <div class="memitem">
 <div class="memproto">
@@ -323,10 +373,42 @@ Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Set default values for a usbdevice. </p>
-<p>Values are defined in <a class="el" href="i2c__header_8h.html">i2c_header.h</a> file as well as <a class="el" href="usbconfig_8h_source.html">usbconfig.h</a> </p>
+<p>Values are defined in <a class="el" href="i2c__header_8h.html" title="Some I2C values.">i2c_header.h</a> file as well as <a class="el" href="usbconfig_8h_source.html">usbconfig.h</a> </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">usbdevice</td><td>The usbdevice data to use. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="aad88667d324fd367f5e339fb65dd688d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="_usbdevice_8h.html#aad88667d324fd367f5e339fb65dd688d">Usbdevice_sendServoData</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structusbdevice__t.html">usbdevice_t</a> *&#160;</td>
+          <td class="paramname"><em>usbdevice</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Send current servo angles to device. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">usbdevice</td><td>The device to communicate with. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt><b>Return values:</b></dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>Success. </td></tr>
+    <tr><td class="paramname">-1</td><td>Failure (device disconnected?). </td></tr>
   </table>
   </dd>
 </dl>
@@ -339,7 +421,7 @@ Functions</h2></td></tr>
     <ul>
       <li class="navelem"><a class="el" href="_usbdevice_8c.html">Usbdevice.c</a>      </li>
 
-    <li class="footer">Generated on Sat Mar 31 2012 15:25:41 for crobot by
+    <li class="footer">Generated on Sat Apr 14 2012 11:21:40 for crobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.0 </li>
    </ul>

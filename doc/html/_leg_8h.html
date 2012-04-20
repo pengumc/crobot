@@ -138,6 +138,16 @@ Functions</h2></td></tr>
 <tr class="memdesc:a143a50e34e2ee69664bf4655ed93055d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free leg memory.  <a href="#a143a50e34e2ee69664bf4655ed93055d"></a><br/></td></tr>
 <tr class="memitem:a0d81abe1448df1f98cd38e96bd69dd92"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_leg_8h.html#a0d81abe1448df1f98cd38e96bd69dd92">Leg_updateServoLocations</a> (<a class="el" href="structleg__t.html">leg_t</a> *leg)</td></tr>
 <tr class="memdesc:a0d81abe1448df1f98cd38e96bd69dd92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate coordinates of all servos relative to servo 0.  <a href="#a0d81abe1448df1f98cd38e96bd69dd92"></a><br/></td></tr>
+<tr class="memitem:a07ddd3d6c42168466ff063c7a82744dc"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_leg_8h.html#a07ddd3d6c42168466ff063c7a82744dc">Leg_getServoPw</a> (<a class="el" href="structleg__t.html">leg_t</a> *leg, uint8_t servoNo)</td></tr>
+<tr class="memdesc:a07ddd3d6c42168466ff063c7a82744dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the stored pulsewidth of a servo.  <a href="#a07ddd3d6c42168466ff063c7a82744dc"></a><br/></td></tr>
+<tr class="memitem:a419c6ce7f7699ef2d71dca7e0269d7e8"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_leg_8h.html#a419c6ce7f7699ef2d71dca7e0269d7e8">Leg_getServoAngle</a> (<a class="el" href="structleg__t.html">leg_t</a> *leg, uint8_t servoNo)</td></tr>
+<tr class="memdesc:a419c6ce7f7699ef2d71dca7e0269d7e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">get stored servo angle.  <a href="#a419c6ce7f7699ef2d71dca7e0269d7e8"></a><br/></td></tr>
+<tr class="memitem:a2c5d17e1ea1398637ff06f757736f46b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_leg_8h.html#a2c5d17e1ea1398637ff06f757736f46b">Leg_setServoPw</a> (<a class="el" href="structleg__t.html">leg_t</a> *leg, uint8_t servoNo, uint8_t pw)</td></tr>
+<tr class="memdesc:a2c5d17e1ea1398637ff06f757736f46b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the pulsewidth of a servo.  <a href="#a2c5d17e1ea1398637ff06f757736f46b"></a><br/></td></tr>
+<tr class="memitem:aa8573a45eb0f3f94513e0f79f97a572b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_leg_8h.html#aa8573a45eb0f3f94513e0f79f97a572b">Leg_tryEndpointChange</a> (<a class="el" href="structleg__t.html">leg_t</a> *leg, rot_vector_t *delta)</td></tr>
+<tr class="memdesc:aa8573a45eb0f3f94513e0f79f97a572b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if there's a valid solution for a change.  <a href="#aa8573a45eb0f3f94513e0f79f97a572b"></a><br/></td></tr>
+<tr class="memitem:ac328c602036a0936aa7e333db3f87ae8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac328c602036a0936aa7e333db3f87ae8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>Leg_commitEndpointChange</b> (<a class="el" href="structleg__t.html">leg_t</a> *leg)</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"></div><hr/><h2>Function Documentation</h2>
@@ -185,6 +195,172 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a419c6ce7f7699ef2d71dca7e0269d7e8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="_leg_8h.html#a419c6ce7f7699ef2d71dca7e0269d7e8">Leg_getServoAngle</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structleg__t.html">leg_t</a> *&#160;</td>
+          <td class="paramname"><em>leg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>servoNo</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>get stored servo angle. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">leg</td><td>The leg data to use. </td></tr>
+    <tr><td class="paramname">servoNo</td><td>The servo to request (0..2). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns:</dt><dd>The servo angle. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a07ddd3d6c42168466ff063c7a82744dc"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t <a class="el" href="_leg_8h.html#a07ddd3d6c42168466ff063c7a82744dc">Leg_getServoPw</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structleg__t.html">leg_t</a> *&#160;</td>
+          <td class="paramname"><em>leg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>servoNo</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Get the stored pulsewidth of a servo. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">leg</td><td>The leg data to use. </td></tr>
+    <tr><td class="paramname">servoNo</td><td>The servo to request (0..2). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns:</dt><dd>The stored pulsewidth </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a2c5d17e1ea1398637ff06f757736f46b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="_leg_8h.html#a2c5d17e1ea1398637ff06f757736f46b">Leg_setServoPw</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structleg__t.html">leg_t</a> *&#160;</td>
+          <td class="paramname"><em>leg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>servoNo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>pw</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Set the pulsewidth of a servo. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">leg</td><td>The leg data to use. </td></tr>
+    <tr><td class="paramname">servoNo</td><td>The servo to change (0..2). </td></tr>
+    <tr><td class="paramname">pw</td><td>The pulsewidth to set. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt><b>Return values:</b></dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">1</td><td>Pulsewidth was out of bounds, nothing changed. </td></tr>
+    <tr><td class="paramname">0</td><td>success </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="aa8573a45eb0f3f94513e0f79f97a572b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="_leg_8h.html#aa8573a45eb0f3f94513e0f79f97a572b">Leg_tryEndpointChange</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structleg__t.html">leg_t</a> *&#160;</td>
+          <td class="paramname"><em>leg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">rot_vector_t *&#160;</td>
+          <td class="paramname"><em>delta</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Check if there's a valid solution for a change. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">leg</td><td>The leg data to use. </td></tr>
+    <tr><td class="paramname">delta</td><td>The change in xyz coords of the endpoint. retval 1 Success, Valid coordinates can be set with Leg_commitEndpointChange. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt><b>Return values:</b></dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">-1</td><td>Error, no valid solution, no changes were made. Please not that the lastResult vector in the solver is not valid now. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a0d81abe1448df1f98cd38e96bd69dd92"></a>
 <div class="memitem">
 <div class="memproto">
@@ -217,7 +393,7 @@ Functions</h2></td></tr>
     <ul>
       <li class="navelem"><a class="el" href="_leg_8h.html">Leg.h</a>      </li>
 
-    <li class="footer">Generated on Sat Mar 31 2012 15:25:41 for crobot by
+    <li class="footer">Generated on Sat Apr 14 2012 11:21:40 for crobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.0 </li>
    </ul>

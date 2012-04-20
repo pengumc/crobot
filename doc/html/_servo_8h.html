@@ -164,6 +164,10 @@ Functions</h2></td></tr>
 <tr class="memdesc:adae92a9fd215985e9ceff6422bd3cbf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test if an angle is within bounds for a specific servo.  <a href="#adae92a9fd215985e9ceff6422bd3cbf1"></a><br/></td></tr>
 <tr class="memitem:a0055a9a3f030e6585235176f32981732"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_servo_8h.html#a0055a9a3f030e6585235176f32981732">Servo_printDetails</a> (<a class="el" href="structservo__t.html">servo_t</a> *servo, const char *name)</td></tr>
 <tr class="memdesc:a0055a9a3f030e6585235176f32981732"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print all values of the servo to stdout.  <a href="#a0055a9a3f030e6585235176f32981732"></a><br/></td></tr>
+<tr class="memitem:a03b6becd72d2e979f95c1859cb5bad29"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_servo_8h.html#a03b6becd72d2e979f95c1859cb5bad29">Servo_setOffset</a> (<a class="el" href="structservo__t.html">servo_t</a> *servo, <a class="el" href="_angle_8h.html#a2dad8157cb7c5fb8506edcfe39ac9bb3">angle_t</a> offset)</td></tr>
+<tr class="memdesc:a03b6becd72d2e979f95c1859cb5bad29"><td class="mdescLeft">&#160;</td><td class="mdescRight">set offset of servo (for a physical rotation of the servo body).  <a href="#a03b6becd72d2e979f95c1859cb5bad29"></a><br/></td></tr>
+<tr class="memitem:a5fb62d5cb0eb7861cfd8ef62bafc310d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_servo_8h.html#a5fb62d5cb0eb7861cfd8ef62bafc310d">Servo_setDirection</a> (<a class="el" href="structservo__t.html">servo_t</a> *servo, int8_t direction)</td></tr>
+<tr class="memdesc:a5fb62d5cb0eb7861cfd8ef62bafc310d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set direction of servo rotation, useful when servo is mirrored.  <a href="#a5fb62d5cb0eb7861cfd8ef62bafc310d"></a><br/></td></tr>
 <tr class="memitem:a1dba1c5e4270e14b5284f0c97ed40b94"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structservo__t.html">servo_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_servo_8h.html#a1dba1c5e4270e14b5284f0c97ed40b94">Servo_alloc</a> ()</td></tr>
 <tr class="memdesc:a1dba1c5e4270e14b5284f0c97ed40b94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate memory for new servo data.  <a href="#a1dba1c5e4270e14b5284f0c97ed40b94"></a><br/></td></tr>
 <tr class="memitem:a68249fdd27b22baf3936b3e0359c9ee8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_servo_8h.html#a68249fdd27b22baf3936b3e0359c9ee8">Servo_free</a> (<a class="el" href="structservo__t.html">servo_t</a> *servo)</td></tr>
@@ -385,7 +389,7 @@ Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Reset all values. </p>
-<p>The default values are defined in as SERVO_DEF_&lt;VALUENAME&gt;.<br/>
+<p>The default values are defined in servo.h as SERVO_DEF_&lt;VALUENAME&gt;.<br/>
  The angle is set to 0 and the pulsewidth to the neutral pulse. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
@@ -434,6 +438,80 @@ Functions</h2></td></tr>
   <table class="retval">
     <tr><td class="paramname">0</td><td>Angle was out of bounds for this servo. nothing was changed. </td></tr>
     <tr><td class="paramname">1</td><td>Success. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a5fb62d5cb0eb7861cfd8ef62bafc310d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="_servo_8h.html#a5fb62d5cb0eb7861cfd8ef62bafc310d">Servo_setDirection</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structservo__t.html">servo_t</a> *&#160;</td>
+          <td class="paramname"><em>servo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>direction</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Set direction of servo rotation, useful when servo is mirrored. </p>
+<p>The angle is reset to 0. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">servo</td><td>The servo settings to use. </td></tr>
+    <tr><td class="paramname">direction</td><td>The new direction, positive for forward, anything else means backwards. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a03b6becd72d2e979f95c1859cb5bad29"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="_servo_8h.html#a03b6becd72d2e979f95c1859cb5bad29">Servo_setOffset</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structservo__t.html">servo_t</a> *&#160;</td>
+          <td class="paramname"><em>servo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="_angle_8h.html#a2dad8157cb7c5fb8506edcfe39ac9bb3">angle_t</a>&#160;</td>
+          <td class="paramname"><em>offset</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>set offset of servo (for a physical rotation of the servo body). </p>
+<p>Also reset the angle to 0. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">servo</td><td>The servo settings to use. </td></tr>
+    <tr><td class="paramname">offset</td><td>The offset to set in radians. </td></tr>
   </table>
   </dd>
 </dl>
@@ -490,7 +568,7 @@ Functions</h2></td></tr>
     <ul>
       <li class="navelem"><a class="el" href="_servo_8h.html">Servo.h</a>      </li>
 
-    <li class="footer">Generated on Sat Mar 31 2012 15:25:41 for crobot by
+    <li class="footer">Generated on Sat Apr 14 2012 11:21:40 for crobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.0 </li>
    </ul>
