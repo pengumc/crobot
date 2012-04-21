@@ -32,6 +32,7 @@ typedef struct QPED{
     uint8_t buffer[BUFLEN_SERVO_DATA]; /**<The usb buffer.*/
     rot_matrix_t* R;/**<rotation matrix of the main body.*/
     rot_matrix_t* invR;/**<Inverse of R.*/
+    rot_vector_t* angles;/**<vector with main body angles.*/
 } quadruped_t;
 
 typedef struct SERVOINFO{
@@ -51,7 +52,13 @@ void Quadruped_setGraphPointers(quadruped_t* qped,
     double* outX, 
     double* outY, 
     double* outZ);
-
+void Quadruped_configureServoOffset(quadruped_t* qped,
+    uint8_t legNo, uint8_t servoNo, angle_t offset);
+void Quadruped_updateMatricesFromAngles(quadruped_t* qped, rot_vector_t* a);
+int Quadruped_changeLegEndpoint(quadruped_t* qped, uint8_t legNo,
+    double X, double Y, double Z);
+int Quadruped_changeAllEndpoints(quadruped_t* qped,
+    double X, double Y, double Z);
 #endif
 
 

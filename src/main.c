@@ -29,20 +29,27 @@ int main(int argc, char* argv[]){
     printf("int size = %d\n", sizeof(int));
     printf("double size = %d\n", sizeof(double));
 	
-	leg_t* myLeg = Leg_alloc();
+    quadruped_t* myQ = Quadruped_alloc();
+    Quadruped_configureServoOffset(myQ, 0, 2, -M_PI/2);
+
+	myQ->dev->legs[0]->legSolver->params->A = 10.0;
+	myQ->dev->legs[0]->legSolver->params->B = 10.0;
+	myQ->dev->legs[0]->legSolver->params->C = 10.0;
+	myQ->dev->legs[0]->legSolver->params->X = 20.0;
+	myQ->dev->legs[0]->legSolver->params->Y = 0.0;
+	myQ->dev->legs[0]->legSolver->params->Z = -10.0;
+
 	
-	Servo_setOffset(myLeg->servos[2], -M_PI/2.0);
+	Leg_updateServoLocations(myQ->dev->legs[0]);
+	Leg_printDetails(myQ->dev->legs[0]);
 	
-	myLeg->legSolver->params->A = 10.0;
-	myLeg->legSolver->params->B = 10.0;
-	myLeg->legSolver->params->C = 10.0;
+    printf("change: %d\n", Quadruped_changeLegEndpoint(myQ, 0, 
+        0.0, 0.0, 1.0));
+    Leg_printDetails(myQ->dev->legs[0]);
+
+    Quadruped_free(myQ);
 	
-	Leg_updateServoLocations(myLeg);
-	Leg_printDetails(myLeg);
-	
-	printf("try z+5 : %d\n", Leg_tryEndpointChange(myLeg, 
-	
-	Leg_free(myLeg);
+	printf("ipow %d\n", ipow(2,0));
 	
     return(0);
 }

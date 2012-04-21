@@ -33,6 +33,9 @@ quadruped_t* Quadruped_alloc(){
     tqped->dev = Usbdevice_alloc();
     tqped->R = rot_matrix_alloc();
     tqped->invR = rot_matrix_alloc();
+    tqped->angles = rot_vector_alloc();
+    rot_vector_setAll(tqped->angles, 0.0, 0.0, 0.0);
+    Quadruped_updateMatricesFromAngles(tqped, tqped->angles);
     return(tqped);
 }
 
@@ -45,6 +48,7 @@ void Quadruped_free(quadruped_t* qped){
     Usbdevice_free(qped->dev);
     rot_free(qped->R);
     rot_free(qped->invR);
+    rot_free(qped->angles);
     free(qped);
 }
 
@@ -62,6 +66,12 @@ int Quadruped_startup(quadruped_t* qped){
 
 
 /*================= CONFIG LEG ==============================================*/
+/** Set the offset for one of the servos in a leg.
+ * @param qped The quadruped data to use.
+ * @param legNo The leg number (0..3).
+ * @param servoNo The servo to change (0..2).
+ * @param offset The offset to set (in radians).
+ */
 void Quadruped_configureServoOffset(quadruped_t* qped,
     uint8_t legNo, uint8_t servoNo, angle_t offset)
 {
@@ -84,7 +94,8 @@ void Quadruped_configureServoDirection(quadruped_t* qped,
 /*======================== UPDATE ===========================================*/
 /** Update function, should be called often to update accelerometer and 
 gamepad data.
- * brief Every 40 ms is recommended.
+ * Every 40 ms or so is recommended. Each update sends an usb control message
+ to the robot, so don't go spamming it a million times per second.
  * @param qped The quadruped data to use.
  * @returns the connection status.
  */
@@ -95,7 +106,7 @@ int Quadruped_update(quadruped_t* qped){
 
 /*======================= SET GRAPH POINTERS ================================*/
 /** Change location of graph datasets.
- * @brief Make the three filters store both their input and output datasets
+ * Make the three filters store both their input and output datasets
  somewhere else (where it's easier for you to read them).<br>
  All [in/out][x/y/z] parameters should be pointers to an array with at room 
  for at least  FILTER_GRAPH_LENGTH doubles.
@@ -152,18 +163,80 @@ int Quadruped_commit(quadruped_t* qped){
 
 
 /*===================== UPDATE ROT MATRIX ===================================*/
+/** Rebuilds the rotation matrix and it's inverse from the provided angles.
+ * @param qped The quadruped to use.
+ * @param a A 3d vector that holds angles for the rotation around the x y and
+ z axis (in that order).
+ */
 void Quadruped_updateMatricesFromAngles(quadruped_t* qped, rot_vector_t* a){
     rot_matrix_build_from_angles(qped->R, a);
     rot_matrix_invert(qped->R, qped->invR);
 }
 
 
-/*================== CHANGE LEG ENDPOINT ===================================+*/
+/*================== CHANGE SINGE LEG ENDPOINT =============================+*/
+/** Move a single leg.
+ * The provided coordinates are for the endpoint (foot) of the leg. So 
+ an increase in Z means servo 0 is going down. This is regardless of 
+ the orientation of the mainbody (at least the part we know about).
+ * @param qped The quadruped data to use.
+ * @param legNo The leg number (0..3).
+ * @param X Change in x direction.
+ * @param Y Change in y direction.
+ * @param Z Change in z direction.
+ * @retval 0 success, you can send the newly stored servo data to the
+ device
+ * @retval -1..3 servo number (-returncode +1) could not make the required 
+ angle, nothing was done.
+ * @retval -4 There was no solution for the new location, nothing was done.
+ */
 int Quadruped_changeLegEndpoint(quadruped_t* qped, uint8_t legNo,
     double X, double Y, double Z)
 {
-    //rotate the requested change with the inverse of our current rotation
+    //build delta vector
+    rot_vector_t* v = rot_vector_alloc();
+    rot_vector_setAll(v, X, Y, Z);
+    //rotate to offset main body rotation
+    rot_matrix_dot_vector(qped->invR, v, v);
+    
+    int returnCode = Leg_tryEndpointChange(qped->dev->legs[legNo], v);
+    if(returnCode == 0){
+        Leg_commitEndpointChange(qped->dev->legs[legNo]);
+    }
 
+    rot_free(v);
+    return(returnCode);
 }
 
+
+/*======================= MOVE ALL LEGS======================================*/
+/** Move the COB by moving all legs
+ * @param qped
+ * @param X the change in the x direction.
+ * @param Y the change in the y direction.
+ * @param Z the change in the z direction.
+ * @return 4 bytes as an int, each representing the error state of 1 leg.
+ */
+int Quadruped_changeAllEndpoints(quadruped_t* qped,
+    double X, double Y, double Z)
+{
+    /* TODO this error returning will fail horribly if 
+     sizeof(int) < USBDEV_LEGNO
+    */
+    rot_vector_t* v = rot_vector_alloc();
+    rot_vector_setAll(v, X, Y, Z);
+    uint8_t i;
+    int error = 0;
+    for(i=0;i<USBDEV_LEGNO;i++){
+        //error should end up on 0 if all succeeds;
+        error += (-Leg_tryEndpointChange(qped->dev->legs[i], v)) << i ;
+    }
+    if(error == 0){
+        //no errors, commit everything.
+        for(i=0;i<USBDEV_LEGNO;i++){
+            Leg_commitEndpointChange(qped->dev->legs[i]);
+        }
+    }
+    return(error);
+}
 

@@ -178,23 +178,30 @@ void Leg_updateServoLocations(leg_t* leg){
  * @param delta The change in xyz coords of the endpoint.
  * retval 0 Success, Valid coordinates can be set with 
  Leg_commitEndpointChange.
- * @retval -3 Error, no valid solution, no changes were made. Please not that 
+ * @retval -4 Error, no valid solution, no changes were made. Please not that 
  the lastResult vector in the solver is not valid now.
- * @retval -0..2 A valid solution was found but one of the servo's couldn't
- handle the angle. It's number (negative) is returned.
+ * @retval 1..3 A valid solution was found but one of the servo's couldn't
+ handle the angle. It's number-1 (negative) is returned.
  */
 int Leg_tryEndpointChange(leg_t* leg, rot_vector_t* delta){
     //setup params
     leg->legSolver->params->X += rot_vector_get(delta, 0);
     leg->legSolver->params->Y += rot_vector_get(delta, 1);
     leg->legSolver->params->Z += rot_vector_get(delta, 2);
+    printf("target coords: %.1f, %.1f, %.1f\n", 
+        leg->legSolver->params->X,
+        leg->legSolver->params->Y,
+        leg->legSolver->params->Z);
     //check if the solver can find a solution
-	uint8_t returnCode = 0;
+	int returnCode = 0;
     if(Solver_solve(leg->legSolver) == 0){
+        rot_vector_print(leg->legSolver->lastResult);
         //successful solve
 		int8_t i;
 		for(i=0;i<LEG_DOF;i++){
 			//still, check the servos to see if they can handle the angle	
+            printf("checking servo %d for angle %.2f\n",
+                i, rot_vector_get(leg->legSolver->lastResult, i));
 			if(Servo_checkAngle(leg->servos[i], 
 				rot_vector_get(leg->legSolver->lastResult, i)) == 0)
 			{
@@ -208,8 +215,8 @@ int Leg_tryEndpointChange(leg_t* leg, rot_vector_t* delta){
         leg->legSolver->params->X -= rot_vector_get(delta, 0);
         leg->legSolver->params->Y -= rot_vector_get(delta, 1);
         leg->legSolver->params->Z -= rot_vector_get(delta, 2);
-        return(-1);
     }
+    return(returnCode);
 
 }
 
@@ -220,8 +227,12 @@ int Leg_tryEndpointChange(leg_t* leg, rot_vector_t* delta){
  */
 void Leg_commitEndpointChange(leg_t* leg){
     if(leg->legSolver->validLastResult){
-        Servo_setAngle(leg->servos[0], 
-            rot_vector_get(leg->legSolver->lastResult, 0));
+        char i;
+        for(i=0;i<LEG_DOF;i++){
+            Servo_setAngle(leg->servos[i], 
+               rot_vector_get(leg->legSolver->lastResult, i));
+        }
+        Leg_updateServoLocations(leg);
     }
 }
 
