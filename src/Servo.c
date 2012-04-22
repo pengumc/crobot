@@ -149,7 +149,8 @@ int Servo_checkAngle(servo_t* servo, angle_t value){
  * @param servo The servo data to print.
  */
 void Servo_printDetails(servo_t* servo, const char* name){
-    printf("servo %s:\n \
+    char s[80*10];
+    sprintf(s,"servo %s:\n \
         \tangle: %.2f\n \
         \tpulsewidth: %d\n \
         \tminPulse: %d\n \
@@ -163,6 +164,7 @@ void Servo_printDetails(servo_t* servo, const char* name){
         servo->maxPulse, servo->offset, servo->K, servo->direction, 
         Servo_convertToAngle(servo, servo->minPulse), 
         Servo_convertToAngle(servo, servo->maxPulse));
+    Report_std(s);
 }
 
 

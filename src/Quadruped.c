@@ -226,10 +226,13 @@ int Quadruped_changeAllEndpoints(quadruped_t* qped,
     rot_vector_t* v = rot_vector_alloc();
     rot_vector_setAll(v, X, Y, Z);
     uint8_t i;
-    int error = 0;
+    unsigned int error = 0;
     for(i=0;i<USBDEV_LEGNO;i++){
         //error should end up on 0 if all succeeds;
-        error += (-Leg_tryEndpointChange(qped->dev->legs[i], v)) << i ;
+        error += 
+            ( (unsigned int)
+                (-Leg_tryEndpointChange(qped->dev->legs[i], v) )
+            ) << i*4;
     }
     if(error == 0){
         //no errors, commit everything.

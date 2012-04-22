@@ -49,6 +49,19 @@ leg_t* Leg_alloc(){
 }
 
 
+void Leg_initDefaults(leg_t* leg){
+    Servo_setOffset(leg->servos[2], -M_PI/2);
+    leg->legSolver->params->A = 10.0;
+    leg->legSolver->params->B = 10.0;
+    leg->legSolver->params->C = 10.0;
+    leg->legSolver->params->X = 20.0;
+    leg->legSolver->params->Y = 00.0;
+    leg->legSolver->params->Z = -10.0;
+    Leg_updateServoLocations(leg);
+
+}
+
+
 /*==================== FREE ================================================*/
 /** Free leg memory.
  * @param leg The leg data to clear up.
@@ -180,7 +193,7 @@ void Leg_updateServoLocations(leg_t* leg){
  Leg_commitEndpointChange.
  * @retval -4 Error, no valid solution, no changes were made. Please not that 
  the lastResult vector in the solver is not valid now.
- * @retval 1..3 A valid solution was found but one of the servo's couldn't
+ * @retval -1..3 A valid solution was found but one of the servo's couldn't
  handle the angle. It's number-1 (negative) is returned.
  */
 int Leg_tryEndpointChange(leg_t* leg, rot_vector_t* delta){
@@ -205,10 +218,11 @@ int Leg_tryEndpointChange(leg_t* leg, rot_vector_t* delta){
 			if(Servo_checkAngle(leg->servos[i], 
 				rot_vector_get(leg->legSolver->lastResult, i)) == 0)
 			{
-				returnCode = -i;
+				returnCode = -(i+1);
+                break;
 			}
 		}
-    }else returnCode = -3;
+    }else returnCode = -(LEG_DOF+1); //no valid solution 
 	
 	if(returnCode != 0){
         //no solution, return params to previous state
@@ -246,7 +260,8 @@ void Leg_printDetails(leg_t* leg){
 	char s[80];
 	Report_std("============\nLEG DETAILS\n============");
 	for(i=0;i<LEG_DOF;i++){
-		sprintf(s, "servo %d: %.2f  at %d", i, leg->servos[i]->_angle, leg->servos[i]->_pw);
+		sprintf(s, "servo %d: %.4f  at %d",
+            i, leg->servos[i]->_angle, leg->servos[i]->_pw);
 		Report_std(s);
 	}
 	Report_std("servo loc:");

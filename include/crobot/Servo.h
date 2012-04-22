@@ -27,6 +27,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "Angle.h"
+#include "Report.h"
 
 /** default maximum pulsewidth*/
 #define SERVO_DEF_MAX_PULSE 96

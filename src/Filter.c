@@ -55,7 +55,7 @@ void Filter_init(filter_t* f){
     f->x = 0.0;
     f->_x_last = 0.0;
     f->_P = 0.0;
-    f->_P_last = 0.0;
+    f->_P_last = 0.5;
     //clear graphs
     memset((void*)f->inputData, 0, sizeof(double)*FILTER_GRAPH_LENGTH);
     memset((void*)f->outputData, 0, sizeof(double)*FILTER_GRAPH_LENGTH);
@@ -74,7 +74,7 @@ void Filter_step(filter_t* f, double input){
     x_temp = f->_x_last;
     P_temp = f->_P_last + f->Sw;
 
-    K = (1.0 / (P_temp + f->Sz) + P_temp);
+    K = (P_temp / (P_temp + f->Sz));
     f->x = x_temp + K * (input - x_temp);
     f->_P = (1.0 - K) * P_temp;
 

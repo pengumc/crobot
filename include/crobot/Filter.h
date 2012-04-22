@@ -36,8 +36,8 @@
 
 /** Filter data.*/
 typedef struct FILTER_T {
-    double Sz; /**<Sz (or R) parameter of the filter.*/
-    double Sw; /**<Sw (or Q) parameter of the filter.*/
+    double Sz; /**<Sz (or R cov of observation noise) parameter of the filter.*/
+    double Sw; /**<Sw (or Q cov of process noise) parameter of the filter.*/
     
     double* inputData; /**<Remembered input points.*/
     double* outputData;/**<Remembered output points.*/

@@ -49,5 +49,6 @@ void Leg_printDetails(leg_t* leg);
 
 int Leg_tryEndpointChange(leg_t* leg, rot_vector_t* delta);
 void Leg_commitEndpointChange(leg_t* leg);
+void Leg_initDefaults(leg_t* leg);
 #endif
 
