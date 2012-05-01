@@ -157,27 +157,35 @@ int Solver_solve(solver_t* solver){
 }
 
 
-/*======================================= SET LENGTHS ======================*/
-/** set the leg lenghts to be used. 
- * @param solver The solver to set the leglengths for,
- * @param lengths Pointer to a double[3] holding A B and C.
- */
-void Solver_setLengths(solver_t* solver ,double* lengths){
-	solver->params->A = lengths[0];
-	solver->params->B = lengths[1];
-	solver->params->C = lengths[2];
+
+void Solver_changeXYZ(solver_t* solver, double X, double Y, double Z){
+    solver->params->X += X;
+    solver->params->Y += Y;
+    solver->params->Z += Z;
+}
+void Solver_setXYZ(solver_t* solver, double X, double Y, double Z){
+    solver->params->X = X;
+    solver->params->Y = Y;
+    solver->params->Z = Z;
 }
 
 
-/*======================================= SET COORDS ======================*/
-/** set the target coordinates to be used in calculating angles.
- * @param solver The solver to set the leglengths for,
- * @param coords Pointer to a double[3] holding X Y and Z.
- */
-void Solver_setCoords(solver_t* solver ,double* coords){
-	solver->params->X = coords[0];
-	solver->params->Y = coords[1];
-	solver->params->Z = coords[2];
+void Solver_changeABC(solver_t* solver, double A, double B, double C){
+    solver->params->A += A;
+    solver->params->B += B;
+    solver->params->C += C;
 }
+void Solver_setABC(solver_t* solver, double A, double B, double C){
+    solver->params->A = A;
+    solver->params->B = B;
+    solver->params->C = C;
+}
+
+/** Return a copy of the parameters.*/
+solverParams_t Solver_getParams(solver_t* solver){
+    return(*solver->params);
+}
+
+
 
 

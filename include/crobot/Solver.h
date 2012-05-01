@@ -62,7 +62,11 @@ void Solver_free(solver_t* solver);
 
 angle_t Solver_calculateAlpha(solver_t* solver);
 int Solver_solve(solver_t* solver);
-void Solver_setLegLengths(double* lengths);
-void Solver_setTargetCoords(double* coords);
+void Solver_changeXYZ(solver_t* solver, double X, double Y, double Z);
+void Solver_changeABC(solver_t* solver, double A, double B, double C);
+void Solver_setXYZ(solver_t* solver, double X, double Y, double Z);
+void Solver_setABC(solver_t* solver, double A, double B, double C);
+solverParams_t Solver_getParams(solver_t* solver);
+
 #endif
 

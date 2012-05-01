@@ -139,16 +139,19 @@ void Leg_updateServoLocations(leg_t* leg){
 	const double alpha = Leg_getServoAngle(leg, 0);
 	const double beta = Leg_getServoAngle(leg, 1);
 	const double gamma = Leg_getServoAngle(leg, 2);
-	
+
+    //grab the lengths
+    solverParams_t params = Solver_getParams(leg->legSolver);
+    
 	//servo 1
-    rot_vector_setAll(x, leg->legSolver->params->A, 0.0, 0.0);
+    rot_vector_setAll(x, params.A, 0.0, 0.0);
 	rot_vector_setAll(angles, 0.0, 0.0, alpha);
     rot_matrix_build_from_angles(M, angles);
     rot_matrix_dot_vector(M, x, leg->servoLocations[1]); //rotate
     rot_vector_add(leg->servoLocations[1], leg->servoLocations[0]); //add prev
 	
 	//servo 2
-    rot_vector_setAll(x, leg->legSolver->params->B, 0.0, 0.0);
+    rot_vector_setAll(x, params.B, 0.0, 0.0);
 		 //y first
     rot_vector_setAll(angles, 0.0, beta, 0.0);
     rot_matrix_build_from_angles(M, angles);
@@ -161,7 +164,7 @@ void Leg_updateServoLocations(leg_t* leg){
     rot_vector_add(leg->servoLocations[2], leg->servoLocations[1]);
     
 	//endpoint
-    rot_vector_setAll(x, leg->legSolver->params->B, 0.0, 0.0);
+    rot_vector_setAll(x, params.C, 0.0, 0.0);
 		 //y first
     rot_vector_setAll(angles, 0.0, beta+gamma, 0.0);
     rot_matrix_build_from_angles(M, angles);
@@ -198,9 +201,11 @@ void Leg_updateServoLocations(leg_t* leg){
  */
 int Leg_tryEndpointChange(leg_t* leg, rot_vector_t* delta){
     //setup params
-    leg->legSolver->params->X += rot_vector_get(delta, 0);
-    leg->legSolver->params->Y += rot_vector_get(delta, 1);
-    leg->legSolver->params->Z += rot_vector_get(delta, 2);
+    Solver_changeXYZ(leg->legSolver, 
+        rot_vector_get(delta, 0),
+        rot_vector_get(delta, 1),
+        rot_vector_get(delta, 2));
+    //DEBUG
     printf("target coords: %.1f, %.1f, %.1f\n", 
         leg->legSolver->params->X,
         leg->legSolver->params->Y,
@@ -226,9 +231,10 @@ int Leg_tryEndpointChange(leg_t* leg, rot_vector_t* delta){
 	
 	if(returnCode != 0){
         //no solution, return params to previous state
-        leg->legSolver->params->X -= rot_vector_get(delta, 0);
-        leg->legSolver->params->Y -= rot_vector_get(delta, 1);
-        leg->legSolver->params->Z -= rot_vector_get(delta, 2);
+        Solver_changeXYZ(leg->legSolver,
+            -rot_vector_get(delta, 0),
+            -rot_vector_get(delta, 1),
+            -rot_vector_get(delta, 2));
     }
     return(returnCode);
 
@@ -268,10 +274,9 @@ void Leg_printDetails(leg_t* leg){
 	for(i=0;i<LEG_DOF+1;i++){
 		rot_vector_print(leg->servoLocations[i]);
 	}
-	
+
+    solverParams_t params = Solver_getParams(leg->legSolver);
 	sprintf(s, "A: %.1f\nB: %.1f\nC: %.1f", 
-		leg->legSolver->params->A, 
-		leg->legSolver->params->B,
-		leg->legSolver->params->C);
+        params.A, params.B, params.C);
 	Report_std(s);
 }
