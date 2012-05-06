@@ -20,28 +20,6 @@ def handleSigTERM():
     sys.exit(0)
 
 
-
-
-
-#grapharea
-#===========
-class GraphArea(gtk.DrawingArea):
-
-    
-    def __init__(self):
-        gtk.DrawingArea.__init__(self)
-        self.lines = [GraphLine(), GraphLine(), GraphLine()]
-
-
-
-#GraphLine
-#=============
-class graphLine:
-    
-    def __init__(self):
-        pass
-
-
 #main screen
 #==============
 class Screen:
@@ -56,14 +34,15 @@ class Screen:
         self.window.connect('delete-event', gtk.main_quit)
 
         self.maintable = gtk.Table(1, 1)
+        #buttonbar
         self.buttonbar = buttonbar.ButtonBar()
         self.maintable.attach(self.buttonbar, 0,1, 0,1, 0,0)
 
+        #launch
         self.window.add(self.maintable)
         self.window.show_all()
         
         self.crobot = crobot
-        self.update_buttons()
 
     def connect_to_device(self):
         pass
@@ -92,8 +71,10 @@ class Screen:
             button.set(self.crobot.getButtonEdge(button.buttonNo))
             
     def update_sticks(self):
-        self.buttonbar.sticks['left'].update(
+        self.buttonbar.sticks['right'].update(
             self.crobot.getStick(0), self.crobot.getStick(1))
+        self.buttonbar.sticks['left'].update(
+            self.crobot.getStick(2), self.crobot.getStick(3))
 
 
 
@@ -154,8 +135,8 @@ class Crobot:
         t = self.crobotlib.Quadruped_getPsButtonEdge(self.qped, button)
         return(t)
 
-    def getStick(self, stick):
-        return(15)
+    def getStick(self, axis):
+        return(self.crobotlib.Quadruped_getPsAxis(self.qped, axis))
     
     def update(self):
         return(self.crobotlib.Quadruped_update(self.qped))

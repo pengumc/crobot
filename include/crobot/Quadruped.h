@@ -40,6 +40,7 @@ typedef struct SERVOINFO{
     double angle[BUFLEN_SERVO_DATA];
 } servoinfo_t;
 
+
 quadruped_t* Quadruped_alloc();
 void Quadruped_free(quadruped_t* qped);
 
@@ -59,6 +60,8 @@ int Quadruped_changeLegEndpoint(quadruped_t* qped, uint8_t legNo,
     double X, double Y, double Z);
 int Quadruped_changeAllEndpoints(quadruped_t* qped,
     double X, double Y, double Z);
+int Quadruped_getPsAxis(quadruped_t* qped, pscontroller_axis axis);
+
 #endif
 
 

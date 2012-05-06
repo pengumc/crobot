@@ -155,6 +155,11 @@ int Quadruped_getPsButtonEdge(quadruped_t* qped, pscontroller_button button){
 }
 
 
+int Quadruped_getPsAxis(quadruped_t* qped, pscontroller_axis axis){
+    return(Pscontroller_getAxis(&qped->dev->pscon, axis));
+}
+
+
 /*===================== COMMIT TO DEVICE ====================================*/
 int Quadruped_commit(quadruped_t* qped){
     Usbdevice_sendServoData(qped->dev);
