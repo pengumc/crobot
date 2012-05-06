@@ -4,3 +4,4 @@ bin/solvertest
 ctest.c
 a.out
 Doxyfile
+*.pyc

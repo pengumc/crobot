@@ -6,7 +6,7 @@ NAME = crobot
 WINDOWSMATCH=MINGW32_NT-6.1
 BITS=64
 #c99 std prevents usleep?
-CFLAGS = -Iinclude -Isrc -Iinclude/$(NAME) -Iinclude/gsl$(BITS) -I. -std=c99 -D_POSIX_C_SOURCE=199309L
+CFLAGS = -fPIC -Iinclude -Isrc -Iinclude/$(NAME) -Iinclude/gsl$(BITS) -I. -std=c99 -D_POSIX_C_SOURCE=199309L
 #USBLIBS = $(shell libusb-config --libs)
 USBLIBS = -lusb
 CLIBS = -Llib/gsl$(BITS) -Llib/crobot -lgslcblas -lgsl $(USBLIBS) -lm

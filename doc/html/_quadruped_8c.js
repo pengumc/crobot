@@ -1,6 +1,7 @@
 var _quadruped_8c =
 [
     [ "Quadruped_alloc", "_quadruped_8c.html#af2fa45b8f494515916638aff1689ca24", null ],
+    [ "Quadruped_changeAllEndpoints", "_quadruped_8c.html#a5fde02d754c20fae37ead2a7c8109f78", null ],
     [ "Quadruped_changeLegEndpoint", "_quadruped_8c.html#aaa20887f015fd19726c38e2d1e6cabb4", null ],
     [ "Quadruped_commit", "_quadruped_8c.html#ae4785fda7b1a8ab51e904609415a1acc", null ],
     [ "Quadruped_configureServoDirection", "_quadruped_8c.html#a7b1d3d7838b555cc0659c6ddb69dc497", null ],

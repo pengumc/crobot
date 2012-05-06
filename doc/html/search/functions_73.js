@@ -14,7 +14,6 @@ var searchData=
   ['solver_5falloc',['Solver_alloc',['../_solver_8c.html#ad5e9f3ce54bb9ad63ac1dfb6929bae2f',1,'Solver_alloc():&#160;Solver.c'],['../_solver_8h.html#ad5e9f3ce54bb9ad63ac1dfb6929bae2f',1,'Solver_alloc():&#160;Solver.c']]],
   ['solver_5fcalculatealpha',['Solver_calculateAlpha',['../_solver_8c.html#a1e3beef4ee8070b09a3793fe68c9ff3e',1,'Solver_calculateAlpha(solver_t *solver):&#160;Solver.c'],['../_solver_8h.html#a1e3beef4ee8070b09a3793fe68c9ff3e',1,'Solver_calculateAlpha(solver_t *solver):&#160;Solver.c']]],
   ['solver_5ffree',['Solver_free',['../_solver_8c.html#a25c8462672dc8572d29453a9534f774b',1,'Solver_free(solver_t *solver):&#160;Solver.c'],['../_solver_8h.html#a25c8462672dc8572d29453a9534f774b',1,'Solver_free(solver_t *solver):&#160;Solver.c']]],
-  ['solver_5fsetcoords',['Solver_setCoords',['../_solver_8c.html#a81010d1f2774d91064e7dd6badc36ad3',1,'Solver.c']]],
-  ['solver_5fsetlengths',['Solver_setLengths',['../_solver_8c.html#a954fcff30f10dbcca5359c91c75090f6',1,'Solver.c']]],
+  ['solver_5fgetparams',['Solver_getParams',['../_solver_8c.html#ac2deb2b5c6e22cf8b6ac2e89e36efb83',1,'Solver_getParams(solver_t *solver):&#160;Solver.c'],['../_solver_8h.html#ac2deb2b5c6e22cf8b6ac2e89e36efb83',1,'Solver_getParams(solver_t *solver):&#160;Solver.c']]],
   ['solver_5fsolve',['Solver_solve',['../_solver_8c.html#aa8295020f365d2de8053df56840f0934',1,'Solver_solve(solver_t *solver):&#160;Solver.c'],['../_solver_8h.html#aa8295020f365d2de8053df56840f0934',1,'Solver_solve(solver_t *solver):&#160;Solver.c']]]
 ];

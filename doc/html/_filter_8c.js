@@ -1,7 +1,8 @@
 var _filter_8c =
 [
-    [ "Filter_addInputPoint", "_filter_8c.html#ac459fe749098b119c6fc336d7fa1372b", null ],
-    [ "Filter_addOutputPoint", "_filter_8c.html#a5118005000f6fe3ea5b0e961f8892768", null ],
+    [ "Filter_addInputPoint", "_filter_8c.html#ac323f74701b33928fb00c2fc5d9ab5a3", null ],
+    [ "Filter_addOutputPoint", "_filter_8c.html#af2276104c2312efb9f0ab16d70d8425b", null ],
+    [ "Filter_addPoints", "_filter_8c.html#a793588462ec54a2cdf9dd18fd40ff6a7", null ],
     [ "Filter_alloc", "_filter_8c.html#ab8a88df0c51e80b1ee461b85384d4026", null ],
     [ "Filter_changeGraphPointers", "_filter_8c.html#a9a65e4c594180f7db319ac51ae854902", null ],
     [ "Filter_free", "_filter_8c.html#a910da2c76b20f0578f3fbc8d754d6212", null ],

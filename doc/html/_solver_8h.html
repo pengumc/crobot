@@ -154,10 +154,16 @@ Functions</h2></td></tr>
 <tr class="memdesc:a1e3beef4ee8070b09a3793fe68c9ff3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the alpha angle from the XY plane Any Y coordinate other than 0 requires servo 0 to rotate by alpha rad.  <a href="#a1e3beef4ee8070b09a3793fe68c9ff3e"></a><br/></td></tr>
 <tr class="memitem:aa8295020f365d2de8053df56840f0934"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_solver_8h.html#aa8295020f365d2de8053df56840f0934">Solver_solve</a> (<a class="el" href="structsolver__t.html">solver_t</a> *solver)</td></tr>
 <tr class="memdesc:aa8295020f365d2de8053df56840f0934"><td class="mdescLeft">&#160;</td><td class="mdescRight">find useful angles for our servos.  <a href="#aa8295020f365d2de8053df56840f0934"></a><br/></td></tr>
-<tr class="memitem:a4b90bd483462510cee1f3b684b7efcbf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4b90bd483462510cee1f3b684b7efcbf"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Solver_setLegLengths</b> (double *lengths)</td></tr>
-<tr class="memitem:a8dc5646e12a4b157da724d2c23666d75"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8dc5646e12a4b157da724d2c23666d75"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Solver_setTargetCoords</b> (double *coords)</td></tr>
+<tr class="memitem:ab057a0b2eff4a1c78f5100ad7ab3c5d8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab057a0b2eff4a1c78f5100ad7ab3c5d8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>Solver_changeXYZ</b> (<a class="el" href="structsolver__t.html">solver_t</a> *solver, double X, double Y, double Z)</td></tr>
+<tr class="memitem:a596f535164f442eb3f9ffe0ea250669b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a596f535164f442eb3f9ffe0ea250669b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>Solver_changeABC</b> (<a class="el" href="structsolver__t.html">solver_t</a> *solver, double A, double B, double C)</td></tr>
+<tr class="memitem:a80a53bc19a82870c138be96023c52e32"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a80a53bc19a82870c138be96023c52e32"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>Solver_setXYZ</b> (<a class="el" href="structsolver__t.html">solver_t</a> *solver, double X, double Y, double Z)</td></tr>
+<tr class="memitem:a50974f565c6b09d19008ca567740d858"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a50974f565c6b09d19008ca567740d858"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>Solver_setABC</b> (<a class="el" href="structsolver__t.html">solver_t</a> *solver, double A, double B, double C)</td></tr>
+<tr class="memitem:ac2deb2b5c6e22cf8b6ac2e89e36efb83"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_solver_8h.html#ad9eda1af9988fd53e0b7fb56db441dc5">solverParams_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_solver_8h.html#ac2deb2b5c6e22cf8b6ac2e89e36efb83">Solver_getParams</a> (<a class="el" href="structsolver__t.html">solver_t</a> *solver)</td></tr>
+<tr class="memdesc:ac2deb2b5c6e22cf8b6ac2e89e36efb83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a copy of the parameters.  <a href="#ac2deb2b5c6e22cf8b6ac2e89e36efb83"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"></div><hr/><h2>Function Documentation</h2>
@@ -234,6 +240,25 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Solver_setTargetCoord
 
 </div>
 </div>
+<a class="anchor" id="ac2deb2b5c6e22cf8b6ac2e89e36efb83"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_solver_8h.html#ad9eda1af9988fd53e0b7fb56db441dc5">solverParams_t</a> <a class="el" href="_solver_8h.html#ac2deb2b5c6e22cf8b6ac2e89e36efb83">Solver_getParams</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structsolver__t.html">solver_t</a> *&#160;</td>
+          <td class="paramname"><em>solver</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Return a copy of the parameters. </p>
+
+</div>
+</div>
 <a class="anchor" id="aa8295020f365d2de8053df56840f0934"></a>
 <div class="memitem">
 <div class="memproto">
@@ -274,7 +299,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Solver_setTargetCoord
     <ul>
       <li class="navelem"><a class="el" href="_solver_8h.html">Solver.h</a>      </li>
 
-    <li class="footer">Generated on Sat Apr 14 2012 11:21:40 for crobot by
+    <li class="footer">Generated on Sun May 6 2012 13:29:33 for crobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.0 </li>
    </ul>

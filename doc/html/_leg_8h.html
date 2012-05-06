@@ -118,6 +118,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="textblock"><code>#include &quot;<a class="el" href="rotation_8h_source.html">rotation.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="_servo_8h_source.html">Servo.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="_solver_8h_source.html">Solver.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="_report_8h_source.html">Report.h</a>&quot;</code><br/>
 </div>
 <p><a href="_leg_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -134,20 +135,24 @@ Defines</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:ab76534cf2afe748c38f7cdca2e89c1a1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structleg__t.html">leg_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_leg_8h.html#ab76534cf2afe748c38f7cdca2e89c1a1">Leg_alloc</a> ()</td></tr>
 <tr class="memdesc:ab76534cf2afe748c38f7cdca2e89c1a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate memory for a new leg.  <a href="#ab76534cf2afe748c38f7cdca2e89c1a1"></a><br/></td></tr>
+<tr class="memitem:ac328c602036a0936aa7e333db3f87ae8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_leg_8h.html#ac328c602036a0936aa7e333db3f87ae8">Leg_commitEndpointChange</a> (<a class="el" href="structleg__t.html">leg_t</a> *leg)</td></tr>
+<tr class="memdesc:ac328c602036a0936aa7e333db3f87ae8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Commit the previously calculated angles to the servos.  <a href="#ac328c602036a0936aa7e333db3f87ae8"></a><br/></td></tr>
 <tr class="memitem:a143a50e34e2ee69664bf4655ed93055d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_leg_8h.html#a143a50e34e2ee69664bf4655ed93055d">Leg_free</a> (<a class="el" href="structleg__t.html">leg_t</a> *leg)</td></tr>
 <tr class="memdesc:a143a50e34e2ee69664bf4655ed93055d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free leg memory.  <a href="#a143a50e34e2ee69664bf4655ed93055d"></a><br/></td></tr>
-<tr class="memitem:a0d81abe1448df1f98cd38e96bd69dd92"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_leg_8h.html#a0d81abe1448df1f98cd38e96bd69dd92">Leg_updateServoLocations</a> (<a class="el" href="structleg__t.html">leg_t</a> *leg)</td></tr>
-<tr class="memdesc:a0d81abe1448df1f98cd38e96bd69dd92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate coordinates of all servos relative to servo 0.  <a href="#a0d81abe1448df1f98cd38e96bd69dd92"></a><br/></td></tr>
-<tr class="memitem:a07ddd3d6c42168466ff063c7a82744dc"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_leg_8h.html#a07ddd3d6c42168466ff063c7a82744dc">Leg_getServoPw</a> (<a class="el" href="structleg__t.html">leg_t</a> *leg, uint8_t servoNo)</td></tr>
-<tr class="memdesc:a07ddd3d6c42168466ff063c7a82744dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the stored pulsewidth of a servo.  <a href="#a07ddd3d6c42168466ff063c7a82744dc"></a><br/></td></tr>
+<tr class="memitem:ab357da757f39175033eb31dbc7edcec2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab357da757f39175033eb31dbc7edcec2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>Leg_initDefaults</b> (<a class="el" href="structleg__t.html">leg_t</a> *leg)</td></tr>
 <tr class="memitem:a419c6ce7f7699ef2d71dca7e0269d7e8"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_leg_8h.html#a419c6ce7f7699ef2d71dca7e0269d7e8">Leg_getServoAngle</a> (<a class="el" href="structleg__t.html">leg_t</a> *leg, uint8_t servoNo)</td></tr>
 <tr class="memdesc:a419c6ce7f7699ef2d71dca7e0269d7e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">get stored servo angle.  <a href="#a419c6ce7f7699ef2d71dca7e0269d7e8"></a><br/></td></tr>
+<tr class="memitem:a07ddd3d6c42168466ff063c7a82744dc"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_leg_8h.html#a07ddd3d6c42168466ff063c7a82744dc">Leg_getServoPw</a> (<a class="el" href="structleg__t.html">leg_t</a> *leg, uint8_t servoNo)</td></tr>
+<tr class="memdesc:a07ddd3d6c42168466ff063c7a82744dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the stored pulsewidth of a servo.  <a href="#a07ddd3d6c42168466ff063c7a82744dc"></a><br/></td></tr>
+<tr class="memitem:aa05248027154aaa5befcb13abe3b525a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_leg_8h.html#aa05248027154aaa5befcb13abe3b525a">Leg_printDetails</a> (<a class="el" href="structleg__t.html">leg_t</a> *leg)</td></tr>
+<tr class="memdesc:aa05248027154aaa5befcb13abe3b525a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print leg details.  <a href="#aa05248027154aaa5befcb13abe3b525a"></a><br/></td></tr>
 <tr class="memitem:a2c5d17e1ea1398637ff06f757736f46b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_leg_8h.html#a2c5d17e1ea1398637ff06f757736f46b">Leg_setServoPw</a> (<a class="el" href="structleg__t.html">leg_t</a> *leg, uint8_t servoNo, uint8_t pw)</td></tr>
 <tr class="memdesc:a2c5d17e1ea1398637ff06f757736f46b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the pulsewidth of a servo.  <a href="#a2c5d17e1ea1398637ff06f757736f46b"></a><br/></td></tr>
 <tr class="memitem:aa8573a45eb0f3f94513e0f79f97a572b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_leg_8h.html#aa8573a45eb0f3f94513e0f79f97a572b">Leg_tryEndpointChange</a> (<a class="el" href="structleg__t.html">leg_t</a> *leg, rot_vector_t *delta)</td></tr>
 <tr class="memdesc:aa8573a45eb0f3f94513e0f79f97a572b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if there's a valid solution for a change.  <a href="#aa8573a45eb0f3f94513e0f79f97a572b"></a><br/></td></tr>
-<tr class="memitem:ac328c602036a0936aa7e333db3f87ae8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac328c602036a0936aa7e333db3f87ae8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Leg_commitEndpointChange</b> (<a class="el" href="structleg__t.html">leg_t</a> *leg)</td></tr>
+<tr class="memitem:a0d81abe1448df1f98cd38e96bd69dd92"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_leg_8h.html#a0d81abe1448df1f98cd38e96bd69dd92">Leg_updateServoLocations</a> (<a class="el" href="structleg__t.html">leg_t</a> *leg)</td></tr>
+<tr class="memdesc:a0d81abe1448df1f98cd38e96bd69dd92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate coordinates of all servos relative to servo 0.  <a href="#a0d81abe1448df1f98cd38e96bd69dd92"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"></div><hr/><h2>Function Documentation</h2>
@@ -167,6 +172,31 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Leg_commitEndpointCha
 
 <p>Allocate memory for a new leg. </p>
 <dl class="section return"><dt>Returns:</dt><dd>A pointer to a new leg. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ac328c602036a0936aa7e333db3f87ae8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="_leg_8h.html#ac328c602036a0936aa7e333db3f87ae8">Leg_commitEndpointChange</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structleg__t.html">leg_t</a> *&#160;</td>
+          <td class="paramname"><em>leg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Commit the previously calculated angles to the servos. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">leg</td><td>The leg data to use. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -269,6 +299,31 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Leg_commitEndpointCha
 
 </div>
 </div>
+<a class="anchor" id="aa05248027154aaa5befcb13abe3b525a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="_leg_8h.html#aa05248027154aaa5befcb13abe3b525a">Leg_printDetails</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structleg__t.html">leg_t</a> *&#160;</td>
+          <td class="paramname"><em>leg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Print leg details. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">leg</td><td>The leg info to print. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a2c5d17e1ea1398637ff06f757736f46b"></a>
 <div class="memitem">
 <div class="memproto">
@@ -345,16 +400,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Leg_commitEndpointCha
 <div class="memdoc">
 
 <p>Check if there's a valid solution for a change. </p>
+<p>After a successful try you should call Leg_commitEndpointChange to finalize the changes. This is to simplify rollbacks when changing multiple legs. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">leg</td><td>The leg data to use. </td></tr>
-    <tr><td class="paramname">delta</td><td>The change in xyz coords of the endpoint. retval 1 Success, Valid coordinates can be set with Leg_commitEndpointChange. </td></tr>
+    <tr><td class="paramname">delta</td><td>The change in xyz coords of the endpoint. retval 0 Success, Valid coordinates can be set with Leg_commitEndpointChange. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="retval"><dt><b>Return values:</b></dt><dd>
   <table class="retval">
-    <tr><td class="paramname">-1</td><td>Error, no valid solution, no changes were made. Please not that the lastResult vector in the solver is not valid now. </td></tr>
+    <tr><td class="paramname">-4</td><td>Error, no valid solution, no changes were made. Please not that the lastResult vector in the solver is not valid now. </td></tr>
+    <tr><td class="paramname">-1..3</td><td>A valid solution was found but one of the servo's couldn't handle the angle. It's number-1 (negative) is returned. </td></tr>
   </table>
   </dd>
 </dl>
@@ -393,7 +450,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Leg_commitEndpointCha
     <ul>
       <li class="navelem"><a class="el" href="_leg_8h.html">Leg.h</a>      </li>
 
-    <li class="footer">Generated on Sat Apr 14 2012 11:21:40 for crobot by
+    <li class="footer">Generated on Sun May 6 2012 13:29:33 for crobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.0 </li>
    </ul>

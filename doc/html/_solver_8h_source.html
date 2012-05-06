@@ -171,17 +171,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00062"></a>00062 
 <a name="l00063"></a>00063 <a class="code" href="_angle_8h.html#a2dad8157cb7c5fb8506edcfe39ac9bb3" title="variable type of an angle">angle_t</a> <a class="code" href="_solver_8c.html#a1e3beef4ee8070b09a3793fe68c9ff3e" title="Get the alpha angle from the XY plane Any Y coordinate other than 0 requires servo 0 to rotate by alp...">Solver_calculateAlpha</a>(<a class="code" href="structsolver__t.html">solver_t</a>* solver);
 <a name="l00064"></a>00064 <span class="keywordtype">int</span> <a class="code" href="_solver_8c.html#aa8295020f365d2de8053df56840f0934" title="find useful angles for our servos.">Solver_solve</a>(<a class="code" href="structsolver__t.html">solver_t</a>* solver);
-<a name="l00065"></a>00065 <span class="keywordtype">void</span> Solver_setLegLengths(<span class="keywordtype">double</span>* lengths);
-<a name="l00066"></a>00066 <span class="keywordtype">void</span> Solver_setTargetCoords(<span class="keywordtype">double</span>* coords);
-<a name="l00067"></a>00067 <span class="preprocessor">#endif</span>
-<a name="l00068"></a>00068 <span class="preprocessor"></span>
+<a name="l00065"></a>00065 <span class="keywordtype">void</span> Solver_changeXYZ(<a class="code" href="structsolver__t.html">solver_t</a>* solver, <span class="keywordtype">double</span> X, <span class="keywordtype">double</span> Y, <span class="keywordtype">double</span> Z);
+<a name="l00066"></a>00066 <span class="keywordtype">void</span> Solver_changeABC(<a class="code" href="structsolver__t.html">solver_t</a>* solver, <span class="keywordtype">double</span> A, <span class="keywordtype">double</span> B, <span class="keywordtype">double</span> C);
+<a name="l00067"></a>00067 <span class="keywordtype">void</span> Solver_setXYZ(<a class="code" href="structsolver__t.html">solver_t</a>* solver, <span class="keywordtype">double</span> X, <span class="keywordtype">double</span> Y, <span class="keywordtype">double</span> Z);
+<a name="l00068"></a>00068 <span class="keywordtype">void</span> Solver_setABC(<a class="code" href="structsolver__t.html">solver_t</a>* solver, <span class="keywordtype">double</span> A, <span class="keywordtype">double</span> B, <span class="keywordtype">double</span> C);
+<a name="l00069"></a>00069 <a class="code" href="struct_p_a_r_a_m_s.html" title="Leg parameters to be used in the solver.">solverParams_t</a> <a class="code" href="_solver_8c.html#ac2deb2b5c6e22cf8b6ac2e89e36efb83" title="Return a copy of the parameters.">Solver_getParams</a>(<a class="code" href="structsolver__t.html">solver_t</a>* solver);
+<a name="l00070"></a>00070 
+<a name="l00071"></a>00071 <span class="preprocessor">#endif</span>
+<a name="l00072"></a>00072 <span class="preprocessor"></span>
 </pre></div></div><!-- contents -->
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="_solver_8h.html">Solver.h</a>      </li>
 
-    <li class="footer">Generated on Sat Apr 14 2012 11:21:40 for crobot by
+    <li class="footer">Generated on Sun May 6 2012 13:29:33 for crobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.0 </li>
    </ul>

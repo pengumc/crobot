@@ -122,6 +122,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="textblock"><code>#include &lt;stdlib.h&gt;</code><br/>
 <code>#include &lt;stdint.h&gt;</code><br/>
 <code>#include &lt;string.h&gt;</code><br/>
+<code>#include &quot;<a class="el" href="_report_8h_source.html">Report.h</a>&quot;</code><br/>
 </div>
 <p><a href="_filter_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -147,10 +148,12 @@ Functions</h2></td></tr>
 <tr class="memdesc:a2b5ce67aee31a8db56b25c1b8b7af352"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set all values to their start values (except Sz/Sw).  <a href="#a2b5ce67aee31a8db56b25c1b8b7af352"></a><br/></td></tr>
 <tr class="memitem:abe62c36614a6ca661da1d8a962c7ccc4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_filter_8h.html#abe62c36614a6ca661da1d8a962c7ccc4">Filter_step</a> (<a class="el" href="_filter_8h.html#a96e56971376e6bf3ebed2a1e06675dbc">filter_t</a> *f, double input)</td></tr>
 <tr class="memdesc:abe62c36614a6ca661da1d8a962c7ccc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Step the filter with an input.  <a href="#abe62c36614a6ca661da1d8a962c7ccc4"></a><br/></td></tr>
-<tr class="memitem:ac459fe749098b119c6fc336d7fa1372b"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_filter_8h.html#ac459fe749098b119c6fc336d7fa1372b">Filter_addInputPoint</a> (<a class="el" href="_filter_8h.html#a96e56971376e6bf3ebed2a1e06675dbc">filter_t</a> *f, double value)</td></tr>
-<tr class="memdesc:ac459fe749098b119c6fc336d7fa1372b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a value to the dataset.  <a href="#ac459fe749098b119c6fc336d7fa1372b"></a><br/></td></tr>
-<tr class="memitem:a5118005000f6fe3ea5b0e961f8892768"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_filter_8h.html#a5118005000f6fe3ea5b0e961f8892768">Filter_addOutputPoint</a> (<a class="el" href="_filter_8h.html#a96e56971376e6bf3ebed2a1e06675dbc">filter_t</a> *f, double value)</td></tr>
-<tr class="memdesc:a5118005000f6fe3ea5b0e961f8892768"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as Filter_addInputPoint (except for the output set).  <a href="#a5118005000f6fe3ea5b0e961f8892768"></a><br/></td></tr>
+<tr class="memitem:a793588462ec54a2cdf9dd18fd40ff6a7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a793588462ec54a2cdf9dd18fd40ff6a7"></a>
+uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>Filter_addPoints</b> (<a class="el" href="_filter_8h.html#a96e56971376e6bf3ebed2a1e06675dbc">filter_t</a> *f, double in, double out)</td></tr>
+<tr class="memitem:ac323f74701b33928fb00c2fc5d9ab5a3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_filter_8h.html#ac323f74701b33928fb00c2fc5d9ab5a3">Filter_addInputPoint</a> (<a class="el" href="_filter_8h.html#a96e56971376e6bf3ebed2a1e06675dbc">filter_t</a> *f, double value)</td></tr>
+<tr class="memdesc:ac323f74701b33928fb00c2fc5d9ab5a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a value to the dataset.  <a href="#ac323f74701b33928fb00c2fc5d9ab5a3"></a><br/></td></tr>
+<tr class="memitem:af2276104c2312efb9f0ab16d70d8425b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_filter_8h.html#af2276104c2312efb9f0ab16d70d8425b">Filter_addOutputPoint</a> (<a class="el" href="_filter_8h.html#a96e56971376e6bf3ebed2a1e06675dbc">filter_t</a> *f, double value)</td></tr>
+<tr class="memdesc:af2276104c2312efb9f0ab16d70d8425b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as Filter_addInputPoint (except for the output set).  <a href="#af2276104c2312efb9f0ab16d70d8425b"></a><br/></td></tr>
 <tr class="memitem:a9a65e4c594180f7db319ac51ae854902"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_filter_8h.html#a9a65e4c594180f7db319ac51ae854902">Filter_changeGraphPointers</a> (<a class="el" href="_filter_8h.html#a96e56971376e6bf3ebed2a1e06675dbc">filter_t</a> *f, double *in, double *out)</td></tr>
 <tr class="memdesc:a9a65e4c594180f7db319ac51ae854902"><td class="mdescLeft">&#160;</td><td class="mdescRight">Supply your own pointers to double arrays to store data points.  <a href="#a9a65e4c594180f7db319ac51ae854902"></a><br/></td></tr>
 </table>
@@ -191,12 +194,12 @@ Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Function Documentation</h2>
-<a class="anchor" id="ac459fe749098b119c6fc336d7fa1372b"></a>
+<a class="anchor" id="ac323f74701b33928fb00c2fc5d9ab5a3"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint16_t <a class="el" href="_filter_8h.html#ac459fe749098b119c6fc336d7fa1372b">Filter_addInputPoint</a> </td>
+          <td class="memname">void <a class="el" href="_filter_8h.html#ac323f74701b33928fb00c2fc5d9ab5a3">Filter_addInputPoint</a> </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="_filter_8h.html#a96e56971376e6bf3ebed2a1e06675dbc">filter_t</a> *&#160;</td>
           <td class="paramname"><em>f</em>, </td>
@@ -228,12 +231,12 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a5118005000f6fe3ea5b0e961f8892768"></a>
+<a class="anchor" id="af2276104c2312efb9f0ab16d70d8425b"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint16_t <a class="el" href="_filter_8h.html#a5118005000f6fe3ea5b0e961f8892768">Filter_addOutputPoint</a> </td>
+          <td class="memname">void <a class="el" href="_filter_8h.html#af2276104c2312efb9f0ab16d70d8425b">Filter_addOutputPoint</a> </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="_filter_8h.html#a96e56971376e6bf3ebed2a1e06675dbc">filter_t</a> *&#160;</td>
           <td class="paramname"><em>f</em>, </td>
@@ -308,6 +311,7 @@ Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Supply your own pointers to double arrays to store data points. </p>
+<p>All data in the new arrays is set to zero and the filter is reset. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">f</td><td>The filter to change. </td></tr>
@@ -411,7 +415,7 @@ Functions</h2></td></tr>
     <ul>
       <li class="navelem"><a class="el" href="_filter_8h.html">Filter.h</a>      </li>
 
-    <li class="footer">Generated on Sat Apr 14 2012 11:21:40 for crobot by
+    <li class="footer">Generated on Sun May 6 2012 13:29:33 for crobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.0 </li>
    </ul>
