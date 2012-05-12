@@ -13,6 +13,7 @@ import pygtk
 import gtk, gobject, cairo
 
 import buttonbar
+import grapharea
 
 def handleSigTERM():
     #gtk.main_quit()
@@ -26,6 +27,7 @@ class Screen:
 
     NUMBER_OF_BUTTONS = 6
     TIMEOUT = 40
+    TIMEOUT_GRAPH = 500
     
     def __init__(self, crobot):
         self.timeout_active = False
@@ -33,16 +35,26 @@ class Screen:
         self.window = gtk.Window();
         self.window.connect('delete-event', gtk.main_quit)
 
-        self.maintable = gtk.Table(1, 1)
+        self.maintable = gtk.Table(1, 2)
         #buttonbar
         self.buttonbar = buttonbar.ButtonBar()
-        self.maintable.attach(self.buttonbar, 0,1, 0,1, 0,0)
+        self.maintable.attach(self.buttonbar, 0,1, 1,2, 0,0)
+        #grapharea 
+        self.graph = grapharea.GraphArea()
+        self.graph.set_size_request(100,100)
+        self.graph.setBgColor(1,1,1)
+        self.maintable.attach(self.graph, 0,1, 0,1, gtk.FILL|gtk.EXPAND,gtk.FILL|gtk.EXPAND)
 
         #launch
         self.window.add(self.maintable)
         self.window.show_all()
+        self.graph.do_expose_event(None) #needed to start drawing
         
         self.crobot = crobot
+        self.graph.setData([self.crobot.inX, self.crobot.outX])
+        self.graph.lines[0].setColor(1,0,0)
+        self.graph.lines[0].setColor(1,0,1)
+        self.graph.set_maxy(100)
 
     def connect_to_device(self):
         pass
@@ -55,6 +67,7 @@ class Screen:
     def start(self):
         self.timeout_active = True
         gtk.timeout_add(Screen.TIMEOUT, self.timeout)
+        gtk.timeout_add(Screen.TIMEOUT_GRAPH, self.graph_timeout)
         gtk.main()
 
     def timeout(self):
@@ -64,6 +77,7 @@ class Screen:
             return(False)
         self.update_buttons()
         self.update_sticks()
+        self.update_graph()
         return(True)
 
     def update_buttons(self):
@@ -76,6 +90,15 @@ class Screen:
         self.buttonbar.sticks['left'].update(
             self.crobot.getStick(2), self.crobot.getStick(3))
 
+    def update_graph(self):
+        self.graph.index += 1
+        if self.graph.index >= 300:
+            self.graph.index = 0
+
+
+    def graph_timeout(self):
+        self.graph.do_expose_event(None)
+        return(True)
 
 
 #crobot library handler

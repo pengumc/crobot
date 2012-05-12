@@ -174,8 +174,14 @@ int Usbdevice_getData(usbdevice_t* usbdevice, char* buffer){
 			buffer[5], buffer[6], buffer[7], buffer[8] //axis
 		);
 		//and adc
-        Accelerometer_updateValues(usbdevice->acc, buffer[0], buffer[3], buffer[4]);
-
+        Accelerometer_updateValues(usbdevice->acc, buffer[3], buffer[4], buffer[0]);
+        /*
+        printf("===\n");
+        int i;
+        for(i=0;i<BUFLEN_SERVO_DATA;i++){
+            printf("%d\n", ((uint8_t)buffer[i]));
+        }
+        */
     }
 	return(cnt);
 }

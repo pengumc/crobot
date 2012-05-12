@@ -92,7 +92,8 @@ void _Accelerometer_calcTilt(accelerometer_t* acc){
 void _Accelerometer_updateFilters(accelerometer_t* acc){
     char i;
     for(i=0;i<ACC_FILTER_COUNT;i++){
-        Filter_step(acc->filters[i], rot_vector_get(acc->tilt_angles, i)); 
+        //Filter_step(acc->filters[i], rot_vector_get(acc->tilt_angles, i)); 
+        Filter_step(acc->filters[i], ((double)acc->adc_values[i])-ACC_MID);
     }
 }
 

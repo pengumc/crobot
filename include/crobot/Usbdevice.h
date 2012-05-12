@@ -24,7 +24,11 @@
 #define __USBDEVICE__
 #define USBCOMMANDLINE
 
-#include <usb.h>
+
+//needed for broken usb.h
+//#include <sys/types.h>
+//#include <usb.h>
+
 #include <string.h>
 #include <unistd.h> //for usleep
 #ifdef __WINDOWSCRAP__

@@ -19,8 +19,12 @@ class Psanalog(gtk.DrawingArea):
         self.Y = 0
     
     def do_expose_event(self, event):
+        self.cr = self.window.cairo_create()
+        self.cr.push_group()
         self.clear()    
         self.draw_stick()
+        self.cr.pop_group_to_source()
+        self.cr.paint()
 
     def draw_stick(self):
         self.cr.set_source_rgb(0.0, 0.5, 0.5)
@@ -30,7 +34,6 @@ class Psanalog(gtk.DrawingArea):
         self.cr.stroke()
 
     def clear(self):
-        self.cr = self.window.cairo_create()
         #empty everything
         self.cr.set_source_rgb(1.0, 1.0, 1.0)
         self.cr.rectangle(0, 0, Psanalog.SIZE, Psanalog.SIZE) 
