@@ -162,7 +162,7 @@ int Quadruped_getPsAxis(quadruped_t* qped, pscontroller_axis axis){
 
 /*===================== COMMIT TO DEVICE ====================================*/
 int Quadruped_commit(quadruped_t* qped){
-    Usbdevice_sendServoData(qped->dev);
+    return(Usbdevice_sendServoData(qped->dev));
 }
 
 
@@ -248,3 +248,13 @@ int Quadruped_changeAllEndpoints(quadruped_t* qped,
     return(error);
 }
 
+
+/*====================== GET SERVO DATA FROM DEVICE =========================*/
+/** Get the servo positions currently stored on the device.
+ *
+ */
+int Quadruped_getServoData(quadruped_t* qp){
+    int ret = Usbdevice_getServoData(qp->dev, qp->buffer);
+    printf("qp_getservodata: %d\n", ret);
+    return(ret);
+}

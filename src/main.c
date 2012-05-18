@@ -31,11 +31,19 @@ int main(int argc, char* argv[]){
 	
     quadruped_t* myQ = Quadruped_alloc();
     Leg_initDefaults(myQ->dev->legs[0]);
+    Leg_initDefaults(myQ->dev->legs[1]);
+    Leg_initDefaults(myQ->dev->legs[2]);
+    Leg_initDefaults(myQ->dev->legs[3]);
+   
+    Quadruped_startup(myQ);
+    
+    printf("get servo data: %d\n", Quadruped_getServoData(myQ));
 
-	printf("moveone: %d\n", Quadruped_changeLegEndpoint(
-        myQ, 0, 0.0, 0.0, 5));
-
-	Leg_printDetails(myQ->dev->legs[0]);
+    if(argc > 1){
+        Quadruped_changeAllEndpoints(myQ, 0,0,5);
+        printf("commit: %d\n", Quadruped_commit(myQ));
+        printf("get servo data: %d\n", Quadruped_getServoData(myQ));
+    }
     Quadruped_free(myQ);
 	
     return(0);

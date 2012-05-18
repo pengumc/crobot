@@ -153,6 +153,8 @@ int _Usbdevice_sendCtrlMsg(
         //we're not connected
         usbdevice->connected--;
     }
+    printf("usb send: msg = %d, cnt = %d\n", request, cnt);
+    printBuffer(buffer);
     return(cnt);
 }
 
@@ -187,6 +189,7 @@ int Usbdevice_getData(usbdevice_t* usbdevice, char* buffer){
 }
 
 /*============================ UPDATE SERVOS ================================*/
+//called by getservodata
 void _Usbdevice_updateServos(usbdevice_t* dev, char* buffer){
     unsigned char leg,servo,i=0;
     for(leg=0;leg<USBDEV_LEGNO;leg++){
@@ -208,24 +211,35 @@ servo data.
  * @retval -2 Something went horribly wrong (device disconnected?).
  */
 int Usbdevice_getServoData(usbdevice_t* usbdevice, char* buffer){
+    if(usbdevice->connected <= 0) return(-2);
+	#ifndef __WINDOWSCRAP__
+		struct timespec sleepy_time;
+        sleepy_time.tv_sec = 0;
+		sleepy_time.tv_nsec = 10000000; //1e6 ns = 1 ms
+	#endif
     int cnt;
     //tell device to get servodata from servocontroller
     cnt = _Usbdevice_sendCtrlMsg(usbdevice, CUSTOM_RQ_LOAD_POS_FROM_I2C,
         USBDEV_READ, 0, 0, buffer);
     if(cnt>0){
+        cnt = -1;
+        if(buffer[1] == CUSTOM_RQ_LOAD_POS_FROM_I2C){
+            printf("received request echo, retrying\n");
+		    nanosleep(&sleepy_time, NULL);
+            //TODO prevent stack overflow...
+            cnt = Usbdevice_getServoData(usbdevice, buffer);
+        }
         //device was not ready
-        return(-1);
+        return(cnt);
     }
     
     signed char trying = USBDEV_RETRY;
-	#ifndef __WINDOWSCRAP__
-		struct timespec sleepy_time;
-		sleepy_time.tv_nsec = 1000000; //1e6 ns = 1 ms
-	#endif
     while(trying >= 0){
 		#ifndef __WINDOWSCRAP__
+            printf("linux sleepy time\n");
 		    nanosleep(&sleepy_time, NULL);
 		#else
+            printf("windows sleepy time\n");
 			Sleep(1);
 		#endif
         cnt = _Usbdevice_sendCtrlMsg(usbdevice, CUSTOM_RQ_GET_POS,
@@ -236,16 +250,16 @@ int Usbdevice_getServoData(usbdevice_t* usbdevice, char* buffer){
             return(-2);
         }else if(cnt == BUFLEN_SERVO_DATA){
             if(buffer[0] == CUSTOM_RQ_GET_POS){
+                printf("busy reading...\n");
                 //indication the device is still busy
             }else{
-                break;
+                trying = -1;
             }
         }
     }
 
     //update the servos
     _Usbdevice_updateServos(usbdevice, buffer);
-
     return(cnt);
 }
 
@@ -263,12 +277,23 @@ int Usbdevice_sendServoData(usbdevice_t* usbdevice){
     for(l=0;l<USBDEV_LEGNO;l++){
         for(s=0;s<LEG_DOF;s++){
             buffer[i] = usbdevice->legs[l]->servos[s]->_pw;
+            i++;
         }
     }
     int cnt = _Usbdevice_sendCtrlMsg(usbdevice, CUSTOM_RQ_SET_DATA,
         USBDEV_WRITE, 0, 0, buffer);
-    if(cnt != 0){
+    if(cnt != BUFLEN_SERVO_DATA){
+        //usb ctrl msg should return number of bytes written in this case
         return(-1);
     }
     return(cnt);
+}
+
+void printBuffer(char* buffer){
+    printf("buffer = [");
+    char i;
+    for(i=0;i<BUFLEN_SERVO_DATA;i++){
+        printf("%d, ", buffer[i]);
+    }
+    printf("]\n");
 }
