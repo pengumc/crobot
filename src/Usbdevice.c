@@ -79,6 +79,7 @@ void Usbdevice_init(usbdevice_t* usbdevice){
     memcpy(usbdevice->product, tempProduct, USB_CFG_DEVICE_NAME_LEN+1);
 	
 	Pscontroller_init(&usbdevice->pscon);
+    usbdevice->connected = 0;
 
 }
 
@@ -152,9 +153,11 @@ int _Usbdevice_sendCtrlMsg(
     }else{
         //we're not connected
         usbdevice->connected--;
+        return(0);
     }
-    printf("usb send: msg = %d, cnt = %d\n", request, cnt);
-    printBuffer(buffer);
+    //DEBUG
+    //printf("usb send: msg = %d, cnt = %d\n", request, cnt);
+    //printBuffer(buffer);
     return(cnt);
 }
 
@@ -286,6 +289,9 @@ int Usbdevice_sendServoData(usbdevice_t* usbdevice){
         //usb ctrl msg should return number of bytes written in this case
         return(-1);
     }
+    //DEBUG
+    printf("servo data send: %d\n", cnt);
+    printBuffer(buffer);
     return(cnt);
 }
 

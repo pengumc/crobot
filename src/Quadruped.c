@@ -36,6 +36,9 @@ quadruped_t* Quadruped_alloc(){
     tqped->angles = rot_vector_alloc();
     rot_vector_setAll(tqped->angles, 0.0, 0.0, 0.0);
     Quadruped_updateMatricesFromAngles(tqped, tqped->angles);
+
+    tqped->si = (servoinfo_t*)calloc(1, sizeof(servoinfo_t));
+    Quadruped_updateServoinfo(tqped);
     return(tqped);
 }
 
@@ -49,6 +52,7 @@ void Quadruped_free(quadruped_t* qped){
     rot_free(qped->R);
     rot_free(qped->invR);
     rot_free(qped->angles);
+    free(qped->si);
     free(qped);
 }
 
@@ -184,6 +188,7 @@ void Quadruped_updateMatricesFromAngles(quadruped_t* qped, rot_vector_t* a){
  * The provided coordinates are for the endpoint (foot) of the leg. So 
  an increase in Z means servo 0 is going down. This is regardless of 
  the orientation of the mainbody (at least the part we know about).
+ Changes are send to the device if they're acceptable.
  * @param qped The quadruped data to use.
  * @param legNo The leg number (0..3).
  * @param X Change in x direction.
@@ -216,7 +221,10 @@ int Quadruped_changeLegEndpoint(quadruped_t* qped, uint8_t legNo,
 
 /*======================= MOVE ALL LEGS======================================*/
 /** Move the COB by moving all legs
- * @param qped
+ * Chnages the endpoints of all legs by the same amount. Essentially moving
+ the center of the quadruped in the opposite direction.
+ Changes are send to the device if they're acceptable.
+ * @param qped The quadruped to use.
  * @param X the change in the x direction.
  * @param Y the change in the y direction.
  * @param Z the change in the z direction.
@@ -258,3 +266,52 @@ int Quadruped_getServoData(quadruped_t* qp){
     printf("qp_getservodata: %d\n", ret);
     return(ret);
 }
+
+/*================== GRAB SERVOINFO =========================================*/
+/** Fill the provided servoinfo with current data.
+ * Data is angles and pulsewidths for all servos. You need to call this
+ * each time you want new data. This is the only function that changes values
+ * in the servoinfo structure.
+ * @param qped The quadruped to use.
+ * @param si Pointer to servoinfo to fill.
+ */
+void Quadruped_updateServoinfo(quadruped_t* qp){
+    char leg, servo, i;
+    i = 0;
+    for(leg=0; leg<USBDEV_LEGNO; leg++){
+        for(servo=0;servo<LEG_DOF; servo++){
+            qp->si->pulsewidths[i] = qp->dev->legs[leg]->servos[servo]->_pw;
+            qp->si->angles[i] = qp->dev->legs[leg]->servos[servo]->_angle;
+            i++;
+        }
+    }
+}
+
+servoinfo_t* Quadruped_getServoinfoPointer(quadruped_t* qp){
+    return(qp->si);
+}
+
+/*======================= CHANGE SERVO ======================================*/
+/** Change the angle of a single servo by an amount.
+ * @param qped The quadruped to use.
+ * @param l The leg number (0..3).
+ * @param s The servo to change (0..2).
+ * @retval 1 success.
+ * @retval 0 Angle was out of bounds for this servo. nothing was changed.
+ * @retval -1 servo angle was changed but sending to device failed.
+ * @retval 
+ */
+int Quadruped_changeSingleServo(
+    quadruped_t* qp, uint8_t l, uint8_t s, double angle)
+{
+    int result = Leg_changeServoAngle(qp->dev->legs[l], s, angle);
+    if(result) result = Quadruped_commit(qp);
+    else return(result);
+
+    //if commit was succesul then we got back BUFLEN_SERVO_DATA
+    //indicating we've written 12 bytes
+    if(result == BUFLEN_SERVO_DATA) result = 1;
+    else result = -1;
+    return(result);
+}
+

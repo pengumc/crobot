@@ -280,3 +280,16 @@ void Leg_printDetails(leg_t* leg){
         params.A, params.B, params.C);
 	Report_std(s);
 }
+
+
+/*====================== CHANGE SERVO =======================================*/
+/** Change servo angle by value.
+ * @param leg The leg data to use.
+ * @param s Target servo no.
+ * @param value The amount to change the angle by.
+ * @retval 1 Success.
+ * @retval 0 Angle was out of bounds for this servo. nothing was changed.
+ */
+int Leg_changeServoAngle(leg_t* leg, uint8_t s, double value){
+    return(Servo_changeAngle(leg->servos[s], value));
+}

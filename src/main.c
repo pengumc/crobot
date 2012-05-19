@@ -34,9 +34,12 @@ int main(int argc, char* argv[]){
     Leg_initDefaults(myQ->dev->legs[1]);
     Leg_initDefaults(myQ->dev->legs[2]);
     Leg_initDefaults(myQ->dev->legs[3]);
-   
-    Quadruped_startup(myQ);
     
+
+    Quadruped_startup(myQ);
+    int result = Quadruped_changeSingleServo(myQ, 0, 0, 0.1);
+    Leg_printDetails(myQ->dev->legs[0]);
+
     printf("get servo data: %d\n", Quadruped_getServoData(myQ));
 
     if(argc > 1){

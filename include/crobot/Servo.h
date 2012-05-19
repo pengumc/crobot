@@ -69,6 +69,7 @@ int Servo_checkAngle(servo_t* servo, angle_t value);
 void Servo_printDetails(servo_t* servo, const char* name);
 void Servo_setOffset(servo_t* servo, angle_t offset);
 void Servo_setDirection(servo_t* servo, int8_t direction);
+int Servo_changeAngle(servo_t* servo, angle_t value);
 
 servo_t* Servo_alloc();
 void Servo_free(servo_t* servo);

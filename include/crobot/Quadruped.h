@@ -26,6 +26,11 @@
 #include "Filter.h"
 #include "Pscontroller.h"
 
+typedef struct SERVOINFO{
+    uint8_t pulsewidths[BUFLEN_SERVO_DATA];
+    double angles[BUFLEN_SERVO_DATA];
+} servoinfo_t;
+
 /**Quadruped data.*/
 typedef struct QPED{
     usbdevice_t* dev; /**<The usb helper.*/
@@ -33,12 +38,10 @@ typedef struct QPED{
     rot_matrix_t* R;/**<rotation matrix of the main body.*/
     rot_matrix_t* invR;/**<Inverse of R.*/
     rot_vector_t* angles;/**<vector with main body angles.*/
+    servoinfo_t* si;/**<servoinfo structure for communication.*/
 } quadruped_t;
 
-typedef struct SERVOINFO{
-    uint8_t pw[BUFLEN_SERVO_DATA];
-    double angle[BUFLEN_SERVO_DATA];
-} servoinfo_t;
+
 
 
 quadruped_t* Quadruped_alloc();
@@ -62,6 +65,11 @@ int Quadruped_changeAllEndpoints(quadruped_t* qped,
     double X, double Y, double Z);
 int Quadruped_getPsAxis(quadruped_t* qped, pscontroller_axis axis);
 int Quadruped_getServoData(quadruped_t* qp);
+void Quadruped_updateServoinfo(quadruped_t* qp);
+int Quadruped_commit(quadruped_t* qped);
+servoinfo_t* Quadruped_getServoinfoPointer(quadruped_t* qp);
+int Quadruped_changeSingleServo(
+    quadruped_t* qp, uint8_t l, uint8_t s, double angle);
 
 
 #endif

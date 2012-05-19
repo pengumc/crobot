@@ -108,6 +108,18 @@ int Servo_setAngle(servo_t* servo, angle_t value){
 }
 
 
+/*============================ CHANGE ANGLE =================================*/
+/** Change servo angle by value.
+ * @param servo Target servo.
+ * @param value The amount to change the angle by.
+ * @retval 1 Success.
+ * @retval 0 Angle was out of bounds for this servo. nothing was changed.
+ */
+int Servo_changeAngle(servo_t* servo, angle_t value){
+    const double a = value + servo->_angle;
+    return(Servo_setAngle(servo, a));
+}
+
 /*=============================== SET PULSEWIDTH ============================*/
 /** Set the pulsewidth of the servo.
  * The value is checked before being set.

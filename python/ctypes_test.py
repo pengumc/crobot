@@ -14,6 +14,7 @@ import gtk, gobject, cairo
 
 import buttonbar
 import grapharea
+import qpimage
 
 def handleSigTERM():
     #gtk.main_quit()
@@ -34,16 +35,21 @@ class Screen:
 
         self.window = gtk.Window();
         self.window.connect('delete-event', gtk.main_quit)
+        self.window.connect('key_press_event', self.do_keypress);
 
-        self.maintable = gtk.Table(1, 2)
-        #buttonbar
-        self.buttonbar = buttonbar.ButtonBar()
-        self.maintable.attach(self.buttonbar, 0,1, 1,2, 0,0)
+        self.maintable = gtk.Table(2, 3)
+        #qpimage
+        self.qpimage = qpimage.QpImage()
+        self.maintable.attach(self.qpimage, 0,1, 0,1, gtk.FILL,gtk.FILL|gtk.EXPAND) 
+        self.qpimage.set_size_request(200, 150)
         #grapharea 
         self.graph = grapharea.GraphArea()
         self.graph.set_size_request(100,100)
         self.graph.setBgColor(1,1,1)
-        self.maintable.attach(self.graph, 0,1, 0,1, gtk.FILL|gtk.EXPAND,gtk.FILL|gtk.EXPAND)
+        self.maintable.attach(self.graph, 0,2, 1,2, gtk.FILL|gtk.EXPAND,gtk.FILL|gtk.EXPAND)
+        #buttonbar
+        self.buttonbar = buttonbar.ButtonBar()
+        self.maintable.attach(self.buttonbar, 0,2, 2,3, 0,0)
 
         #launch
         self.window.add(self.maintable)
@@ -100,11 +106,23 @@ class Screen:
         self.graph.do_expose_event(None)
         return(True)
 
+    def do_keypress(self, widget, event):
+        keyname = gtk.gdk.keyval_name(event.keyval)
+        handled = False
+        #print(keyname)
+        if keyname == 'space':
+            print(self.crobot.changeServo(0,2, 0.1))
+            handled = True
+
+        return(handled)
+
 
 #crobot library handler
 #======================
 class Crobot:
-    
+        
+    SERVOCOUNT = 12
+
     def __init__(self):
         bits = platform.machine()
         if bits == 'i686':
@@ -121,7 +139,10 @@ class Crobot:
         self.crobotlib = CDLL(LIBCROBOT)
         self.crobotlib.Quadruped_alloc.restype = c_void_p
         self.qped = self.crobotlib.Quadruped_alloc()
-        #set datasets
+        #servoinfo
+        self.servoinfop = self.crobotlib.Quadruped_getServoinfoPointer(self.qped)
+        self.servoinfo = SERVOINFO.from_address(self.servoinfop)
+        #set datasets for filters
         self.inX = (c_double *300)()
         self.p_inX = cast(self.inX, POINTER(c_double))
         self.inY = (c_double *300)()
@@ -146,6 +167,9 @@ class Crobot:
                     self.p_outY,
                     self.p_outZ)
         
+        print("getting first servo data")
+
+
     def __del__(self):
         self.crobotlib.Quadruped_free(self.qped)
     
@@ -164,8 +188,13 @@ class Crobot:
     def update(self):
         return(self.crobotlib.Quadruped_update(self.qped))
 
+    def changeServo(self, leg, s, value):
+        return(self.crobotlib.Quadruped_changeSingleServo(self.qped, leg, s, c_double(value)))
 
 
+class SERVOINFO(Structure):
+    _fields_ = [("pulsewidths", c_byte*12),
+                ("angles", c_double*12)]
 
 
 #-------------------------------start -----------------------------------------
