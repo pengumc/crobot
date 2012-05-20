@@ -298,20 +298,13 @@ servoinfo_t* Quadruped_getServoinfoPointer(quadruped_t* qp){
  * @param s The servo to change (0..2).
  * @retval 1 success.
  * @retval 0 Angle was out of bounds for this servo. nothing was changed.
- * @retval -1 servo angle was changed but sending to device failed.
  * @retval 
  */
 int Quadruped_changeSingleServo(
     quadruped_t* qp, uint8_t l, uint8_t s, double angle)
 {
     int result = Leg_changeServoAngle(qp->dev->legs[l], s, angle);
-    if(result) result = Quadruped_commit(qp);
-    else return(result);
-
-    //if commit was succesul then we got back BUFLEN_SERVO_DATA
-    //indicating we've written 12 bytes
-    if(result == BUFLEN_SERVO_DATA) result = 1;
-    else result = -1;
     return(result);
 }
+
 

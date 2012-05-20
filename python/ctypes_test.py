@@ -41,7 +41,14 @@ class Screen:
         #qpimage
         self.qpimage = qpimage.QpImage()
         self.maintable.attach(self.qpimage, 0,1, 0,1, gtk.FILL,gtk.FILL|gtk.EXPAND) 
-        self.qpimage.set_size_request(200, 150)
+        self.qpimage.set_size_request(430, 150)
+        #buttonlist
+        self.buttontable = gtk.Table(1,1)
+        self.maintable.attach(
+            self.buttontable, 1,2, 0,1, gtk.FILL|gtk.EXPAND, gtk.FILL|gtk.EXPAND)
+        self.connect_button = gtk.Button("connect")
+        self.connect_button.connect("clicked", self.connect_click)
+        self.buttontable.attach(self.connect_button, 0,1, 0,1, 0,0)
         #grapharea 
         self.graph = grapharea.GraphArea()
         self.graph.set_size_request(100,100)
@@ -71,14 +78,29 @@ class Screen:
         table.attach(self.left_analog, 3,5, 1,3, 0,0)        
 
     def start(self):
-        self.timeout_active = True
-        gtk.timeout_add(Screen.TIMEOUT, self.timeout)
+        self.connect_click(None)
         gtk.timeout_add(Screen.TIMEOUT_GRAPH, self.graph_timeout)
         gtk.main()
 
-    def timeout(self):
+    def connect_click(self, event):
+        con = self.crobot.connect()
+        if con:
+            if self.timeout_active == False:
+                print("(re)connected")
+                self.update_servoinfo()
+                self.timeout_active = True
+                gtk.timeout_add(Screen.TIMEOUT, self.timeout)
+
+    def update_servoinfo(self):
+        info = self.crobot.getServoinfo()
+        for i in range(Crobot.SERVOCOUNT):
+            self.qpimage.blocks[i].pw = info.pulsewidths[i]
+        self.qpimage.do_expose_event()
+
+
+    def timeout(self, event=None):
         if self.crobot.update() < 1:
-            print('disconnected...')
+            print('disconnected timeout...')
             self.timeout_active = False
             return(False)
         self.update_buttons()
@@ -107,14 +129,39 @@ class Screen:
         return(True)
 
     def do_keypress(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gtk.gdk.keyval_name(event.keyval).lower()
         handled = False
         #print(keyname)
         if keyname == 'space':
-            print(self.crobot.changeServo(0,2, 0.1))
             handled = True
+        elif keyname == 'escape':
+            gtk.main_quit()
+        elif (keyname == 'plus' or keyname == 'equal' or keyname == 'kp_add'):
+            self.change_first_selected_servo(0.1)
+        elif (keyname == 'minus' or keyname == 'kp_subtract'):
+            self.change_first_selected_servo(-0.1)
+        else:
+            print("unhandled: " + str(keyname) + " - " + str(event.keyval))
 
         return(handled)
+
+    def change_first_selected_servo(self, amount):
+        if not self.crobot.con: return
+        selection = self.qpimage.get_selected()
+        if len(selection):
+            #print("selection: " + str(selection[0]))
+            if selection[0] == qpimage.QpImage.SERVOCOUNT:
+                print("passing")
+            else:
+                l = int(selection[0]) / qpimage.QpImage.LEGSIZE
+                s = int(selection[0]) % qpimage.QpImage.LEGSIZE
+                result = self.crobot.changeServo(l, s, amount)
+                print("move result: " + str(result))
+                if result != 1:
+                    self.qpimage.blink(selection[0])
+                else:
+                    self.crobot.commit()
+                    self.update_servoinfo()
 
 
 #crobot library handler
@@ -125,8 +172,8 @@ class Crobot:
 
     def __init__(self):
         bits = platform.machine()
-        if bits == 'i686':
-            bits = '32'
+        if bits == 'i686' or bits == 'x86':
+            bits = '64'
         elif bits == 'x86_64' or bits == 'AMD64':
             bits = '64'
        
@@ -157,18 +204,22 @@ class Crobot:
         self.p_outZ = cast(self.outZ, POINTER(c_double))
         self.con =  self.crobotlib.Quadruped_startup(self.qped)
         print('startup: ' + str(self.con))
-        if self.con > 0:
-                print("setting new graph buffers...")
-                self.crobotlib.Quadruped_setGraphPointers(self.qped,
-                    self.inX,
-                    self.p_inY,
-                    self.p_inZ,
-                    self.p_outX,
-                    self.p_outY,
-                    self.p_outZ)
-        
-        print("getting first servo data")
+        if self.con:
+            print("grabbing first servoinfo...")
+            self.refreshServoinfo()
+        print("setting new graph buffers...")
+        self.crobotlib.Quadruped_setGraphPointers(self.qped,
+            self.inX,
+            self.p_inY,
+            self.p_inZ,
+            self.p_outX,
+            self.p_outY,
+            self.p_outZ)
 
+    def connect(self):
+        self.con = self.crobotlib.Quadruped_startup(self.qped)
+        self.refreshServoinfo()
+        return(self.con)
 
     def __del__(self):
         self.crobotlib.Quadruped_free(self.qped)
@@ -191,6 +242,16 @@ class Crobot:
     def changeServo(self, leg, s, value):
         return(self.crobotlib.Quadruped_changeSingleServo(self.qped, leg, s, c_double(value)))
 
+    def getServoinfo(self):
+        self.crobotlib.Quadruped_updateServoinfo(self.qped)
+        return(self.servoinfo)
+
+    def refreshServoinfo(self):
+        self.crobotlib.Quadruped_getServoData(self.qped)
+        return(self.getServoinfo())
+
+    def commit(self):
+        return(self.crobotlib.Quadruped_commit(self.qped))
 
 class SERVOINFO(Structure):
     _fields_ = [("pulsewidths", c_byte*12),

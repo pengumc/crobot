@@ -26,10 +26,13 @@ bin/$(OUTPUTNAME):$(OBJECTS) main.o
 %.o:src/%.c
 ifeq ($(UNAME),Linux)
 	$(CC) $(CFLAGS) -c $< -o lib/$(NAME)/$@
-endif
-ifeq ($(UNAME),$(WINDOWSMATCH))
+#endif
+#ifeq ($(UNAME),$(WINDOWSMATCH))
+#else, just assume we're on windows? meh, macs are for hipsters.
+else
 	$(CC) $(CFLAGS) -D__WINDOWSCRAP__ -c $< -o lib/$(NAME)/$@
 endif
+
 clean:
 	rm lib/$(NAME)/*.o
 
@@ -38,8 +41,9 @@ library:lib/lib$(OUTPUTNAME)$(BITS).so.1.0.1
 lib/lib$(OUTPUTNAME)$(BITS).so.1.0.1:$(OBJECTS) main.o
 ifeq ($(UNAME),Linux)
 	$(CC) $(CLIBS) -shared -Wl,-soname,lib$(OUTPUTNAME).so.1 -o lib/lib$(OUTPUTNAME)$(BITS).so.1.0.1 $(addprefix lib/$(NAME)/, $(OBJECTS))
-endif
-ifeq ($(UNAME),$(WINDOWSMATCH))
+#endif
+#ifeq ($(UNAME),$(WINDOWSMATCH))
+else
 	$(CC) -D__WINDOWSCRAP__ -shared -Wall -o lib/lib$(OUTPUTNAME)$(BITS).dll $(addprefix lib/$(NAME)/, $(OBJECTS)) $(CLIBS)
 endif
 

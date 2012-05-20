@@ -19,6 +19,7 @@ class QpImage(gtk.DrawingArea):
     SERVOCOUNT = 12
     LEGSIZE = 3 #servos per leg
     TEXTSIZE = 16
+    BLINKTIMEMS = 1000 #ms to flash red
 
     def __init__(self):
         gtk.DrawingArea.__init__(self)
@@ -57,13 +58,22 @@ class QpImage(gtk.DrawingArea):
                 self.do_expose_event()
         return(handled)
 
+    def blink(self, blockno):
+        self.do_expose_event()
+        gtk.timeout_add(QpImage.BLINKTIMEMS, self.blink_timeout, blockno)
+        pass
+
+    def blink_timeout(self, data):
+        self.do_expose_event()
+        return(True)
+
     def clearSelected(self):
         for block in self.blocks:
             block.off()
 
-    def get_selected():
+    def get_selected(self):
         result = []
-        for block in blocks:
+        for block in self.blocks:
             if block.selected: result.append(block.n)
         return(result)
 

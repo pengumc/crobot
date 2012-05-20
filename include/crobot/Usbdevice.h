@@ -52,6 +52,9 @@
 /** Number of legs.*/
 #define USBDEV_LEGNO 4
 
+/** Number of servos.*/
+#define USBDEV_SERVOCOUNT BUFLEN_SERVO_DATA
+
 /** Usbdevice data.*/
 typedef struct{
     usb_dev_handle* handle; /**<libusb device handle.*/
@@ -81,5 +84,6 @@ int Usbdevice_getData(usbdevice_t* usbdevice, char* buffer);
 int Usbdevice_sendServoData(usbdevice_t* usbdevice);
 int Usbdevice_getServoData(usbdevice_t* usbdevice, char* buffer);
 void printBuffer(char* buffer);
+void nsleep(long nanoseconds);
 #endif
 

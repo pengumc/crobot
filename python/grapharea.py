@@ -35,6 +35,7 @@ class GraphArea(gtk.DrawingArea):
         #ask for forgiveness
         try:
             self.cr = self.window.cairo_create()
+            self.cr.set_line_width(1);
             self.cr.push_group()
             self.clear()
             self.drawLines()

@@ -133,7 +133,7 @@ int _Usbdevice_sendCtrlMsg(
     int cnt = 0;
     int i;
     //only send if we're connected
-    if(usbdevice->handle && usbdevice->connected){
+    if(usbdevice->handle && usbdevice->connected > 0){
         cnt = usb_control_msg(
             usbdevice->handle,
             USB_TYPE_VENDOR | USB_RECIP_DEVICE | reqType,
@@ -142,9 +142,9 @@ int _Usbdevice_sendCtrlMsg(
             USBDEV_TIMEOUT_MS
         );
         if(cnt < 0){
-            char s[256];
-            sprintf("usb_control_msg: %s", usb_strerror());
-            Report_err(s);
+            //horrible error occured, disconnect, abandon all hope
+            printf("usb_control_msg: %s\n", usb_strerror());
+            usbdevice->connected = 0;
         }else{
             //success full msg
             usbdevice->connected = USBDEV_RETRY;
@@ -172,7 +172,8 @@ int Usbdevice_getData(usbdevice_t* usbdevice, char* buffer){
     int cnt = _Usbdevice_sendCtrlMsg(usbdevice, CUSTOM_RQ_GET_DATA, 
         USBDEV_READ, 0, 0, buffer);
     if(cnt > 0){
-        //store correct values in pscontroller 
+        //store correct values in pscontroller
+        //The order of returned values is highly illogical captain...
 		Pscontroller_updateData(&usbdevice->pscon, 
 			buffer[1], //ss_dpad
 			buffer[2], //shoulder_shapes
@@ -180,13 +181,6 @@ int Usbdevice_getData(usbdevice_t* usbdevice, char* buffer){
 		);
 		//and adc
         Accelerometer_updateValues(usbdevice->acc, buffer[3], buffer[4], buffer[0]);
-        /*
-        printf("===\n");
-        int i;
-        for(i=0;i<BUFLEN_SERVO_DATA;i++){
-            printf("%d\n", ((uint8_t)buffer[i]));
-        }
-        */
     }
 	return(cnt);
 }
@@ -215,11 +209,6 @@ servo data.
  */
 int Usbdevice_getServoData(usbdevice_t* usbdevice, char* buffer){
     if(usbdevice->connected <= 0) return(-2);
-	#ifndef __WINDOWSCRAP__
-		struct timespec sleepy_time;
-        sleepy_time.tv_sec = 0;
-		sleepy_time.tv_nsec = 10000000; //1e6 ns = 1 ms
-	#endif
     int cnt;
     //tell device to get servodata from servocontroller
     cnt = _Usbdevice_sendCtrlMsg(usbdevice, CUSTOM_RQ_LOAD_POS_FROM_I2C,
@@ -228,7 +217,8 @@ int Usbdevice_getServoData(usbdevice_t* usbdevice, char* buffer){
         cnt = -1;
         if(buffer[1] == CUSTOM_RQ_LOAD_POS_FROM_I2C){
             printf("received request echo, retrying\n");
-		    nanosleep(&sleepy_time, NULL);
+		    //nanosleep(&sleepy_time, NULL);
+			nsleep(10000000);
             //TODO prevent stack overflow...
             cnt = Usbdevice_getServoData(usbdevice, buffer);
         }
@@ -238,13 +228,7 @@ int Usbdevice_getServoData(usbdevice_t* usbdevice, char* buffer){
     
     signed char trying = USBDEV_RETRY;
     while(trying >= 0){
-		#ifndef __WINDOWSCRAP__
-            printf("linux sleepy time\n");
-		    nanosleep(&sleepy_time, NULL);
-		#else
-            printf("windows sleepy time\n");
-			Sleep(1);
-		#endif
+		nsleep(10000000);
         cnt = _Usbdevice_sendCtrlMsg(usbdevice, CUSTOM_RQ_GET_POS,
             USBDEV_READ, 0, 0, buffer);
         //should have received 12 bytes, even on failure
@@ -302,4 +286,14 @@ void printBuffer(char* buffer){
         printf("%d, ", buffer[i]);
     }
     printf("]\n");
+}
+
+void nsleep(long nanoseconds){
+	#ifndef __WINDOWSCRAP__
+		struct timespec sleepy_time;
+        sleepy_time.tv_sec = 0;
+		sleepy_time.tv_nsec = nanoseconds;//10000000; //1e6 ns = 1 ms
+	#else
+		Sleep(nanoseconds/1000000);
+	#endif
 }
