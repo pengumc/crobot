@@ -1,5 +1,6 @@
 var _accelerometer_8h =
 [
+    [ "accelerometer_t", "structaccelerometer__t.html", "structaccelerometer__t" ],
     [ "ACC_ADC_COUNT", "_accelerometer_8h.html#a522a32b84e1b31975d62974737aee3cb", null ],
     [ "ACC_FILTER_COUNT", "_accelerometer_8h.html#a07bf3d1ab5d44ee629ab5eeba839ae77", null ],
     [ "ACC_MID", "_accelerometer_8h.html#a9d08b750692e6337bf09ca67d2909b90", null ],

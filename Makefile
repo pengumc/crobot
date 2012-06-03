@@ -41,6 +41,9 @@ library:lib/lib$(OUTPUTNAME)$(BITS).so.1.0.1
 lib/lib$(OUTPUTNAME)$(BITS).so.1.0.1:$(OBJECTS) main.o
 ifeq ($(UNAME),Linux)
 	$(CC) $(CLIBS) -shared -Wl,-soname,lib$(OUTPUTNAME).so.1 -o lib/lib$(OUTPUTNAME)$(BITS).so.1.0.1 $(addprefix lib/$(NAME)/, $(OBJECTS))
+	@echo ==========================================
+	@echo File: lib/lib$(OUTPUTNAME)$(BITS).so.1.0.1
+	@echo ==========================================
 #endif
 #ifeq ($(UNAME),$(WINDOWSMATCH))
 else

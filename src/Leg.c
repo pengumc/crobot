@@ -293,3 +293,15 @@ void Leg_printDetails(leg_t* leg){
 int Leg_changeServoAngle(leg_t* leg, uint8_t s, double value){
     return(Servo_changeAngle(leg->servos[s], value));
 }
+
+
+
+void Leg_setLengths(leg_t * leg, double A, double B, double C){
+    leg->legSolver->params->A = A;
+    leg->legSolver->params->B = B;
+    leg->legSolver->params->C = C;
+    Leg_updateServoLocations(leg);
+    leg->legSolver->params->X = rot_vector_get(leg->servoLocations[LEG_DOF], 0);
+    leg->legSolver->params->Y = rot_vector_get(leg->servoLocations[LEG_DOF], 1);
+    leg->legSolver->params->Z = rot_vector_get(leg->servoLocations[LEG_DOF], 2);
+}

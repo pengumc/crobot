@@ -1,5 +1,7 @@
 var _solver_8h =
 [
+    [ "PARAMS", "struct_p_a_r_a_m_s.html", "struct_p_a_r_a_m_s" ],
+    [ "solver_t", "structsolver__t.html", "structsolver__t" ],
     [ "M_PI", "_solver_8h.html#ae71449b1cc6e6250b91f539153a7a0d3", null ],
     [ "M_PI_2", "_solver_8h.html#a958e4508ed28ee5cc04249144312c15f", null ],
     [ "solverParams_t", "_solver_8h.html#ad9eda1af9988fd53e0b7fb56db441dc5", null ],

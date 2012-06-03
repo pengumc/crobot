@@ -30,23 +30,12 @@ int main(int argc, char* argv[]){
     printf("double size = %d\n", sizeof(double));
 	
     quadruped_t* myQ = Quadruped_alloc();
-    Leg_initDefaults(myQ->dev->legs[0]);
-    Leg_initDefaults(myQ->dev->legs[1]);
-    Leg_initDefaults(myQ->dev->legs[2]);
-    Leg_initDefaults(myQ->dev->legs[3]);
-    
-
-    Quadruped_startup(myQ);
-    int result = Quadruped_changeSingleServo(myQ, 0, 0, 0.1);
+    Quadruped_configureServoOffset(myQ, 0, 2, -M_PI/2.0);
+    Quadruped_configureLegLengths(myQ, 0,  3.2, 6.1, 6.2);
+    printf("moving leg 0: %d\n", Quadruped_changeLegEndpoint(myQ, 0, 0,0,3));
     Leg_printDetails(myQ->dev->legs[0]);
 
-    printf("get servo data: %d\n", Quadruped_getServoData(myQ));
-
-    if(argc > 1){
-        Quadruped_changeAllEndpoints(myQ, 0,0,5);
-        printf("commit: %d\n", Quadruped_commit(myQ));
-        printf("get servo data: %d\n", Quadruped_getServoData(myQ));
-    }
+    
     Quadruped_free(myQ);
 	
     return(0);

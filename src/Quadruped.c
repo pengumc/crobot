@@ -93,6 +93,11 @@ void Quadruped_configureServoDirection(quadruped_t* qped,
     }
 }
 
+void Quadruped_configureLegLengths(quadruped_t* qped,
+    uint8_t legNo, double A, double B, double C)
+{
+    Leg_setLengths(qped->dev->legs[legNo], A, B, C);
+}
 
 
 /*======================== UPDATE ===========================================*/

@@ -15,6 +15,7 @@ import gtk, gobject, cairo
 import buttonbar
 import grapharea
 import qpimage
+import configuration
 
 def handleSigTERM():
     #gtk.main_quit()
@@ -68,9 +69,16 @@ class Screen:
         self.graph.lines[0].setColor(1,0,0)
         self.graph.lines[0].setColor(1,0,1)
         self.graph.set_maxy(100)
+        self.configure()
 
     def connect_to_device(self):
-        pass
+        con = self.crobot.connect()
+        if con:
+            if self.timeout_active == False:
+                print("(re)connected")
+                self.update_servoinfo()
+                self.timeout_active = True
+                gtk.timeout_add(Screen.TIMEOUT, self.timeout)
             
     
     def _attach_analog(self, table):
@@ -83,13 +91,7 @@ class Screen:
         gtk.main()
 
     def connect_click(self, event):
-        con = self.crobot.connect()
-        if con:
-            if self.timeout_active == False:
-                print("(re)connected")
-                self.update_servoinfo()
-                self.timeout_active = True
-                gtk.timeout_add(Screen.TIMEOUT, self.timeout)
+        self.connect_to_device()
 
     def update_servoinfo(self):
         info = self.crobot.getServoinfo()
@@ -162,6 +164,23 @@ class Screen:
                 else:
                     self.crobot.commit()
                     self.update_servoinfo()
+
+
+    def configure(self):
+        self.config = configuration.Configuration()
+        if  not self.config.load(): exit(-1)
+        A = B = C = 0
+        
+        for leg in self.config.legs:
+            for servo in leg.servos:
+                self.crobot.setServoOffset(leg.n, servo["n"], float(servo["offset"]))
+            self.crobot.setLegLengths(
+                leg.n,
+                float(leg.sections["A"]["length"]),
+                float(leg.sections["B"]["length"]),
+                float(leg.sections["C"]["length"]))
+
+        
 
 
 #crobot library handler
@@ -252,6 +271,14 @@ class Crobot:
 
     def commit(self):
         return(self.crobotlib.Quadruped_commit(self.qped))
+
+    def setLegLengths(self, legno, A, B, C):
+        self.crobotlib.Quadruped_configureLegLengths(
+            self.qped, legno, c_double(A), c_double(B), c_double(C))
+
+    def setServoOffset(self, legno, servono, offset):
+        self.crobotlib.Quadruped_configureServoOffset(
+            self.qped, legno, servono, c_double(offset))
 
 class SERVOINFO(Structure):
     _fields_ = [("pulsewidths", c_byte*12),

@@ -1,5 +1,6 @@
 var _servo_8h =
 [
+    [ "servo_t", "structservo__t.html", "structservo__t" ],
     [ "SERVO_DEF_DIR", "_servo_8h.html#a4f542cca65e40bb878829ed4634f3cf2", null ],
     [ "SERVO_DEF_K", "_servo_8h.html#a85c6522b9a44db9237216cadd7044a34", null ],
     [ "SERVO_DEF_MAX_PULSE", "_servo_8h.html#abe4a2139f8a55f58a6f0ace0e8fbb78b", null ],
@@ -7,6 +8,7 @@ var _servo_8h =
     [ "SERVO_DEF_MIN_PULSE", "_servo_8h.html#ae22b5140e4cfcd80d2a5701be0ee6b28", null ],
     [ "SERVO_DEF_OFFSET", "_servo_8h.html#ad674dc9a933b866079e30ad5d1fac331", null ],
     [ "Servo_alloc", "_servo_8h.html#a1dba1c5e4270e14b5284f0c97ed40b94", null ],
+    [ "Servo_changeAngle", "_servo_8h.html#ae44355b987662089f501f282409da02c", null ],
     [ "Servo_checkAngle", "_servo_8h.html#adae92a9fd215985e9ceff6422bd3cbf1", null ],
     [ "Servo_convertToAngle", "_servo_8h.html#ae8784e22278d10c15d13baf38b1f64ce", null ],
     [ "Servo_convertToPulsewidth", "_servo_8h.html#a06862c9c9148a6ddcf8d64179799ab7b", null ],

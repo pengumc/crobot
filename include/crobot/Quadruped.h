@@ -70,6 +70,9 @@ int Quadruped_commit(quadruped_t* qped);
 servoinfo_t* Quadruped_getServoinfoPointer(quadruped_t* qp);
 int Quadruped_changeSingleServo(
     quadruped_t* qp, uint8_t l, uint8_t s, double angle);
+void Quadruped_configureLegLengths(quadruped_t* qped,
+    uint8_t legNo, double A, double B, double C);
+
 
 
 #endif

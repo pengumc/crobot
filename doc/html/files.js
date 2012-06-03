@@ -1,29 +1,5 @@
 var files =
 [
-    [ "include/crobot/Accelerometer.h", "_accelerometer_8h.html", "_accelerometer_8h" ],
-    [ "include/crobot/Angle.h", "_angle_8h.html", "_angle_8h" ],
-    [ "include/crobot/Filter.h", "_filter_8h.html", "_filter_8h" ],
-    [ "include/crobot/i2c_header.h", "i2c__header_8h.html", "i2c__header_8h" ],
-    [ "include/crobot/Leg.h", "_leg_8h.html", "_leg_8h" ],
-    [ "include/crobot/opendevice.h", null, null ],
-    [ "include/crobot/Pscontroller.h", "_pscontroller_8h.html", "_pscontroller_8h" ],
-    [ "include/crobot/Quadruped.h", null, null ],
-    [ "include/crobot/Report.h", "_report_8h.html", "_report_8h" ],
-    [ "include/crobot/requests.h", null, null ],
-    [ "include/crobot/rotation.h", "rotation_8h.html", "rotation_8h" ],
-    [ "include/crobot/Servo.h", "_servo_8h.html", "_servo_8h" ],
-    [ "include/crobot/Solver.h", "_solver_8h.html", "_solver_8h" ],
-    [ "include/crobot/usbconfig.h", null, null ],
-    [ "include/crobot/Usbdevice.h", "_usbdevice_8h.html", "_usbdevice_8h" ],
-    [ "src/Accelerometer.c", "_accelerometer_8c.html", "_accelerometer_8c" ],
-    [ "src/Angle.c", "_angle_8c.html", "_angle_8c" ],
-    [ "src/Filter.c", "_filter_8c.html", "_filter_8c" ],
-    [ "src/Leg.c", "_leg_8c.html", "_leg_8c" ],
-    [ "src/Pscontroller.c", "_pscontroller_8c.html", "_pscontroller_8c" ],
-    [ "src/Quadruped.c", "_quadruped_8c.html", "_quadruped_8c" ],
-    [ "src/Report.c", "_report_8c.html", "_report_8c" ],
-    [ "src/rotation.c", "rotation_8c.html", "rotation_8c" ],
-    [ "src/Servo.c", "_servo_8c.html", "_servo_8c" ],
-    [ "src/Solver.c", "_solver_8c.html", "_solver_8c" ],
-    [ "src/Usbdevice.c", "_usbdevice_8c.html", "_usbdevice_8c" ]
+    [ "include", "dir_d44c64559bbebec7f509842c48db8b23.html", "dir_d44c64559bbebec7f509842c48db8b23" ],
+    [ "src", "dir_68267d1309a1af8e8297ef4c3efbcdba.html", "dir_68267d1309a1af8e8297ef4c3efbcdba" ]
 ];

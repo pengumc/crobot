@@ -1,5 +1,6 @@
 var _pscontroller_8h =
 [
+    [ "pscontroller_t", "structpscontroller__t.html", "structpscontroller__t" ],
     [ "CHK", "_pscontroller_8h.html#af1ffa2b7554f4e88da3e39f5e7d9053d", null ],
     [ "PS_DEFAULT_ANALOG", "_pscontroller_8h.html#a45c1d1a4fa084c9bdf9c475f76c7d2e3", null ],
     [ "pscontroller_axis", "_pscontroller_8h.html#a21858413ba15bd5862f9838737a5c4ee", null ],

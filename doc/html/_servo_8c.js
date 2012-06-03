@@ -1,6 +1,7 @@
 var _servo_8c =
 [
     [ "Servo_alloc", "_servo_8c.html#a1dba1c5e4270e14b5284f0c97ed40b94", null ],
+    [ "Servo_changeAngle", "_servo_8c.html#ae44355b987662089f501f282409da02c", null ],
     [ "Servo_checkAngle", "_servo_8c.html#adae92a9fd215985e9ceff6422bd3cbf1", null ],
     [ "Servo_convertToAngle", "_servo_8c.html#ae8784e22278d10c15d13baf38b1f64ce", null ],
     [ "Servo_convertToPulsewidth", "_servo_8c.html#a06862c9c9148a6ddcf8d64179799ab7b", null ],

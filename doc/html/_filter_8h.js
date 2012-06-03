@@ -1,5 +1,6 @@
 var _filter_8h =
 [
+    [ "FILTER_T", "struct_f_i_l_t_e_r___t.html", "struct_f_i_l_t_e_r___t" ],
     [ "FILTER_GRAPH_LENGTH", "_filter_8h.html#a7292779f30fbff846dfb5edf492c82c9", null ],
     [ "filter_t", "_filter_8h.html#a96e56971376e6bf3ebed2a1e06675dbc", null ],
     [ "Filter_addInputPoint", "_filter_8h.html#ac323f74701b33928fb00c2fc5d9ab5a3", null ],

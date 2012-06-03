@@ -1,6 +1,7 @@
 var searchData=
 [
   ['servo_5falloc',['Servo_alloc',['../_servo_8c.html#a1dba1c5e4270e14b5284f0c97ed40b94',1,'Servo_alloc():&#160;Servo.c'],['../_servo_8h.html#a1dba1c5e4270e14b5284f0c97ed40b94',1,'Servo_alloc():&#160;Servo.c']]],
+  ['servo_5fchangeangle',['Servo_changeAngle',['../_servo_8c.html#ae44355b987662089f501f282409da02c',1,'Servo_changeAngle(servo_t *servo, angle_t value):&#160;Servo.c'],['../_servo_8h.html#ae44355b987662089f501f282409da02c',1,'Servo_changeAngle(servo_t *servo, angle_t value):&#160;Servo.c']]],
   ['servo_5fcheckangle',['Servo_checkAngle',['../_servo_8c.html#adae92a9fd215985e9ceff6422bd3cbf1',1,'Servo_checkAngle(servo_t *servo, angle_t value):&#160;Servo.c'],['../_servo_8h.html#adae92a9fd215985e9ceff6422bd3cbf1',1,'Servo_checkAngle(servo_t *servo, angle_t value):&#160;Servo.c']]],
   ['servo_5fconverttoangle',['Servo_convertToAngle',['../_servo_8c.html#ae8784e22278d10c15d13baf38b1f64ce',1,'Servo_convertToAngle(servo_t *servo, uint8_t pulsewidth):&#160;Servo.c'],['../_servo_8h.html#ae8784e22278d10c15d13baf38b1f64ce',1,'Servo_convertToAngle(servo_t *servo, uint8_t pulsewidth):&#160;Servo.c']]],
   ['servo_5fconverttopulsewidth',['Servo_convertToPulsewidth',['../_servo_8c.html#a06862c9c9148a6ddcf8d64179799ab7b',1,'Servo_convertToPulsewidth(servo_t *servo, angle_t value):&#160;Servo.c'],['../_servo_8h.html#a06862c9c9148a6ddcf8d64179799ab7b',1,'Servo_convertToPulsewidth(servo_t *servo, angle_t value):&#160;Servo.c']]],

@@ -2,6 +2,8 @@ var _usbdevice_8c =
 [
     [ "_Usbdevice_sendCtrlMsg", "_usbdevice_8c.html#af08646c2daa1109cbb335fc65786d428", null ],
     [ "_Usbdevice_updateServos", "_usbdevice_8c.html#a9ac372ea8e7421c6b1f57ee0a222e4b8", null ],
+    [ "nsleep", "_usbdevice_8c.html#a7cc59f013b3690e45b1b70ac7fbbdb2e", null ],
+    [ "printBuffer", "_usbdevice_8c.html#a9e07beb7ca6211d7bdd3a3c5f3194463", null ],
     [ "Usbdevice_alloc", "_usbdevice_8c.html#a6541068db275cb3acf050fcd77d3e728", null ],
     [ "Usbdevice_connect", "_usbdevice_8c.html#ad9e5d91f579f56f940885588a40ec104", null ],
     [ "Usbdevice_free", "_usbdevice_8c.html#a67e86349f557e302178dddda80ade12b", null ],

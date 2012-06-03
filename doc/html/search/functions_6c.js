@@ -1,6 +1,7 @@
 var searchData=
 [
   ['leg_5falloc',['Leg_alloc',['../_leg_8c.html#ab76534cf2afe748c38f7cdca2e89c1a1',1,'Leg_alloc():&#160;Leg.c'],['../_leg_8h.html#ab76534cf2afe748c38f7cdca2e89c1a1',1,'Leg_alloc():&#160;Leg.c']]],
+  ['leg_5fchangeservoangle',['Leg_changeServoAngle',['../_leg_8c.html#a4de3bfce3d6277f7949b43e614ac6638',1,'Leg_changeServoAngle(leg_t *leg, uint8_t s, double value):&#160;Leg.c'],['../_leg_8h.html#a4de3bfce3d6277f7949b43e614ac6638',1,'Leg_changeServoAngle(leg_t *leg, uint8_t s, double value):&#160;Leg.c']]],
   ['leg_5fcommitendpointchange',['Leg_commitEndpointChange',['../_leg_8c.html#ac328c602036a0936aa7e333db3f87ae8',1,'Leg_commitEndpointChange(leg_t *leg):&#160;Leg.c'],['../_leg_8h.html#ac328c602036a0936aa7e333db3f87ae8',1,'Leg_commitEndpointChange(leg_t *leg):&#160;Leg.c']]],
   ['leg_5ffree',['Leg_free',['../_leg_8c.html#a143a50e34e2ee69664bf4655ed93055d',1,'Leg_free(leg_t *leg):&#160;Leg.c'],['../_leg_8h.html#a143a50e34e2ee69664bf4655ed93055d',1,'Leg_free(leg_t *leg):&#160;Leg.c']]],
   ['leg_5fgetservoangle',['Leg_getServoAngle',['../_leg_8c.html#a419c6ce7f7699ef2d71dca7e0269d7e8',1,'Leg_getServoAngle(leg_t *leg, uint8_t servoNo):&#160;Leg.c'],['../_leg_8h.html#a419c6ce7f7699ef2d71dca7e0269d7e8',1,'Leg_getServoAngle(leg_t *leg, uint8_t servoNo):&#160;Leg.c']]],
