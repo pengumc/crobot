@@ -18,7 +18,7 @@ class QpImage(gtk.DrawingArea):
     MARGIN = 10 #flat pixel margin between servos
     SERVOCOUNT = 12
     LEGSIZE = 3 #servos per leg
-    TEXTSIZE = 16
+    TEXTSIZE = 12
     BLINKTIMEMS = 1000 #ms to flash red
 
     def __init__(self):
@@ -58,14 +58,24 @@ class QpImage(gtk.DrawingArea):
                 self.do_expose_event()
         return(handled)
 
-    def blink(self, blockno):
+    def select_block(self, blockno):
+        self.clearSelected()
+        self.blocks[blockno].on()
         self.do_expose_event()
-        gtk.timeout_add(QpImage.BLINKTIMEMS, self.blink_timeout, blockno)
-        pass
+
+    def blink(self, blockno):
+        self.blocks[blockno].blinking += 1
+        self.do_expose_event()
+        if self.blocks[blockno].blinking == 1:
+            gtk.timeout_add(QpImage.BLINKTIMEMS, self.blink_timeout, blockno)
 
     def blink_timeout(self, data):
+        self.blocks[data].blinking -= 1
         self.do_expose_event()
-        return(True)
+        if self.blocks[data].blinking > 0:
+            return(True)
+        elif self.blocks[data].blinking <= 0:
+            return(False)
 
     def clearSelected(self):
         for block in self.blocks:
@@ -144,18 +154,18 @@ class QpImage(gtk.DrawingArea):
         servono = i % QpImage.LEGSIZE
         w = self.width
         if legno == 0:  
-            direction = 1.0
+            direction = -1.0
             # y = same as top of mainbody + half servo size
-            y = self.height/2 - self.mainbodyh/2 + self.servoh/2
+            y = self.height/2 + self.mainbodyh/2 - self.servoh/2
         elif legno == 1:
-            direction = -1.0
-            y = self.height/2 - self.mainbodyh/2 + self.servoh/2
-        elif legno == 2:
-            y = self.height/2 + self.mainbodyh/2 - self.servoh/2
             direction = 1.0
-        elif legno == 3:
             y = self.height/2 + self.mainbodyh/2 - self.servoh/2
+        elif legno == 2:
+            y = self.height/2 - self.mainbodyh/2 + self.servoh/2
             direction = -1.0
+        elif legno == 3:
+            y = self.height/2 - self.mainbodyh/2 + self.servoh/2
+            direction = 1.0
         #x = to the right of mainbody, one default margin + half servowidth +
         #a margin and a servosize for each additional servo
         x = w*0.5 + direction * (self.mainbodyw/2 + QpImage.MARGIN + servono *(
@@ -174,6 +184,7 @@ class ServoBlock:
         self.h = 0
         self.n = n
         self.pw = 72
+        self.blinking = 0
 
         
     def draw(self, cr):
@@ -206,11 +217,11 @@ class ServoBlock:
         self.color = QpImage.GREEN
 
     def set_color(self, cr, colorint):
-        if colorint == QpImage.RED:
+        if colorint == QpImage.RED or self.blinking > 0:
             cr.set_source_rgb(1,0,0)
-        if colorint == QpImage.GREEN:
+        elif colorint == QpImage.GREEN:
             cr.set_source_rgb(0,0.7,0)
-        if colorint == QpImage.BLACK:
+        elif colorint == QpImage.BLACK:
             cr.set_source_rgb(0,0,0)
 
 if __name__ == "__main__":

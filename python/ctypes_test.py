@@ -37,6 +37,8 @@ class Screen:
         self.window = gtk.Window();
         self.window.connect('delete-event', gtk.main_quit)
         self.window.connect('key_press_event', self.do_keypress);
+        self.window.add_events(gtk.gdk.SCROLL_MASK)
+        self.window.connect("scroll-event", self.do_scroll)
 
         self.maintable = gtk.Table(2, 3)
         #qpimage
@@ -130,10 +132,19 @@ class Screen:
         self.graph.do_expose_event(None)
         return(True)
 
+    def do_scroll(self, widget, event):
+        handled = False
+        if event.direction == gtk.gdk.SCROLL_DOWN:
+            handled = True
+            self.change_first_selected_servo(-0.1)
+        if event.direction == gtk.gdk.SCROLL_UP:
+            handled = True
+            self.change_first_selected_servo(0.1)
+        return(handled)
+
     def do_keypress(self, widget, event):
         keyname = gtk.gdk.keyval_name(event.keyval).lower()
         handled = False
-        #print(keyname)
         if keyname == 'space':
             handled = True
         elif keyname == 'escape':
@@ -142,6 +153,12 @@ class Screen:
             self.change_first_selected_servo(0.1)
         elif (keyname == 'minus' or keyname == 'kp_subtract'):
             self.change_first_selected_servo(-0.1)
+        elif (keyname == 'grave'):
+            self.qpimage.select_block(0)
+        elif (keyname == '1'):
+            self.qpimage.select_block(1)
+        elif (keyname == '2'):
+            self.qpimage.select_block(2)
         else:
             print("unhandled: " + str(keyname) + " - " + str(event.keyval))
 
