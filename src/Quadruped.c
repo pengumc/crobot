@@ -83,6 +83,16 @@ void Quadruped_configureServoOffset(quadruped_t* qped,
         Servo_setOffset(qped->dev->legs[legNo]->servos[servoNo], offset);
 }
 
+
+
+/*===================== CONFIG SERVO DIRECTION ==============================*/
+/** Set the turning direction of a servo.
+ * @param qped The quadruped data to use.
+ * @param legNo Which leg.
+ * @param servoNo Which servo.
+ * @param direction The new direction. Higher than 0 gives a positive
+ * direction, lower will give a negative direction.
+ */
 void Quadruped_configureServoDirection(quadruped_t* qped, 
     uint8_t legNo, uint8_t servoNo, int8_t direction)
 {
@@ -93,6 +103,16 @@ void Quadruped_configureServoDirection(quadruped_t* qped,
     }
 }
 
+
+
+/*=========================== CONFIG LEG LENGTHS ============================*/
+/** Set the lengths of the different segments per leg.
+ * @param qped The quadruped to use.
+ * @param legNo Which leg to set the segments for.
+ * @param A Length of segment A in cm.
+ * @param B Length of segment B in cm.
+ * @param C Length of segment C in cm.
+ */
 void Quadruped_configureLegLengths(quadruped_t* qped,
     uint8_t legNo, double A, double B, double C)
 {
@@ -298,7 +318,7 @@ servoinfo_t* Quadruped_getServoinfoPointer(quadruped_t* qp){
 
 /*======================= CHANGE SERVO ======================================*/
 /** Change the angle of a single servo by an amount.
- * @param qped The quadruped to use.
+ * @param qp The quadruped to use.
  * @param l The leg number (0..3).
  * @param s The servo to change (0..2).
  * @retval 1 success.
@@ -313,3 +333,14 @@ int Quadruped_changeSingleServo(
 }
 
 
+/*========================= PRINT SERVO DETAILS ==============================*/
+/** Print servodetails to stdout
+ * @param qp The quadruped to use.
+ * @param legNo The leg the servo is in.
+ * @param servoNo The servo from that leg to print.
+ */
+void Quadruped_printServoDetails(quadruped_t* qp,
+  uint8_t legNo, uint8_t servoNo)
+{
+    Servo_printDetails(qp->dev->legs[legNo]->servos[servoNo], NULL);
+}

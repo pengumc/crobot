@@ -73,6 +73,13 @@ class Screen:
         self.graph.set_maxy(100)
         self.configure()
 
+    def msgbox(self, text):
+        box = gtk.MessageDialog(self.window,
+            gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_INFO,
+            gtk.BUTTONS_OK, text)
+        box.run()
+        box.destroy()
+
     def connect_to_device(self):
         con = self.crobot.connect()
         if con:
@@ -161,7 +168,6 @@ class Screen:
             self.qpimage.select_block(2)
         else:
             print("unhandled: " + str(keyname) + " - " + str(event.keyval))
-
         return(handled)
 
     def change_first_selected_servo(self, amount):
@@ -209,7 +215,7 @@ class Crobot:
     def __init__(self):
         bits = platform.machine()
         if bits == 'i686' or bits == 'x86':
-            bits = '64'
+            bits = '32'
         elif bits == 'x86_64' or bits == 'AMD64':
             bits = '64'
        
