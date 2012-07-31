@@ -46,12 +46,16 @@ class Screen:
         self.maintable.attach(self.qpimage, 0,1, 0,1, gtk.FILL,gtk.FILL|gtk.EXPAND) 
         self.qpimage.set_size_request(430, 150)
         #buttonlist
-        self.buttontable = gtk.Table(1,1)
+        self.buttontable = gtk.Table(1,2)
         self.maintable.attach(
             self.buttontable, 1,2, 0,1, gtk.FILL|gtk.EXPAND, gtk.FILL|gtk.EXPAND)
         self.connect_button = gtk.Button("connect")
         self.connect_button.connect("clicked", self.connect_click)
-        self.buttontable.attach(self.connect_button, 0,1, 0,1, 0,0)
+        self.buttontable.attach(self.connect_button, 0,1, 0,1,gtk.FILL,gtk.FILL)
+        self.debug_button = gtk.Button("debug info")
+        self.debug_button.connect("clicked", self.debug_click)
+        self.buttontable.attach(self.debug_button, 0,1, 1,2, gtk.FILL,gtk.FILL)
+        
         #grapharea 
         self.graph = grapharea.GraphArea()
         self.graph.set_size_request(100,100)
@@ -101,6 +105,9 @@ class Screen:
 
     def connect_click(self, event):
         self.connect_to_device()
+        
+    def debug_click(self, event):
+        print("hi")
 
     def update_servoinfo(self):
         info = self.crobot.getServoinfo()
@@ -214,6 +221,7 @@ class Crobot:
 
     def __init__(self):
         bits = platform.machine()
+        print("system reported: " + bits)
         if bits == 'i686' or bits == 'x86':
             bits = '32'
         elif bits == 'x86_64' or bits == 'AMD64':
