@@ -85,7 +85,7 @@ angle_t Servo_convertToAngle(servo_t* servo, uint8_t pulsewidth){
  */
 uint8_t Servo_convertToPulsewidth(servo_t* servo, angle_t value){
     return( (uint8_t) ((Angle_normalize(value) - servo->offset)
-        / servo->K / servo->direction + servo->midPulse));
+        / servo->K * servo->direction + servo->midPulse));
 }
 
 

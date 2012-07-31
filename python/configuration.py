@@ -20,11 +20,11 @@ class Configuration:
         legs = xml.findall("leg")
         for leg in legs:
             n = int(leg.attrib["n"])
+            l = None
             l = LegConfig(n)
             sections = leg.findall("section")
             for s in sections:
                 l.sections[s.attrib["id"]] = s.attrib
-#                l.sections.append(s.attrib)
             servos = leg.findall("servo")
             for s in servos:
                 l.servos.append(s.attrib)
@@ -33,9 +33,9 @@ class Configuration:
         
 
 class LegConfig:
-    def __init__(self, n, sections={}, servos=[]):
-        self.sections = sections
-        self.servos = servos
+    def __init__(self, n):
+        self.sections = {}
+        self.servos = []
         self.n = n
 
 #------------------------------- -----------------------------------------

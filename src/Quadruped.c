@@ -116,7 +116,7 @@ void Quadruped_configureServoDirection(quadruped_t* qped,
 void Quadruped_configureLegLengths(quadruped_t* qped,
     uint8_t legNo, double A, double B, double C)
 {
-    Leg_setLengths(qped->dev->legs[legNo], A, B, C);
+    if(legNo < USBDEV_LEGNO) Leg_setLengths(qped->dev->legs[legNo], A, B, C);
 }
 
 
@@ -284,7 +284,7 @@ int Quadruped_changeAllEndpoints(quadruped_t* qped,
 
 /*====================== GET SERVO DATA FROM DEVICE =========================*/
 /** Get the servo positions currently stored on the device.
- *
+ * into local storage
  */
 int Quadruped_getServoData(quadruped_t* qp){
     int ret = Usbdevice_getServoData(qp->dev, qp->buffer);
@@ -332,6 +332,13 @@ int Quadruped_changeSingleServo(
     return(result);
 }
 
+/*======================= DEBUG LEGS======================================*/
+void Quadruped_debugLegs(quadruped_t* qp){
+    char i;
+    for(i=0;i<USBDEV_LEGNO;i++){
+        Leg_printDetails(qp->dev->legs[i]);   
+    }
+}
 
 /*========================= PRINT SERVO DETAILS ==============================*/
 /** Print servodetails to stdout
