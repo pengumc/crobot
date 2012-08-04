@@ -147,12 +147,15 @@ int Servo_setPw(servo_t* servo, uint8_t value){
  * @retval 0 Angle is out of bounds.
  */
 int Servo_checkAngle(servo_t* servo, angle_t value){
-    if (Angle_rangeCheck(value,
-        Servo_convertToAngle(servo, servo->minPulse),
-        Servo_convertToAngle(servo, servo->maxPulse)))
+    int result;
+    angle_t min = Servo_convertToAngle(servo, servo->minPulse);
+    angle_t max = Servo_convertToAngle(servo, servo->maxPulse);
+    if (Angle_rangeCheck(value, min, max))
     {
-        return(1);
-    }else return(0);
+        result = 1;
+    }else result =0;
+    printf("servo check %.2f: %d\nrange: %.2f ... %.2f\n", value, result, min, max);
+    return(result);
 }
 
 
@@ -192,12 +195,6 @@ void Servo_setOffset(servo_t* servo, angle_t offset){
 }
 
 
-/*========================== MIRROR  ALONG SERVOBOTTOM ======================*/
-void Servo_mirrorBottom(servo_t* servo){
-    
-}
-
-
 /*================================ SET DIRECTION ============================*/
 /** Set direction of servo rotation, useful when servo is mirrored.
  * The pulsewidth is reset to SERVO_DEF_MID_PULSE.
@@ -206,7 +203,15 @@ void Servo_mirrorBottom(servo_t* servo){
  means backwards.
  */
 void Servo_setDirection(servo_t* servo, int8_t direction){
-    if(direction) servo->direction = 1.0;
-    else servo->direction = -1.0;
+    double newdir;
+    if(direction > 0) newdir = 1.0;
+    else newdir = -1.0;
+    if (servo->direction != newdir){
+        //flip min and max pulse as well as direction
+        uint8_t temp = servo->minPulse;
+        servo->minPulse = servo->maxPulse;
+        servo->maxPulse = temp;
+        servo->direction = newdir;
+    }
     Servo_setPw(servo, SERVO_DEF_MID_PULSE);
 }

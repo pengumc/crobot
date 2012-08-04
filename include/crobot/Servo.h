@@ -39,7 +39,7 @@
 #define SERVO_DEF_MID_PULSE 72
 
 /** default rotation direction for a servo*/
-#define SERVO_DEF_DIR 1.0
+#define SERVO_DEF_DIR 1.0f
 
 /** default servo offset*/
 #define SERVO_DEF_OFFSET 0

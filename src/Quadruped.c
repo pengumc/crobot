@@ -351,3 +351,8 @@ void Quadruped_printServoDetails(quadruped_t* qp,
 {
     Servo_printDetails(qp->dev->legs[legNo]->servos[servoNo], NULL);
 }
+
+
+/*===================== GET SERVO POSISIONS (3D) ==================================*/
+
+

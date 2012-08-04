@@ -22,22 +22,22 @@ class RobotMainViewArea(gtk.Table):
             for i in range(self.LEGCOUNT)]
         self.legviews[0].alignment = RobotLegView.RIGHT
         self.legviews[2].alignment = RobotLegView.RIGHT
-        self.attach(self.legviews[0],
-            0,1,
-            0,1,
-            gtk.EXPAND|gtk.FILL,
-            gtk.EXPAND|gtk.FILL)
         self.attach(self.legviews[1],
-            1,2,
+            0,1,
             0,1,
             gtk.EXPAND|gtk.FILL,
             gtk.EXPAND|gtk.FILL)
-        self.attach(self.legviews[2],
-            0,1,
+        self.attach(self.legviews[0],
             1,2,
+            0,1,
             gtk.EXPAND|gtk.FILL,
             gtk.EXPAND|gtk.FILL)
         self.attach(self.legviews[3],
+            0,1,
+            1,2,
+            gtk.EXPAND|gtk.FILL,
+            gtk.EXPAND|gtk.FILL)
+        self.attach(self.legviews[2],
             1,2,
             1,2,
             gtk.EXPAND|gtk.FILL,

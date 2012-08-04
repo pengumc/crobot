@@ -53,7 +53,6 @@ class Screen:
         self.debug_button = gtk.Button("debug info")
         self.debug_button.connect("clicked", self.debug_click)
         self.buttontable.attach(self.debug_button, 0,1, 1,2, gtk.FILL,gtk.FILL)
-        
         #grapharea 
         self.graph = grapharea.GraphArea()
         self.graph.set_size_request(100,100)
@@ -73,23 +72,25 @@ class Screen:
         self.graph.lines[0].setColor(1,0,1)
         self.graph.set_maxy(100)
         self.configure()
-
+    #--------------------------------------------------------------------------
     def msgbox(self, text):
         box = gtk.MessageDialog(self.window,
             gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_INFO,
             gtk.BUTTONS_OK, text)
         box.run()
         box.destroy()
-
     #--------------------------------------------------------------------------
     def connect_to_device(self):
         con = self.crobot.connect()
         if con:
             if self.timeout_active == False:
                 print("(re)connected")
+                self.connect_button.set_label('connect (1)')
                 self.update_servoinfo()
                 self.timeout_active = True
                 gtk.timeout_add(Screen.TIMEOUT, self.timeout)
+        else:
+            self.connect_button.set_label('connect (0)')
     #--------------------------------------------------------------------------            
     def _attach_analog(self, table):
         table.attach(self.right_analog, 1,3, 1,3, 0,0)        
@@ -102,9 +103,13 @@ class Screen:
     #--------------------------------------------------------------------------
     def connect_click(self, event):
         self.connect_to_device()
-        
+    #--------------------------------------------------------------------------
     def debug_click(self, event):
-        print("hi")
+        self.crobot.printLegs();
+        for i in range(4):
+            for j in range(3):
+                print('servo {},{}'.format(i,j))
+                self.crobot.printServoDetails(i, j)
 
     #--------------------------------------------------------------------------
     def update_servoinfo(self):
@@ -118,6 +123,7 @@ class Screen:
         if self.crobot.update() < 1:
             print('disconnected timeout...')
             self.timeout_active = False
+            self.connect_button.set_label('connect (0)')
             return(False)
         self.update_buttons()
         self.update_sticks()
@@ -165,11 +171,12 @@ class Screen:
         elif (keyname == 'minus' or keyname == 'kp_subtract'):
             self.change_selected(-0.1)
         else:
-            print("unhandled: " + str(keyname) + " - " + str(event.keyval))
+            #print("unhandled: " + str(keyname) + " - " + str(event.keyval))
+            pass
         return(handled)
     #--------------------------------------------------------------------------
     def change_selected(self, amount):
-        if not self.crobot.con: return
+        #if not self.crobot.con: return
         selection = self.robotdrawing.selected
         if selection == -1: return
         if selection < drawrobot.RobotMainViewArea.SERVOCOUNT:
@@ -194,15 +201,20 @@ class Screen:
     def configure(self):
         self.config = configuration.Configuration()
         if  not self.config.load(): exit(-1)
-        self.crobot.setServoDirection(0,0,-1)
         for leg in self.config.legs:
             for servo in leg.servos:
                 self.crobot.setServoOffset(leg.n, servo["n"], float(servo["offset"]))
+                ori = servo["orientation"]
+                if ori == "xy":
+                    self.crobot.setServoDirection(leg.n, servo["n"], -1);
+                elif ori == "zx":
+                    self.crobot.setServoDirection(leg.n, servo["n"], -1);
             self.crobot.setLegLengths(
                 leg.n,
                 float(leg.sections["A"]["length"]),
                 float(leg.sections["B"]["length"]),
                 float(leg.sections["C"]["length"]))
+        
     #--------------------------------------------------------------------------
       
 
@@ -286,11 +298,11 @@ class Crobot:
     def changeServo(self, leg, s, value):
         return(self.crobotlib.Quadruped_changeSingleServo(self.qped, leg, s, c_double(value)))
     #--------------------------------------------------------------------------
-    def getServoinfo(self):
+    def getServoinfo(self): #put C info into the shared mem
         self.crobotlib.Quadruped_updateServoinfo(self.qped)
         return(self.servoinfo)
     #--------------------------------------------------------------------------
-    def refreshServoinfo(self):
+    def refreshServoinfo(self): #ask the device for actual info
         self.crobotlib.Quadruped_getServoData(self.qped)
         return(self.getServoinfo())
     #--------------------------------------------------------------------------
@@ -316,6 +328,11 @@ class Crobot:
     def setServoDirection(self, legno, servono, direction):
         self.crobotlib.Quadruped_configureServoDirection(self.qped, 
             c_byte(int(legno)), c_byte(int(servono)), c_int8(int(direction)))
+        
+    #--------------------------------------------------------------------------
+    def printServoDetails(self, legno, servono):
+        self.crobotlib.Quadruped_printServoDetails(self.qped,
+            c_byte(int(legno)), c_byte(int(servono)))
     #--------------------------------------------------------------------------
 
 
