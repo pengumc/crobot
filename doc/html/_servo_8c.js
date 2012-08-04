@@ -6,7 +6,6 @@ var _servo_8c =
     [ "Servo_convertToAngle", "_servo_8c.html#ae8784e22278d10c15d13baf38b1f64ce", null ],
     [ "Servo_convertToPulsewidth", "_servo_8c.html#a06862c9c9148a6ddcf8d64179799ab7b", null ],
     [ "Servo_free", "_servo_8c.html#a68249fdd27b22baf3936b3e0359c9ee8", null ],
-    [ "Servo_mirrorBottom", "_servo_8c.html#a2798757a423af136b5d99f9200b89a58", null ],
     [ "Servo_printDetails", "_servo_8c.html#a0055a9a3f030e6585235176f32981732", null ],
     [ "Servo_reset", "_servo_8c.html#a70da48d2b4c35c2b01b35df2dbd7e579", null ],
     [ "Servo_setAngle", "_servo_8c.html#a6399ce0b19989a6412d753999b11ef70", null ],

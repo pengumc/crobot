@@ -8,6 +8,7 @@ var annotated =
     [ "QPED", "struct_q_p_e_d.html", "struct_q_p_e_d" ],
     [ "servo_t", "structservo__t.html", "structservo__t" ],
     [ "SERVOINFO", "struct_s_e_r_v_o_i_n_f_o.html", "struct_s_e_r_v_o_i_n_f_o" ],
+    [ "SERVOPOS", "struct_s_e_r_v_o_p_o_s.html", "struct_s_e_r_v_o_p_o_s" ],
     [ "solver_t", "structsolver__t.html", "structsolver__t" ],
     [ "usbdevice_t", "structusbdevice__t.html", "structusbdevice__t" ]
 ];

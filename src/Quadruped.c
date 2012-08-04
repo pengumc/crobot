@@ -354,5 +354,19 @@ void Quadruped_printServoDetails(quadruped_t* qp,
 
 
 /*===================== GET SERVO POSISIONS (3D) ==================================*/
-
+quadruped_servopos_t Quadruped_getServoPositions(quadruped_t* qp){
+    int i,j;
+    static quadruped_servopos_t pos;
+    for(i=0;i<USBDEV_LEGNO;i++){
+        for(j=0;j<LEG_DOF;j++){
+            pos.x[i*3+j] = rot_vector_get(
+                qp->dev->legs[i]->servoLocations[j], 0);
+            pos.y[i*3+j] = rot_vector_get(
+                qp->dev->legs[i]->servoLocations[j], 1);
+            pos.z[i*3+j] = rot_vector_get(
+                qp->dev->legs[i]->servoLocations[j], 2);
+        }
+    }
+    return(pos);
+}
 

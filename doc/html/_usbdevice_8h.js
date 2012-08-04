@@ -6,7 +6,10 @@ var _usbdevice_8h =
     [ "USBDEV_RETRY", "_usbdevice_8h.html#a649b0ae2f6a7a987a39a8bf0f1513108", null ],
     [ "USBDEV_SERVOCOUNT", "_usbdevice_8h.html#a26769c9dccbd1cdad589f0d29962cc72", null ],
     [ "USBDEV_TIMEOUT_MS", "_usbdevice_8h.html#aabfac2996ecb418c7bcc8445f9f83b7d", null ],
-    [ "usbdevice_reqType", "_usbdevice_8h.html#afd19dc83ca82875d15aa0e167bee8cab", null ],
+    [ "usbdevice_reqType", "_usbdevice_8h.html#afd19dc83ca82875d15aa0e167bee8cab", [
+      [ "USBDEV_READ", "_usbdevice_8h.html#afd19dc83ca82875d15aa0e167bee8caba6d330473bd9589f9334f1fa8e6f9cba2", null ],
+      [ "USBDEV_WRITE", "_usbdevice_8h.html#afd19dc83ca82875d15aa0e167bee8caba8b9fcc1b6c72d336c19bfb7be5388976", null ]
+    ] ],
     [ "nsleep", "_usbdevice_8h.html#a7cc59f013b3690e45b1b70ac7fbbdb2e", null ],
     [ "printBuffer", "_usbdevice_8h.html#a9e07beb7ca6211d7bdd3a3c5f3194463", null ],
     [ "Usbdevice_alloc", "_usbdevice_8h.html#a6541068db275cb3acf050fcd77d3e728", null ],

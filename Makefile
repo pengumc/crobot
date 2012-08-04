@@ -13,7 +13,7 @@ CLIBS = -Llib/gsl -Llib/crobot -lgslcblas -lgsl $(USBLIBS) -lm
 CC = gcc
 OUTPUTNAME = $(NAME)
 LIBUSB_OBJECTS = opendevice.o
-OBJECTS = $(LIBUSB_OBJECTS) Quadruped.o Accelerometer.o Filter.o Pscontroller.o Report.o Usbdevice.o Leg.o Solver.o Servo.o rotation.o Angle.o
+OBJECTS = $(LIBUSB_OBJECTS) Quadruped.o Accelerometer.o Filter.o Pscontroller.o Report.o Usbdevice.o Leg.o Solver.o Servo.o rotation.o Angle.o Communication.o
 UNAME:= $(shell uname -s)
 
 .PHONY:all clean library

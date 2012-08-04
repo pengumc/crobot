@@ -42,6 +42,12 @@ typedef struct QPED{
 } quadruped_t;
 
 
+/**Quadruped 3d servo positions.*/
+typedef struct SERVOPOS{
+    double x[BUFLEN_SERVO_DATA];
+    double y[BUFLEN_SERVO_DATA];
+    double z[BUFLEN_SERVO_DATA];
+} quadruped_servopos_t;
 
 
 quadruped_t* Quadruped_alloc();
@@ -72,8 +78,8 @@ int Quadruped_changeSingleServo(
     quadruped_t* qp, uint8_t l, uint8_t s, double angle);
 void Quadruped_configureLegLengths(quadruped_t* qped,
     uint8_t legNo, double A, double B, double C);
-
-
+quadruped_servopos_t Quadruped_getServoPositions(quadruped_t* qp);
+void Quadruped_debugLegs(quadruped_t* qp);
 
 #endif
 

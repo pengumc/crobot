@@ -110,6 +110,10 @@ class Screen:
             for j in range(3):
                 print('servo {},{}'.format(i,j))
                 self.crobot.printServoDetails(i, j)
+        #print servo pos
+        pos = self.crobot.getServoPositions()
+        for i in range(12):
+            print("servo {}: {}, {}, {}".format(i, pos.x[i], pos.y[i], pos.z[i]))
 
     #--------------------------------------------------------------------------
     def update_servoinfo(self):
@@ -241,6 +245,7 @@ class Crobot:
         #create qped instance
         self.crobotlib = CDLL(LIBCROBOT)
         self.crobotlib.Quadruped_alloc.restype = c_void_p
+        self.crobotlib.Quadruped_getServoPositions = SERVOPOS
         self.qped = self.crobotlib.Quadruped_alloc()
         #servoinfo
         self.servoinfop = self.crobotlib.Quadruped_getServoinfoPointer(self.qped)
@@ -328,18 +333,27 @@ class Crobot:
     def setServoDirection(self, legno, servono, direction):
         self.crobotlib.Quadruped_configureServoDirection(self.qped, 
             c_byte(int(legno)), c_byte(int(servono)), c_int8(int(direction)))
-        
     #--------------------------------------------------------------------------
     def printServoDetails(self, legno, servono):
         self.crobotlib.Quadruped_printServoDetails(self.qped,
             c_byte(int(legno)), c_byte(int(servono)))
     #--------------------------------------------------------------------------
+    def getServoPositions(self):
+        positions_p = self.crobotlib.Quadruped_getServoPositions(self.qped);
+        positions = SERVOPOS.from_address(positions_p)
+        return positions;
+    #--------------------------------------------------------------------------
+
 
 
 class SERVOINFO(Structure):
     _fields_ = [("pulsewidths", c_byte*12),
                 ("angles", c_double*12)]
 
+class SERVOPOS(Structure):
+    _fields_ = [("x", c_double*12),
+                ("y", c_double*12),
+                ("z", c_double*12)]
 
 #-------------------------------start -----------------------------------------
 if __name__ == "__main__":

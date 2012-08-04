@@ -24,6 +24,7 @@ var searchData=
   ['servo_5ft',['servo_t',['../structservo__t.html',1,'']]],
   ['servoinfo',['SERVOINFO',['../struct_s_e_r_v_o_i_n_f_o.html',1,'']]],
   ['servolocations',['servoLocations',['../structleg__t.html#aec16989bc7cc8436a92d0a23cd510434',1,'leg_t']]],
+  ['servopos',['SERVOPOS',['../struct_s_e_r_v_o_p_o_s.html',1,'']]],
   ['servos',['servos',['../structleg__t.html#a150504eff4daa883b241a58ee74ae4fd',1,'leg_t']]],
   ['shoulder_5fshapes',['shoulder_shapes',['../structpscontroller__t.html#a8b34a75e2b84d712402b98f62efda3d4',1,'pscontroller_t']]],
   ['si',['si',['../struct_q_p_e_d.html#a70bdbaded4f415275969fbbb0399bb7c',1,'QPED']]],
