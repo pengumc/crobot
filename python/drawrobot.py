@@ -59,6 +59,10 @@ class RobotMainViewArea(gtk.Table):
         self.redraw()
         if self.servoboxes[blockno].blinking == 1:
             gtk.timeout_add(self.BLINKTIMEMS, self.blink_timeout, blockno)
+    def blinknone(self):
+        for box in self.servoboxes:
+            box.blinking = 0;
+        self.redraw()
    #-------------------------------------------------------
     def blink_timeout(self, data):
         self.servoboxes[data].blinking -= 1
@@ -116,7 +120,7 @@ class RobotLegView(gtk.DrawingArea):
         alloc = self.get_allocation()
         self.width = alloc.width
         self.height = alloc.height
-        self.align(self.alignment)
+        #self.align(self.alignment)
         self.do_expose_event()
     #--------------------------------------------------------------        
     def do_expose_event(self, event=None):
@@ -263,4 +267,7 @@ if __name__ == "__main__":
     window.show_all()
     window.connect('delete-event', gtk.main_quit)
     window.set_size_request(500,500)
+    
+    a.servoboxes[0].pos[0] = 100
+    
     gtk.main()

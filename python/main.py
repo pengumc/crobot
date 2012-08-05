@@ -91,13 +91,21 @@ class Screen:
     #--------------------------------------------------------------------------
     def debug_click(self, event):
         self.crobot.printLegs();
-        for i in range(4):
-            for j in range(3):
-                print('servo {},{}'.format(i,j))
-                self.crobot.printServoDetails(i, j)
+        #for i in range(4):
+        #    for j in range(3):
+        #        print('servo {},{}'.format(i,j))
+        #        self.crobot.printServoDetails(i, j)
         for i in range(Crobot.SERVOCOUNT):
-            print("servo {}: {} {:.2f}".format(
-                i, self.crobot.com.pulsewidths[i], self.crobot.com.angles[i]))
+            print("servo {}: {} {:.2f} -- {:.2f}, {:.2f}, {:.2f}".format(
+                i, self.crobot.com.pulsewidths[i], self.crobot.com.angles[i],
+                self.crobot.com.servopos.x[i],self.crobot.com.servopos.y[i],
+                self.crobot.com.servopos.z[i]))
+            if i%3 == 2:
+                print("endpoint {}: {:.2f}, {:.2f}, {:.2f}".format(
+                    i/3,
+                    self.crobot.com.endpoints.x[i/3],
+                    self.crobot.com.endpoints.y[i/3],
+                    self.crobot.com.endpoints.z[i/3]))
     #--------------------------------------------------------------------------
     def load_click(self, event):
         self.crobot.load_from_eeprom()
@@ -170,6 +178,7 @@ class Screen:
                 self.robotdrawing.blink(selection)
             else:
                 self.crobot.commit()
+                self.robotdrawing.blinknone()
                 self.update_servoinfo()
         elif selection < (drawrobot.RobotMainViewArea.SERVOCOUNT
              + drawrobot.RobotMainViewArea.LEGCOUNT):
@@ -178,6 +187,7 @@ class Screen:
              print('move result: ' + str(result))
              if result == 0:
                 self.crobot.commit()
+                self.robotdrawing.blinknone()
                 self.update_servoinfo()
     #--------------------------------------------------------------------------
     def configure(self):

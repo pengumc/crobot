@@ -66,10 +66,10 @@ void Communication_updateEndpoints(communication_t* com, quadruped_t* qp){
     int i;
     for(i=0;i<USBDEV_LEGNO;i++){
         com->endpoints.x[i] = rot_vector_get(
-            qp->dev->legs[i]->servoLocations[LEG_DOF +1],0);
+            qp->dev->legs[i]->servoLocations[LEG_DOF],0);
         com->endpoints.y[i] = rot_vector_get(
-            qp->dev->legs[i]->servoLocations[LEG_DOF +1],1);
+            qp->dev->legs[i]->servoLocations[LEG_DOF],1);
         com->endpoints.z[i] = rot_vector_get(
-            qp->dev->legs[i]->servoLocations[LEG_DOF +1],2);
+            qp->dev->legs[i]->servoLocations[LEG_DOF],2);
     }
 }
