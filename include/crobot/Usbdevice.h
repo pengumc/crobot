@@ -83,6 +83,7 @@ int Usbdevice_connect(usbdevice_t* usbdevice);
 int Usbdevice_getData(usbdevice_t* usbdevice, char* buffer);
 int Usbdevice_sendServoData(usbdevice_t* usbdevice);
 int Usbdevice_getServoData(usbdevice_t* usbdevice, char* buffer);
+int Usbdevice_loadPositions(usbdevice_t* usbdevice);
 void printBuffer(char* buffer);
 void nsleep(long nanoseconds);
 #endif

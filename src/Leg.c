@@ -95,8 +95,8 @@ uint8_t Leg_getServoPw(leg_t* leg, uint8_t servoNo){
  * @param leg The leg data to use.
  * @param servoNo The servo to change (0..2).
  * @param pw The pulsewidth to set.
- * @retval 1 Pulsewidth was out of bounds, nothing changed.
- * @retval 0 success
+ * @retval 0 Pulsewidth was out of bounds, nothing changed.
+ * @retval 1 success
  */
 int Leg_setServoPw(leg_t* leg, uint8_t servoNo, uint8_t pw){
     return(Servo_setPw(leg->servos[servoNo], pw));

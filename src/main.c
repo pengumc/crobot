@@ -34,12 +34,6 @@ int main(int argc, char* argv[]){
     Quadruped_configureLegLengths(myQ, 0,  3.2, 6.1, 6.2);
     Leg_updateServoLocations(myQ->dev->legs[0]);
     Quadruped_debugLegs(myQ);
-    quadruped_servopos_t aap = Quadruped_getServoPositions(myQ);
-    printf("sizeof aap: %d bytes\n", sizeof(aap));
-    int i;
-    for(i=0;i<12;i++){
-        printf("%d: %.2f, %.2f, %.2f\n", i, aap.x[i], aap.y[i], aap.z[i]);
-    }
     
 
     

@@ -191,6 +191,7 @@ void _Usbdevice_updateServos(usbdevice_t* dev, char* buffer){
     unsigned char leg,servo,i=0;
     for(leg=0;leg<USBDEV_LEGNO;leg++){
         for(servo=0;servo<LEG_DOF;servo++){
+            //printf("update servo %d,%d to %d: %d\n", leg, servo, buffer[i],
             Leg_setServoPw(dev->legs[leg], servo, buffer[i]);
             i++;
         }
@@ -241,6 +242,7 @@ int Usbdevice_getServoData(usbdevice_t* usbdevice, char* buffer){
                 //indication the device is still busy
             }else{
                 trying = -1;
+                printBuffer(buffer);
             }
         }
     }
@@ -287,6 +289,29 @@ void printBuffer(char* buffer){
     }
     printf("]\n");
 }
+
+
+/*========================== LOAD POSITIONS===================================*/
+/** Tell the device to load the servo positions that are stored in the eeprom.
+ * @param usbdevice The device to communicate with.
+ * @retval 0 success
+ * @retval -1 failure.
+ */
+int Usbdevice_loadPositions(usbdevice_t* usbdevice){
+    uint8_t buf[BUFLEN_SERVO_DATA];
+    int i;
+    for (i=0;i<BUFLEN_SERVO_DATA;i++) buf[i]= I2C_LOAD_STARTPOS;
+    int cnt = _Usbdevice_sendCtrlMsg(usbdevice, CUSTOM_RQ_SET_DATA,
+        USBDEV_WRITE, 0, 0, buf);
+    if(cnt != BUFLEN_SERVO_DATA){
+        //usb ctrl msg should return number of bytes written in this case
+        return(-1);
+    }
+    return(cnt);
+}
+
+
+
 
 void nsleep(long nanoseconds){
 	#ifndef __WINDOWSCRAP__

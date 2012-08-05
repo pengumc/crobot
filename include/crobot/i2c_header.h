@@ -61,3 +61,11 @@
 /** stop start*/
 #define TWSTOSTA (TWCR=(1<<TWINT)|(1<<TWEN)|(1<<TWSTA)|(1<<TWSTO))
 #endif
+
+
+/**will make the servocontroller load the array stored in eeprom.*/
+#define I2C_LOAD_STARTPOS 2
+
+/**Servocontroller saves the current servopositions in EEPROM.*/
+#define I2C_SAVE_STARTPOS 3
+

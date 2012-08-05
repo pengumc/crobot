@@ -129,7 +129,13 @@ int Servo_changeAngle(servo_t* servo, angle_t value){
  * @retval 1 Success.
  */
 int Servo_setPw(servo_t* servo, uint8_t value){
-    if (value >= servo->minPulse && value <= servo->maxPulse){
+    int valid = 0;
+    if(servo->direction > 0.0){
+        if (value >= servo->minPulse && value <= servo->maxPulse) valid = 1;
+    }else{
+        if (value >= servo->maxPulse && value <= servo->minPulse) valid = 1;
+    }   
+    if (valid){
         servo->_pw = value;
         servo->_angle = Servo_convertToAngle(servo, value);
         return(1);

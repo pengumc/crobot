@@ -24,6 +24,19 @@
 
 #include "Quadruped.h"
 
+/* ===============================
+ *  UTILITY
+ * =============================*/
+void update_servoAction(quadruped_t* qped){
+    if(qped->com != NULL){
+        Communication_updateEndpoints(qped->com, qped);
+        Communication_updatePWA(qped->com, qped);
+        Communication_updatePos(qped->com, qped);
+    }
+}
+
+
+
 /*======================= ALLOC =============================================*/
 /** Allocate quadruped memory.
  * @return A pointer to the new quadruped memory.
@@ -37,8 +50,12 @@ quadruped_t* Quadruped_alloc(){
     rot_vector_setAll(tqped->angles, 0.0, 0.0, 0.0);
     Quadruped_updateMatricesFromAngles(tqped, tqped->angles);
 
+    tqped->com = NULL;
+    
+    //TODO remove
     tqped->si = (servoinfo_t*)calloc(1, sizeof(servoinfo_t));
     Quadruped_updateServoinfo(tqped);
+    
     return(tqped);
 }
 
@@ -49,6 +66,7 @@ quadruped_t* Quadruped_alloc(){
  */
 void Quadruped_free(quadruped_t* qped){
     Usbdevice_free(qped->dev);
+    Communication_free(qped->com);
     rot_free(qped->R);
     rot_free(qped->invR);
     rot_free(qped->angles);
@@ -56,6 +74,12 @@ void Quadruped_free(quadruped_t* qped){
     free(qped);
 }
 
+/*========================== ENABLE COMMUNICATION ===========================*/
+/** Use your own allocated com memory*/
+void Quadruped_enableCommunication(quadruped_t* qp, communication_t* com){
+    qp->com = com;
+    update_servoAction(qp);
+}
 
 /*==================== STARTUP ==============================================*/
 /** Startup function (mainly try to connect usb).
@@ -65,9 +89,20 @@ void Quadruped_free(quadruped_t* qped){
  */
 int Quadruped_startup(quadruped_t* qped){
     int cnt = Usbdevice_connect(qped->dev);
+    Quadruped_getServoData(qped);
     return(cnt);
 }
 
+/*======================== LOAD STARTING POSISTION ==========================*/
+/** Restore the servos to the starting positions stored on the device.
+ * @param qped The quadruped to use.
+ * @retval 0 Success.
+ * @retval -1 Failure.
+ */
+int Quadruped_loadStartPos(quadruped_t* qped){
+   int result = Usbdevice_loadPositions(qped->dev); 
+   Quadruped_getServoData(qped);
+}
 
 /*================= CONFIG LEG ==============================================*/
 /** Set the offset for one of the servos in a leg.
@@ -133,33 +168,6 @@ int Quadruped_update(quadruped_t* qped){
     return(cnt);
 }
 
-/*======================= SET GRAPH POINTERS ================================*/
-/** Change location of graph datasets.
- * Make the three filters store both their input and output datasets
- somewhere else (where it's easier for you to read them).<br>
- All [in/out][x/y/z] parameters should be pointers to an array with at room 
- for at least  FILTER_GRAPH_LENGTH doubles.
- * @param qped The quadruped data to use.
- * @param inX input value array for X filter.
- * @param inY input value array for Y filter.
- * @param inZ input value array for Z filter.
- * @param outX output value array for X filter.
- * @param outY output value array for Y filter.
- * @param outZ output value array for Z filter.
- */
-void Quadruped_setGraphPointers(quadruped_t* qped,
-    double* inX, 
-    double* inY, 
-    double* inZ, 
-    double* outX, 
-    double* outY, 
-    double* outZ)
-{
-   Filter_changeGraphPointers(qped->dev->acc->filters[0], inX, outX);
-   Filter_changeGraphPointers(qped->dev->acc->filters[1], inY, outY);
-   Filter_changeGraphPointers(qped->dev->acc->filters[2], inZ, outZ);
-}
-
 
 /*======================================= GET BUTTON (EDGE) =================*/
 /** Query button state.
@@ -194,6 +202,16 @@ int Quadruped_commit(quadruped_t* qped){
     return(Usbdevice_sendServoData(qped->dev));
 }
 
+/*====================== GET SERVO DATA FROM DEVICE =========================*/
+/** Get the servo positions currently stored on the device.
+ * into local storage
+ */
+int Quadruped_getServoData(quadruped_t* qp){
+    int ret = Usbdevice_getServoData(qp->dev, qp->buffer);
+    printf("qp_getservodata: %d\n", ret);
+    update_servoAction(qp);
+    return(ret);
+}
 
 
 /*===================== UPDATE ROT MATRIX ===================================*/
@@ -238,8 +256,10 @@ int Quadruped_changeLegEndpoint(quadruped_t* qped, uint8_t legNo,
     if(returnCode == 0){
         Leg_commitEndpointChange(qped->dev->legs[legNo]);
     }
-
+    
+    
     rot_free(v);
+    update_servoAction(qped);
     return(returnCode);
 }
 
@@ -278,47 +298,15 @@ int Quadruped_changeAllEndpoints(quadruped_t* qped,
             Leg_commitEndpointChange(qped->dev->legs[i]);
         }
     }
+    update_servoAction(qped);
     return(error);
 }
 
 
-/*====================== GET SERVO DATA FROM DEVICE =========================*/
-/** Get the servo positions currently stored on the device.
- * into local storage
- */
-int Quadruped_getServoData(quadruped_t* qp){
-    int ret = Usbdevice_getServoData(qp->dev, qp->buffer);
-    printf("qp_getservodata: %d\n", ret);
-    return(ret);
-}
-
-/*================== GRAB SERVOINFO =========================================*/
-/** Fill the provided servoinfo with current data.
- * Data is angles and pulsewidths for all servos. You need to call this
- * each time you want new data. This is the only function that changes values
- * in the servoinfo structure.
- * @param qped The quadruped to use.
- * @param si Pointer to servoinfo to fill.
- */
-void Quadruped_updateServoinfo(quadruped_t* qp){
-    char leg, servo, i;
-    i = 0;
-    for(leg=0; leg<USBDEV_LEGNO; leg++){
-        for(servo=0;servo<LEG_DOF; servo++){
-            qp->si->pulsewidths[i] = qp->dev->legs[leg]->servos[servo]->_pw;
-            qp->si->angles[i] = qp->dev->legs[leg]->servos[servo]->_angle;
-            i++;
-        }
-    }
-}
-
-servoinfo_t* Quadruped_getServoinfoPointer(quadruped_t* qp){
-    return(qp->si);
-}
 
 /*======================= CHANGE SERVO ======================================*/
 /** Change the angle of a single servo by an amount.
- * @param qp The quadruped to use.
+ * @param qped The quadruped to use.
  * @param l The leg number (0..3).
  * @param s The servo to change (0..2).
  * @retval 1 success.
@@ -326,9 +314,10 @@ servoinfo_t* Quadruped_getServoinfoPointer(quadruped_t* qp){
  * @retval 
  */
 int Quadruped_changeSingleServo(
-    quadruped_t* qp, uint8_t l, uint8_t s, double angle)
+    quadruped_t* qped, uint8_t l, uint8_t s, double angle)
 {
-    int result = Leg_changeServoAngle(qp->dev->legs[l], s, angle);
+    int result = Leg_changeServoAngle(qped->dev->legs[l], s, angle);
+    update_servoAction(qped);
     return(result);
 }
 
@@ -353,20 +342,63 @@ void Quadruped_printServoDetails(quadruped_t* qp,
 }
 
 
-/*===================== GET SERVO POSISIONS (3D) ==================================*/
-quadruped_servopos_t Quadruped_getServoPositions(quadruped_t* qp){
-    int i,j;
-    static quadruped_servopos_t pos;
-    for(i=0;i<USBDEV_LEGNO;i++){
-        for(j=0;j<LEG_DOF;j++){
-            pos.x[i*3+j] = rot_vector_get(
-                qp->dev->legs[i]->servoLocations[j], 0);
-            pos.y[i*3+j] = rot_vector_get(
-                qp->dev->legs[i]->servoLocations[j], 1);
-            pos.z[i*3+j] = rot_vector_get(
-                qp->dev->legs[i]->servoLocations[j], 2);
-        }
-    }
-    return(pos);
+
+
+
+
+/*==================================================
+ * TO BE DELETED
+ * ===============================================*/
+
+
+/*======================= SET GRAPH POINTERS ================================*/
+/** Change location of graph datasets.
+ * Make the three filters store both their input and output datasets
+ somewhere else (where it's easier for you to read them).<br>
+ All [in/out][x/y/z] parameters should be pointers to an array with at room 
+ for at least  FILTER_GRAPH_LENGTH doubles.
+ * @param qped The quadruped data to use.
+ * @param inX input value array for X filter.
+ * @param inY input value array for Y filter.
+ * @param inZ input value array for Z filter.
+ * @param outX output value array for X filter.
+ * @param outY output value array for Y filter.
+ * @param outZ output value array for Z filter.
+ */
+void Quadruped_setGraphPointers(quadruped_t* qped,
+    double* inX, 
+    double* inY, 
+    double* inZ, 
+    double* outX, 
+    double* outY, 
+    double* outZ)
+{
+   Filter_changeGraphPointers(qped->dev->acc->filters[0], inX, outX);
+   Filter_changeGraphPointers(qped->dev->acc->filters[1], inY, outY);
+   Filter_changeGraphPointers(qped->dev->acc->filters[2], inZ, outZ);
 }
 
+
+/*================== GRAB SERVOINFO =========================================*/
+/** Fill the provided servoinfo with current data.
+ * Data is angles and pulsewidths for all servos. You need to call this
+ * each time you want new data. This is the only function that changes values
+ * in the servoinfo structure.
+ * @param qped The quadruped to use.
+ * @param si Pointer to servoinfo to fill.
+ */
+void Quadruped_updateServoinfo(quadruped_t* qp){
+    char leg, servo, i;
+    i = 0;
+    for(leg=0; leg<USBDEV_LEGNO; leg++){
+        for(servo=0;servo<LEG_DOF; servo++){
+            qp->si->pulsewidths[i] = qp->dev->legs[leg]->servos[servo]->_pw;
+            qp->si->angles[i] = qp->dev->legs[leg]->servos[servo]->_angle;
+            i++;
+        }
+    }
+}
+
+servoinfo_t* Quadruped_getServoinfoPointer(quadruped_t* qp){
+    return(qp->si);
+}
