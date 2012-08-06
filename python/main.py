@@ -3,6 +3,7 @@ import sys, os, math
 import platform
 import pygtk
 import gtk, gobject, cairo
+import threading
 
 import buttonbar
 import grapharea
@@ -15,6 +16,25 @@ def handleSigTERM():
     print("quitting...")
     sys.exit(0)
 
+def c_vector(x, y, z):
+    return((y, z, x))
+
+
+class VPythonThread(threading.Thread):
+    
+    def __init__(self):
+        threading.Thread.__init__(self)
+        
+    def run(self):
+        import visual
+        self.scene = visual.display()
+        self.b = visual.box()
+        while 1:
+            visual.rate(30)
+            self.b.rotate(angle=0.01, axis=c_vector(1,1,0), orig=self.b.pos)
+            
+
+
 #main screen
 #==============
 class Screen:
@@ -26,7 +46,7 @@ class Screen:
     def __init__(self, crobot):
         self.timeout_active = False
         self.window = gtk.Window();
-        self.window.connect('delete-event', gtk.main_quit)
+        self.window.connect('destroy', gtk.main_quit)
         self.window.connect('key_press_event', self.do_keypress);
         self.window.add_events(gtk.gdk.SCROLL_MASK)
         self.window.connect("scroll-event", self.do_scroll)
@@ -36,7 +56,7 @@ class Screen:
         self.maintable.attach(self.robotdrawing, 0,1, 0,1, gtk.FILL,gtk.FILL|gtk.EXPAND) 
         self.robotdrawing.set_size_request(500,500)
         #buttonlist
-        self.buttontable = gtk.Table(1,3)
+        self.buttontable = gtk.Table(1,4)
         self.maintable.attach(
         self.buttontable, 1,2, 0,1, gtk.FILL|gtk.EXPAND, gtk.FILL|gtk.EXPAND)
         self.connect_button = gtk.Button("connect")
@@ -48,7 +68,9 @@ class Screen:
         self.load_button = gtk.Button("Load from eeprom")
         self.load_button.connect("clicked", self.load_click)
         self.buttontable.attach(self.load_button, 0,1, 2,3, gtk.FILL,gtk.FILL)
-
+        self.launch3d_button = gtk.Button("Launch 3D")
+        self.launch3d_button.connect("clicked", self.launch3d_click)
+        self.buttontable.attach(self.launch3d_button, 0,1, 3,4, gtk.FILL,gtk.FILL)
         #buttonbar
         self.buttonbar = buttonbar.ButtonBar()
         self.maintable.attach(self.buttonbar, 0,2, 2,3, 0,0)
@@ -59,6 +81,8 @@ class Screen:
         self.crobot = crobot
         self.configure()
         self.crobot.enable_com()
+        #3D
+        self.vp = VPythonThread()
     #--------------------------------------------------------------------------
     def msgbox(self, text):
         box = gtk.MessageDialog(self.window,
@@ -111,6 +135,9 @@ class Screen:
         self.crobot.load_from_eeprom()
         self.update_servoinfo()
     #--------------------------------------------------------------------------
+    def launch3d_click(self, event):
+        if not self.vp.isAlive(): self.vp.start()
+    #--------------------------------------------------------------------------
     def timeout(self, event=None):
         if self.crobot.update_sensor_data() < 1:
             print('disconnected timeout...')
@@ -147,6 +174,7 @@ class Screen:
         if keyname == 'space':
             handled = True
         elif keyname == 'escape':
+            self.window.destroy()
             gtk.main_quit()
         elif (keyname == 'plus' or keyname == 'equal' or keyname == 'kp_add'):
             self.change_selected(0.1)
@@ -214,6 +242,7 @@ class Screen:
 if __name__ == "__main__":
     signal.signal(signal.SIGTERM, handleSigTERM) 
     signal.signal(signal.SIGINT, handleSigTERM) 
+    gobject.threads_init()
     bits = platform.machine()
     print("machine: " + bits)
     if bits == 'i686' or bits == 'x86':
