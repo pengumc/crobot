@@ -3,32 +3,36 @@
         <section id="A" length="3.2"/>
         <section id="B" length="6.1"/>
         <section id="C" length="6.2"/>
-        <servo n="0" offset="0" orientation="xy" x="0" y="0" z="0"/>
-        <servo n="1" offset="0" orientation="zx" x="0" y="0" z="0"/>
-        <servo n="2" offset="-1.57" orientation="xz" x="0" y="0" z="0"/>
+        <servo n="0" offset="0" orientation="xy" />
+        <servo n="1" offset="0" orientation="zx" />
+        <servo n="2" offset="-1.57" orientation="xz"/>
+        <offset x="4" y="7" z="0"/>
     </leg>
     <leg n="1">
         <section id="A" length="3.2"/>
         <section id="B" length="6.3"/>
         <section id="C" length="6.1"/>
-        <servo n="0" offset="0" orientation="xy" x="0" y="0" z="0"/>
-        <servo n="1" offset="0" orientation="zx" x="0" y="0" z="0"/>
-        <servo n="2" offset="-1.57" orientation="xz" x="0" y="0" z="0"/>
+        <servo n="0" offset="3.14" orientation="xy" />
+        <servo n="1" offset="0" orientation="zx" />
+        <servo n="2" offset="-1.57" orientation="xz" />
+        <offset x="-4" y="7" z="0"/>
     </leg>
     <leg n="2">
         <section id="A" length="3.1"/>
         <section id="B" length="5.8"/>
         <section id="C" length="6.3"/>
-        <servo n="0" offset="0" orientation="xy" x="0" y="0" z="0"/>
-        <servo n="1" offset="0" orientation="xz" x="0" y="0" z="0"/>
-        <servo n="2" offset="-1.57" orientation="zx" x="0" y="0" z="0"/>
+        <servo n="0" offset="0" orientation="xy" />
+        <servo n="1" offset="0" orientation="xz" />
+        <servo n="2" offset="-1.57" orientation="zx" />
+        <offset x="4" y="-7" z="0"/>
     </leg>
     <leg n="3">
         <section id="A" length="3.2"/>
         <section id="B" length="5.6"/>
         <section id="C" length="6.5"/>
-        <servo n="0" offset="0" orientation="xy" x="0" y="0" z="0"/>
-        <servo n="1" offset="0" orientation="xz" x="0" y="0" z="0"/>
-        <servo n="2" offset="-1.5708" orientation="zx" x="0" y="0" z="0"/>
+        <servo n="0" offset="3.14" orientation="xy" />
+        <servo n="1" offset="0" orientation="xz" />
+        <servo n="2" offset="-1.5708" orientation="zx" />
+        <offset x="-4" y="-7" z="0"/>
     </leg>
 </crobot>

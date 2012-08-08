@@ -80,6 +80,10 @@ class Crobot:
     #--------------------------------------------------------------------------
     def load_from_eeprom(self):
         return(self.lib.Quadruped_loadStartPos(self.qped))
+    #--------------------------------------------------------------------------
+    def set_leg_offset(self, legno, X, Y, Z):
+        self.lib.Quadruped_configureLegOffset(
+            self.qped, c_byte(legno), c_double(X), c_double(Y), c_double(Z))
     
                 
                 

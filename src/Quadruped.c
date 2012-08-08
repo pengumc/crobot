@@ -154,6 +154,12 @@ void Quadruped_configureLegLengths(quadruped_t* qped,
     if(legNo < USBDEV_LEGNO) Leg_setLengths(qped->dev->legs[legNo], A, B, C);
 }
 
+/*========================== CONFIG LEG OFFSET ==============================*/
+void Quadruped_configureLegOffset(quadruped_t* qped,
+    uint8_t legNo, double X, double Y, double Z)
+{
+    rot_vector_setAll(qped->dev->legs[legNo]->offsetFromCOB, X, Y, Z);
+}
 
 /*======================== UPDATE ===========================================*/
 /** Update function, should be called often to update accelerometer and 
@@ -317,6 +323,7 @@ int Quadruped_changeSingleServo(
     quadruped_t* qped, uint8_t l, uint8_t s, double angle)
 {
     int result = Leg_changeServoAngle(qped->dev->legs[l], s, angle);
+    Leg_resyncSolverParams(qped->dev->legs[l]);
     update_servoAction(qped);
     return(result);
 }

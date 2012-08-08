@@ -49,27 +49,29 @@ void Communication_updatePWA(communication_t* com, quadruped_t* qp){
 void Communication_updatePos(communication_t* com, quadruped_t* qp){
     int i,j;
     int index = 0;
+    rot_vector_t* v = rot_vector_alloc();
     for(i=0;i<USBDEV_LEGNO;i++){
         for(j=0;j<LEG_DOF;j++){
-            com->servopos.x[index] = rot_vector_get(
-                qp->dev->legs[i]->servoLocations[j],0);
-            com->servopos.y[index] = rot_vector_get(
-                qp->dev->legs[i]->servoLocations[j],1);
-            com->servopos.z[index] = rot_vector_get(
-                qp->dev->legs[i]->servoLocations[j],2);
+            rot_vector_copy(qp->dev->legs[i]->servoLocations[j], v);
+            rot_vector_add(v, qp->dev->legs[i]->offsetFromCOB);
+            com->servopos.x[index] = rot_vector_get(v, 0);
+            com->servopos.y[index] = rot_vector_get(v, 1);
+            com->servopos.z[index] = rot_vector_get(v, 2);
             index ++;
         }
     }
+    rot_free(v);
 }           
 
 void Communication_updateEndpoints(communication_t* com, quadruped_t* qp){
     int i;
+    rot_vector_t* v = rot_vector_alloc();
     for(i=0;i<USBDEV_LEGNO;i++){
-        com->endpoints.x[i] = rot_vector_get(
-            qp->dev->legs[i]->servoLocations[LEG_DOF],0);
-        com->endpoints.y[i] = rot_vector_get(
-            qp->dev->legs[i]->servoLocations[LEG_DOF],1);
-        com->endpoints.z[i] = rot_vector_get(
-            qp->dev->legs[i]->servoLocations[LEG_DOF],2);
+        rot_vector_copy(qp->dev->legs[i]->servoLocations[LEG_DOF], v);
+        rot_vector_add(v, qp->dev->legs[i]->offsetFromCOB);
+        com->endpoints.x[i] = rot_vector_get(v, 0);
+        com->endpoints.y[i] = rot_vector_get(v, 1);
+        com->endpoints.z[i] = rot_vector_get(v, 2);
     }
+    rot_free(v);
 }

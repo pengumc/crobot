@@ -3,35 +3,20 @@ import sys, os, math
 import platform
 import pygtk
 import gtk, gobject, cairo
-import threading
+import time
 
 import buttonbar
 import grapharea
 import drawrobot #import qpimage
 import configuration
 from crobotlib import Crobot
+import display3d
 
 def handleSigTERM():
     #gtk.main_quit()
     print("quitting...")
     sys.exit(0)
 
-def c_vector(x, y, z):
-    return((y, z, x))
-
-
-class VPythonThread(threading.Thread):
-    
-    def __init__(self):
-        threading.Thread.__init__(self)
-        
-    def run(self):
-        import visual
-        self.scene = visual.display()
-        self.b = visual.box()
-        while 1:
-            visual.rate(30)
-            self.b.rotate(angle=0.01, axis=c_vector(1,1,0), orig=self.b.pos)
             
 
 
@@ -82,7 +67,7 @@ class Screen:
         self.configure()
         self.crobot.enable_com()
         #3D
-        self.vp = VPythonThread()
+        self.vp = display3d.VPythonThread()
     #--------------------------------------------------------------------------
     def msgbox(self, text):
         box = gtk.MessageDialog(self.window,
@@ -136,7 +121,11 @@ class Screen:
         self.update_servoinfo()
     #--------------------------------------------------------------------------
     def launch3d_click(self, event):
-        if not self.vp.isAlive(): self.vp.start()
+        if not self.vp.isAlive():
+            self.vp.start()
+            while not hasattr(self.vp, "servos"):
+                time.sleep(0.1)
+            self.update_servoinfo()
     #--------------------------------------------------------------------------
     def timeout(self, event=None):
         if self.crobot.update_sensor_data() < 1:
@@ -162,10 +151,10 @@ class Screen:
         handled = False
         if event.direction == gtk.gdk.SCROLL_DOWN:
             handled = True
-            self.change_selected(-0.1)
+            self.change_selected(-0.2)
         if event.direction == gtk.gdk.SCROLL_UP:
             handled = True
-            self.change_selected(0.1)
+            self.change_selected(0.2)
         return(handled)
     #--------------------------------------------------------------------------
     def do_keypress(self, widget, event):
@@ -191,7 +180,20 @@ class Screen:
             self.robotdrawing.servoboxes[i].data[0] = info.pulsewidths[i]
             self.robotdrawing.servoboxes[i].data[1] = info.angles[i]
         self.robotdrawing.redraw()
-        
+        if self.vp.isAlive(): self.update_servoinfo_3d()
+    #--------------------------------------------------------------------------
+    def update_servoinfo_3d(self):
+        info = self.crobot.com
+        for i in range(Crobot.SERVOCOUNT):
+            self.vp.set_servo_pos(i, 
+                info.servopos.x[i],
+                info.servopos.y[i],
+                info.servopos.z[i])
+        for i in range(Crobot.LEGCOUNT):
+            self.vp.set_endpoint_pos(i,
+                info.endpoints.x[i],
+                info.endpoints.y[i],        
+                info.endpoints.z[i])
     #--------------------------------------------------------------------------
     def change_selected(self, amount):
         #if not self.crobot.con: return
@@ -234,6 +236,11 @@ class Screen:
                 float(leg.sections["A"]["length"]),
                 float(leg.sections["B"]["length"]),
                 float(leg.sections["C"]["length"]))
+            self.crobot.set_leg_offset(
+                leg.n, 
+                float(leg.offset["x"]),
+                float(leg.offset["y"]),
+                float(leg.offset["z"]))
     #--------------------------------------------------------------------------
 
 
