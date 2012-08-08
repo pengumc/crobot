@@ -28,7 +28,7 @@ class VPythonThread(threading.Thread):
             visual.rate(60)
 
     def set_servo_pos(self, n, x, y, z):
-        print("setting {} to ({:.2f},{:.2f},{:.2f})".format(n, x, y, z))
+        #print("setting {} to ({:.2f},{:.2f},{:.2f})".format(n, x, y, z))
         self.servos[n].pos = (c_vector(x, y, z))
         if n%3 > 0:
             self.curves[n].pos = [self.servos[n-1].pos, self.servos[n].pos]
