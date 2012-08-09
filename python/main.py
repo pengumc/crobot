@@ -4,6 +4,7 @@ import platform
 import pygtk
 import gtk, gobject, cairo
 import time
+import threading
 
 import buttonbar
 import grapharea
@@ -123,9 +124,14 @@ class Screen:
     def launch3d_click(self, event):
         if not self.vp.isAlive():
             self.vp.start()
-            while not hasattr(self.vp, "servos"):
-                time.sleep(0.1)
+            #workaround. the vp thread won't start until after this function
+            #returns for some reason....
+            gtk.timeout_add(500, self.wait_vpython)
+    def wait_vpython(self):
+        result = display3d.threadlock.acquire(False) 
+        if result:
             self.update_servoinfo()
+        return(result)
     #--------------------------------------------------------------------------
     def timeout(self, event=None):
         if self.crobot.update_sensor_data() < 1:
@@ -257,9 +263,9 @@ if __name__ == "__main__":
     elif bits == 'x86_64' or bits == 'AMD64':
         bits = '64'
     if sys.platform == 'linux2':
-        LIBCROBOT = "lib/libcrobot" + bits + ".so.1.0.1"
+        LIBCROBOT = os.path.dirname(__file__) + "../lib/libcrobot" + bits + ".so.1.0.1"
     elif sys.platform == 'win32':
-        LIBCROBOT = "lib/libcrobot" + bits + ".dll"
+        LIBCROBOT = os.path.dirname(__file__) + "../lib/libcrobot" + bits + ".dll"
     print("lib: " + LIBCROBOT)
     try:
         screen = Screen(Crobot(LIBCROBOT))
