@@ -13,8 +13,8 @@
         <section id="B" length="6.3"/>
         <section id="C" length="6.1"/>
         <servo n="0" offset="3.14" orientation="xy" />
-        <servo n="1" offset="0" orientation="zx" />
-        <servo n="2" offset="-1.57" orientation="xz" />
+        <servo n="1" offset="0" orientation="xz" />
+        <servo n="2" offset="-1.57" orientation="zx" />
         <offset x="-4" y="7" z="0"/>
     </leg>
     <leg n="2">
@@ -31,8 +31,8 @@
         <section id="B" length="5.6"/>
         <section id="C" length="6.5"/>
         <servo n="0" offset="3.14" orientation="xy" />
-        <servo n="1" offset="0" orientation="xz" />
-        <servo n="2" offset="-1.5708" orientation="zx" />
+        <servo n="1" offset="0" orientation="zx" />
+        <servo n="2" offset="-1.5708" orientation="xz" />
         <offset x="-4" y="-7" z="0"/>
     </leg>
 </crobot>

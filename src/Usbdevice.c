@@ -196,6 +196,7 @@ void _Usbdevice_updateServos(usbdevice_t* dev, char* buffer){
             i++;
         }
         Leg_updateServoLocations(dev->legs[leg]);
+        Leg_resyncSolverParams(dev->legs[leg]);
     }
 }
 

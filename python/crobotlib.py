@@ -67,6 +67,12 @@ class Crobot:
         #TODO parse return value
         return(result)
     #--------------------------------------------------------------------------
+    def changeAllLegs(self, dX, dY, dZ):
+        result = self.lib.Quadruped_changeAllEndpoints(
+            self.qped, c_double(dX), c_double(dY), c_double(dZ))
+        #TODO parse return value
+        return(result)
+    #--------------------------------------------------------------------------
     def printLegs(self):
         self.lib.Quadruped_debugLegs(self.qped)
     #--------------------------------------------------------------------------
