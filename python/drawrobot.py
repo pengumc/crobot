@@ -72,7 +72,14 @@ class RobotMainViewArea(gtk.Table):
         elif self.servoboxes[data].blinking <= 0:
             return(False)
    #-------------------------------------------------------
- 
+    def get_single_selected(self):
+        return(self.selected)
+    #--------------------------------------------------------------
+    def setpw(self, n, pw):
+        self.servoboxes[n].data[0] = pw
+    #--------------------------------------------------------------
+    def setangle(self, n, angle):
+        self.servoboxes[n].data[1] = angle
     
                 
     
@@ -114,6 +121,8 @@ class RobotLegView(gtk.DrawingArea):
                         self.selected = box.n
                         box.select()
                 self.click_callback(self.selected)
+            elif event.button == 2:
+                pass
         return handled
     #-------------------------------------------------------
     def do_configure_event(self, event):

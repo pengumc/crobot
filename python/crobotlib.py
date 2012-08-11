@@ -16,8 +16,6 @@ class Crobot:
         #create Quadruped instance
         self.qped = self.lib.Quadruped_alloc()
         self.connected = 0
-        #setup com system
-        self.lib.Quadruped_enableCommunication(self.qped, self.com_p)
 
     def enable_com(self):
         #setup com system
@@ -26,6 +24,7 @@ class Crobot:
     #interface
     #---------------------------------------------------------------------------
     def connect(self):
+        print("trying to connect to device...")
         self.connected = self.lib.Quadruped_startup(self.qped)
         return(self.connected)
     #---------------------------------------------------------------------------
@@ -68,6 +67,12 @@ class Crobot:
         #TODO parse return value
         return(result)
     #--------------------------------------------------------------------------
+    def changeAllLegs(self, dX, dY, dZ):
+        result = self.lib.Quadruped_changeAllEndpoints(
+            self.qped, c_double(dX), c_double(dY), c_double(dZ))
+        #TODO parse return value
+        return(result)
+    #--------------------------------------------------------------------------
     def printLegs(self):
         self.lib.Quadruped_debugLegs(self.qped)
     #--------------------------------------------------------------------------
@@ -81,6 +86,10 @@ class Crobot:
     #--------------------------------------------------------------------------
     def load_from_eeprom(self):
         return(self.lib.Quadruped_loadStartPos(self.qped))
+    #--------------------------------------------------------------------------
+    def set_leg_offset(self, legno, X, Y, Z):
+        self.lib.Quadruped_configureLegOffset(
+            self.qped, c_byte(legno), c_double(X), c_double(Y), c_double(Z))
     
                 
                 

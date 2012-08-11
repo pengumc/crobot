@@ -3,17 +3,24 @@ import sys, os, math
 import platform
 import pygtk
 import gtk, gobject, cairo
+import time
+import threading
 
 import buttonbar
 import grapharea
-import drawrobot #import qpimage
+#import drawrobot
+import qpimage
 import configuration
 from crobotlib import Crobot
+import display3d
 
 def handleSigTERM():
     #gtk.main_quit()
     print("quitting...")
     sys.exit(0)
+
+            
+
 
 #main screen
 #==============
@@ -22,21 +29,26 @@ class Screen:
     NUMBER_OF_BUTTONS = 6
     TIMEOUT = 40
     TIMEOUT_GRAPH = 500
+    SERVOCOUNT = 12
+    DOF = 3
+    LEGCOUNT = 4
     #--------------------------------------------------------------------------    
     def __init__(self, crobot):
         self.timeout_active = False
         self.window = gtk.Window();
-        self.window.connect('delete-event', gtk.main_quit)
+        self.window.connect('destroy', gtk.main_quit)
         self.window.connect('key_press_event', self.do_keypress);
         self.window.add_events(gtk.gdk.SCROLL_MASK)
         self.window.connect("scroll-event", self.do_scroll)
         self.maintable = gtk.Table(2, 3)
-        #drawrobot
-        self.robotdrawing = drawrobot.RobotMainViewArea()
-        self.maintable.attach(self.robotdrawing, 0,1, 0,1, gtk.FILL,gtk.FILL|gtk.EXPAND) 
-        self.robotdrawing.set_size_request(500,500)
+        #=============
+        #self.robotdisp = drawrobot.RobotMainViewArea()
+        self.robotdisp = qpimage.QpImage()
+        self.maintable.attach(self.robotdisp, 0,1, 0,1, gtk.FILL,gtk.FILL|gtk.EXPAND) 
+        self.robotdisp.set_size_request(440,200)
+        #=============
         #buttonlist
-        self.buttontable = gtk.Table(1,3)
+        self.buttontable = gtk.Table(1,4)
         self.maintable.attach(
         self.buttontable, 1,2, 0,1, gtk.FILL|gtk.EXPAND, gtk.FILL|gtk.EXPAND)
         self.connect_button = gtk.Button("connect")
@@ -48,7 +60,9 @@ class Screen:
         self.load_button = gtk.Button("Load from eeprom")
         self.load_button.connect("clicked", self.load_click)
         self.buttontable.attach(self.load_button, 0,1, 2,3, gtk.FILL,gtk.FILL)
-
+        self.launch3d_button = gtk.Button("Launch 3D")
+        self.launch3d_button.connect("clicked", self.launch3d_click)
+        self.buttontable.attach(self.launch3d_button, 0,1, 3,4, gtk.FILL,gtk.FILL)
         #buttonbar
         self.buttonbar = buttonbar.ButtonBar()
         self.maintable.attach(self.buttonbar, 0,2, 2,3, 0,0)
@@ -59,6 +73,8 @@ class Screen:
         self.crobot = crobot
         self.configure()
         self.crobot.enable_com()
+        #3D
+        self.vp = display3d.VPythonThread()
     #--------------------------------------------------------------------------
     def msgbox(self, text):
         box = gtk.MessageDialog(self.window,
@@ -111,6 +127,18 @@ class Screen:
         self.crobot.load_from_eeprom()
         self.update_servoinfo()
     #--------------------------------------------------------------------------
+    def launch3d_click(self, event):
+        if not self.vp.isAlive():
+            self.vp.start()
+            #workaround. the vp thread won't start until after this function
+            #returns for some reason....
+            gtk.timeout_add(500, self.wait_vpython)
+    def wait_vpython(self):
+        result = display3d.threadlock.acquire(False) 
+        if result:
+            self.update_servoinfo()
+        return(result)
+    #--------------------------------------------------------------------------
     def timeout(self, event=None):
         if self.crobot.update_sensor_data() < 1:
             print('disconnected timeout...')
@@ -135,10 +163,10 @@ class Screen:
         handled = False
         if event.direction == gtk.gdk.SCROLL_DOWN:
             handled = True
-            self.change_selected(-0.1)
+            self.change_selected(-0.2)
         if event.direction == gtk.gdk.SCROLL_UP:
             handled = True
-            self.change_selected(0.1)
+            self.change_selected(0.2)
         return(handled)
     #--------------------------------------------------------------------------
     def do_keypress(self, widget, event):
@@ -147,6 +175,7 @@ class Screen:
         if keyname == 'space':
             handled = True
         elif keyname == 'escape':
+            self.window.destroy()
             gtk.main_quit()
         elif (keyname == 'plus' or keyname == 'equal' or keyname == 'kp_add'):
             self.change_selected(0.1)
@@ -160,34 +189,54 @@ class Screen:
     def update_servoinfo(self):
         info = self.crobot.com
         for i in range(Crobot.SERVOCOUNT):
-            self.robotdrawing.servoboxes[i].data[0] = info.pulsewidths[i]
-            self.robotdrawing.servoboxes[i].data[1] = info.angles[i]
-        self.robotdrawing.redraw()
-        
+            #self.robotdrawing.servoboxes[i].data[0] = info.pulsewidths[i]
+            self.robotdisp.setpw(i, info.pulsewidths[i])
+            #self.robotdrawing.servoboxes[i].data[1] = info.angles[i]
+            self.robotdisp.setangle(i, info.angles[i])
+        self.robotdisp.redraw()
+        if self.vp.isAlive(): self.update_servoinfo_3d()
+    #--------------------------------------------------------------------------
+    def update_servoinfo_3d(self):
+        info = self.crobot.com
+        for i in range(Crobot.SERVOCOUNT):
+            self.vp.set_servo_pos(i, 
+                info.servopos.x[i],
+                info.servopos.y[i],
+                info.servopos.z[i])
+        for i in range(Crobot.LEGCOUNT):
+            self.vp.set_endpoint_pos(i,
+                info.endpoints.x[i],
+                info.endpoints.y[i],        
+                info.endpoints.z[i])
     #--------------------------------------------------------------------------
     def change_selected(self, amount):
         #if not self.crobot.con: return
-        selection = self.robotdrawing.selected
+        selection = self.robotdisp.get_single_selected()
         if selection == -1: return
-        if selection < drawrobot.RobotMainViewArea.SERVOCOUNT:
-            l = int(selection) / drawrobot.ServoBox.PERLEG
-            s = int(selection) % drawrobot.ServoBox.PERLEG
+        if selection < self.SERVOCOUNT:
+            l = int(selection) / self.DOF
+            s = int(selection) % self.DOF
             result = self.crobot.changeServo(l, s, amount)
             print("move result: " + str(result))
             if result != 1:
-                self.robotdrawing.blink(selection)
+                self.robotdisp.blink(selection)
             else:
                 self.crobot.commit()
-                self.robotdrawing.blinknone()
+                self.robotdisp.blinknone()
                 self.update_servoinfo()
-        elif selection < (drawrobot.RobotMainViewArea.SERVOCOUNT
-             + drawrobot.RobotMainViewArea.LEGCOUNT):
-             l = int(selection) - drawrobot.RobotMainViewArea.SERVOCOUNT
+        elif selection < (self.SERVOCOUNT + self.LEGCOUNT):
+             l = int(selection) - self.SERVOCOUNT
              result = self.crobot.changeLeg(l, 0, 0, amount)
              print('move result: ' + str(result))
              if result == 0:
                 self.crobot.commit()
-                self.robotdrawing.blinknone()
+                self.robotdisp.blinknone()
+                self.update_servoinfo()
+        elif selection == self.SERVOCOUNT + self.LEGCOUNT:
+            result = self.crobot.changeAllLegs(0,0,amount)
+            if result == 0:
+                self.crobot.commit()
+                self.robotdisp.blinknone()
                 self.update_servoinfo()
     #--------------------------------------------------------------------------
     def configure(self):
@@ -206,6 +255,11 @@ class Screen:
                 float(leg.sections["A"]["length"]),
                 float(leg.sections["B"]["length"]),
                 float(leg.sections["C"]["length"]))
+            self.crobot.set_leg_offset(
+                leg.n, 
+                float(leg.offset["x"]),
+                float(leg.offset["y"]),
+                float(leg.offset["z"]))
     #--------------------------------------------------------------------------
 
 
@@ -214,6 +268,7 @@ class Screen:
 if __name__ == "__main__":
     signal.signal(signal.SIGTERM, handleSigTERM) 
     signal.signal(signal.SIGINT, handleSigTERM) 
+    gobject.threads_init()
     bits = platform.machine()
     print("machine: " + bits)
     if bits == 'i686' or bits == 'x86':
@@ -221,9 +276,9 @@ if __name__ == "__main__":
     elif bits == 'x86_64' or bits == 'AMD64':
         bits = '64'
     if sys.platform == 'linux2':
-        LIBCROBOT = "lib/libcrobot" + bits + ".so.1.0.1"
+        LIBCROBOT = os.path.dirname(__file__) + "/../lib/libcrobot" + bits + ".so.1.0.1"
     elif sys.platform == 'win32':
-        LIBCROBOT = "lib/libcrobot" + bits + ".dll"
+        LIBCROBOT = os.path.dirname(__file__) + "/../lib/libcrobot" + bits + ".dll"
     print("lib: " + LIBCROBOT)
     try:
         screen = Screen(Crobot(LIBCROBOT))

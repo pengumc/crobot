@@ -1,7 +1,9 @@
 /**
  * @file Leg.c
  * @brief leg data is unaware of the main body. The origin point is servo 0,
+ servoLocations uses this as origin.
  The plane of rotation is the same as the mainbody plate.
+ 
  */
 /* Copyright (c) 2012 Michiel van der Coelen
 
@@ -184,6 +186,13 @@ void Leg_updateServoLocations(leg_t* leg){
 	
 }
 
+void Leg_resyncSolverParams(leg_t* leg){
+    Solver_setXYZ(leg->legSolver, 
+        rot_vector_get(leg->servoLocations[3], 0),
+        rot_vector_get(leg->servoLocations[3], 1),
+        rot_vector_get(leg->servoLocations[3], 2));
+}
+
 
 /*============== TRY ENDPOINT change ========================================*/
 /** Check if there's a valid solution for a change.
@@ -270,10 +279,13 @@ void Leg_printDetails(leg_t* leg){
             i, leg->servos[i]->_angle, leg->servos[i]->_pw);
 		Report_std(s);
 	}
+    Report_std("leg offset:");
+    rot_vector_print(leg->offsetFromCOB);
 	Report_std("servo loc:");
 	for(i=0;i<LEG_DOF+1;i++){
 		rot_vector_print(leg->servoLocations[i]);
 	}
+    
 
     solverParams_t params = Solver_getParams(leg->legSolver);
 	sprintf(s, "A: %.1f\nB: %.1f\nC: %.1f", 
@@ -291,7 +303,9 @@ void Leg_printDetails(leg_t* leg){
  * @retval 0 Angle was out of bounds for this servo. nothing was changed.
  */
 int Leg_changeServoAngle(leg_t* leg, uint8_t s, double value){
-    return(Servo_changeAngle(leg->servos[s], value));
+    int result = Servo_changeAngle(leg->servos[s], value);
+    Leg_updateServoLocations(leg);
+    return(result);
 }
 
 

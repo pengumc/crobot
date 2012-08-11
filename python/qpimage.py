@@ -18,12 +18,14 @@ class QpImage(gtk.DrawingArea):
     MARGIN = 10 #flat pixel margin between servos
     SERVOCOUNT = 12
     LEGSIZE = 3 #servos per leg
+    LEGCOUNT = 4
     TEXTSIZE = 12
     BLINKTIMEMS = 1000 #ms to flash red
 
     def __init__(self):
         gtk.DrawingArea.__init__(self)
-        self.bgcolor = [0.9, 0.9, 0.9]
+        #self.bgcolor = [0.9, 0.9, 0.9]
+        self.bgcolor = [1,1,1]
         self.cr = None
         self.height = 0
         self.width = 0
@@ -31,10 +33,20 @@ class QpImage(gtk.DrawingArea):
         self.mainbodyw = 0
         self.servow = 0
         self.servoh = 0
-        self.blocks = [ServoBlock(i) for i in range(QpImage.SERVOCOUNT+1)]
+        #0-11 servos, 12-15 legs, 16 mainbody
+        self.blocks = [ServoBlock(i) for i in range(QpImage.SERVOCOUNT+QpImage.LEGCOUNT+1)]
         self.add_events(gtk.gdk.BUTTON_PRESS_MASK)
         self.connect("button_press_event", self.do_click)
 
+    def redraw(self):
+        self.do_expose_event()
+        
+    def setpw(self, n, pw):
+        self.blocks[n].pw = pw
+        
+    def setangle(self, n, angle):
+        self.blocks[n].angle = angle
+        
     def do_click(self, widget, event):
         handled = False
         #normal click = select item (clear everything else)
@@ -68,6 +80,11 @@ class QpImage(gtk.DrawingArea):
         self.do_expose_event()
         if self.blocks[blockno].blinking == 1:
             gtk.timeout_add(QpImage.BLINKTIMEMS, self.blink_timeout, blockno)
+    
+    def blinknone(self):
+        for block in self.blocks:
+            block.blinking = 0
+        self.do_expose_event()
 
     def blink_timeout(self, data):
         self.blocks[data].blinking -= 1
@@ -87,8 +104,19 @@ class QpImage(gtk.DrawingArea):
             if block.selected: result.append(block.n)
         return(result)
 
-    def getItemByXY(self, x, y):
+    def get_single_selected(self):
         for block in self.blocks:
+            if block.selected: return(block.n)
+    
+        
+    def getItemByXY(self, x, y):
+        #check mainbody first
+        block = self.blocks[-1]
+        if block.x - block.w/2 < x < block.x + block.w/2:
+            if block.y - block.h/2 < y < block.y + block.h/2:
+                return(block.n)
+        #next check the rest
+        for block in self.blocks[:-1]:
             if block.x - block.w/2 < x < block.x + block.w/2:
                 if block.y - block.h/2 < y < block.y + block.h/2:
                     return(block.n)
@@ -101,7 +129,7 @@ class QpImage(gtk.DrawingArea):
         self.cr.set_font_size(QpImage.TEXTSIZE)
         self.clear()
         #self.draw_mainbody()
-        self.draw_servo()
+        self.draw_blocks()
         self.cr.pop_group_to_source()
         self.cr.paint()
 
@@ -110,21 +138,33 @@ class QpImage(gtk.DrawingArea):
         alloc = self.get_allocation()
         self.width = alloc.width
         self.height = alloc.height
-        
         base = self.width
+        #mainbody
         self.mainbodyw = base * QpImage.MAINBODYSIZE
         self.mainbodyh = self.mainbodyw * QpImage.MAINBODYRATIO
-        self.blocks[QpImage.SERVOCOUNT].w = self.mainbodyw
-        self.blocks[QpImage.SERVOCOUNT].h = self.mainbodyh
-        self.blocks[QpImage.SERVOCOUNT].x = self.width/2
-        self.blocks[QpImage.SERVOCOUNT].y = self.height/2
+        mainbodyindex = QpImage.SERVOCOUNT+QpImage.LEGCOUNT
+        self.blocks[mainbodyindex].w = self.mainbodyw
+        self.blocks[mainbodyindex].h = self.mainbodyh
+        self.blocks[mainbodyindex].x = self.width/2
+        self.blocks[mainbodyindex].y = self.height/2
+        #servos
         self.servow = base * QpImage.SERVOSIZE
         self.servoh = self.servow
         for i in range(QpImage.SERVOCOUNT):
             self.blocks[i].x, self.blocks[i].y = self.get_servoloc_by_number(i)
             self.blocks[i].w = self.servow
             self.blocks[i].h = self.servoh
-
+        #legs
+        legwidth  = self.width/2 - 4
+        legheight = self.mainbodyh * 0.7
+        #legbasex = self.width / 2
+        #legbasey = self.height /2
+        for i in range(self.LEGCOUNT):
+            self.blocks[QpImage.SERVOCOUNT + i].x = self.blocks[i*self.LEGSIZE + 1].x
+            self.blocks[QpImage.SERVOCOUNT + i].y = self.blocks[i*self.LEGSIZE + 1].y
+            self.blocks[QpImage.SERVOCOUNT + i].w = legwidth
+            self.blocks[QpImage.SERVOCOUNT + i].h = legheight
+            self.blocks[QpImage.SERVOCOUNT + i].silent = True
         #draw after we've set all sizes
         self.do_expose_event()
 
@@ -132,11 +172,13 @@ class QpImage(gtk.DrawingArea):
         self.cr.set_source_rgb(*self.bgcolor)
         self.cr.rectangle(0, 0, self.width, self.height) 
         self.cr.fill()
-            
 
-
-    def draw_servo(self):
-        for block in self.blocks:
+    def draw_blocks(self):
+        for block in self.blocks[QpImage.SERVOCOUNT:QpImage.SERVOCOUNT + QpImage.LEGCOUNT]:
+            block.draw(self.cr)
+        for block in self.blocks[:QpImage.SERVOCOUNT]:
+            block.draw(self.cr)
+        for block in self.blocks[QpImage.SERVOCOUNT + QpImage.LEGCOUNT:]:
             block.draw(self.cr)
 
     def toggle_select(self):
@@ -153,17 +195,17 @@ class QpImage(gtk.DrawingArea):
         legno = i / QpImage.LEGSIZE
         servono = i % QpImage.LEGSIZE
         w = self.width
-        if legno == 0:  
+        if legno == 3:  
             direction = -1.0
             # y = same as top of mainbody + half servo size
             y = self.height/2 + self.mainbodyh/2 - self.servoh/2
-        elif legno == 1:
+        elif legno == 2:
             direction = 1.0
             y = self.height/2 + self.mainbodyh/2 - self.servoh/2
-        elif legno == 2:
+        elif legno == 1:
             y = self.height/2 - self.mainbodyh/2 + self.servoh/2
             direction = -1.0
-        elif legno == 3:
+        elif legno == 0:
             y = self.height/2 - self.mainbodyh/2 + self.servoh/2
             direction = 1.0
         #x = to the right of mainbody, one default margin + half servowidth +
@@ -184,12 +226,15 @@ class ServoBlock:
         self.h = 0
         self.n = n
         self.pw = 72
+        self.angle = 0.0
         self.blinking = 0
+        self.silent = False
 
         
     def draw(self, cr):
-        #colered blocks with text at roughly the servo locations
+        #colored blocks with text at roughly the servo locations
         self.set_color(cr, self.color)
+        cr.set_line_width(2.0)
         x = self.x
         y = self.y
         cr.rectangle(
@@ -197,11 +242,20 @@ class ServoBlock:
             y - self.h/2,
             self.w,
             self.h)
-        cr.stroke()
-        self.set_color(cr, QpImage.BLACK)
-        cr.move_to(x -20 ,y)
-        cr.show_text(str(self.n) + ": " + str(self.pw))
-        cr.stroke()
+        if not self.silent:
+            cr.stroke()
+            self.set_color(cr, QpImage.BLACK)
+            cr.move_to(x -18 ,y-5)
+            cr.show_text(str(self.n) + ":  " + str(self.pw))
+            cr.move_to(x -18, y+10)
+            cr.show_text("{:.2f}".format(self.angle))
+            cr.stroke()
+        else:
+            if self.selected:
+                cr.fill()
+            else:
+                cr.set_line_width(0.5)
+                cr.stroke()
     
     def toggle_select(self):
         if self.selected:

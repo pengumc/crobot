@@ -196,6 +196,7 @@ void _Usbdevice_updateServos(usbdevice_t* dev, char* buffer){
             i++;
         }
         Leg_updateServoLocations(dev->legs[leg]);
+        Leg_resyncSolverParams(dev->legs[leg]);
     }
 }
 
@@ -285,7 +286,7 @@ void printBuffer(char* buffer){
     printf("buffer = [");
     char i;
     for(i=0;i<BUFLEN_SERVO_DATA;i++){
-        printf("%d, ", buffer[i]);
+        printf("%d, ", (uint8_t)buffer[i]);
     }
     printf("]\n");
 }

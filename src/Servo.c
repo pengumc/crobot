@@ -84,8 +84,11 @@ angle_t Servo_convertToAngle(servo_t* servo, uint8_t pulsewidth){
 * @returns The pulsewidth this servo would take if you set it's angle to value.
  */
 uint8_t Servo_convertToPulsewidth(servo_t* servo, angle_t value){
-    return( (uint8_t) ((Angle_normalize(value) - servo->offset)
-        / servo->K * servo->direction + servo->midPulse));
+    value = Angle_normalize(value - servo->offset);
+    uint8_t result = (value)
+        / servo->K * servo->direction + servo->midPulse;
+    //printf("angle2pw: %.2f -> %d\n", value, result);
+    return(result);
 }
 
 
@@ -160,7 +163,7 @@ int Servo_checkAngle(servo_t* servo, angle_t value){
     {
         result = 1;
     }else result =0;
-    printf("servo check %.2f: %d\nrange: %.2f ... %.2f\n", value, result, min, max);
+    //printf("servo check %.2f: %d\nrange: %.2f ... %.2f\n", value, result, min, max);
     return(result);
 }
 

@@ -28,6 +28,8 @@ class Configuration:
             servos = leg.findall("servo")
             for s in servos:
                 l.servos.append(s.attrib)
+            offset = leg.find("offset")
+            l.offset = offset.attrib
             self.legs.append(l)
         return(True)
         
@@ -37,6 +39,7 @@ class LegConfig:
         self.sections = {}
         self.servos = []
         self.n = n
+        self.offset = {}
 
 #------------------------------- -----------------------------------------
 if __name__ == "__main__":

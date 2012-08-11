@@ -99,6 +99,8 @@ int Quadruped_changeSingleServo(
     quadruped_t* qp, uint8_t l, uint8_t s, double angle);
 void Quadruped_configureLegLengths(quadruped_t* qped,
     uint8_t legNo, double A, double B, double C);
+void Quadruped_configureLegLengths(quadruped_t* qped,
+    uint8_t legNo, double A, double B, double C);
 void Quadruped_debugLegs(quadruped_t* qp);
 void Quadruped_enableCommunication(quadruped_t* qp, communication_t* com);
 int Quadruped_loadStartPos(quadruped_t* qped);
