@@ -272,7 +272,7 @@ int Quadruped_changeLegEndpoint(quadruped_t* qped, uint8_t legNo,
 
 /*======================= MOVE ALL LEGS======================================*/
 /** Move the COB by moving all legs
- * Chnages the endpoints of all legs by the same amount. Essentially moving
+ * Changes the endpoints of all legs by the same amount. Essentially moving
  the center of the quadruped in the opposite direction.
  Changes are send to the device if they're acceptable.
  * @param qped The quadruped to use.
@@ -305,9 +305,49 @@ int Quadruped_changeAllEndpoints(quadruped_t* qped,
         }
     }
     update_servoAction(qped);
+    rot_free(v);
     return(error);
 }
 
+
+/*======================= SET ALL LEGS======================================*/
+/** Set all endpoints to the same coordinates (relative to the leg origin)
+ * This will set set all legs to the same height so the quadruped should be
+ * level after calling this.
+ Changes are send to the device if they're acceptable.
+ * @param qped The quadruped to use.
+ * @param X the x coordinate.
+ * @param Y the y coordinate.
+ * @param Z the z coordinate.
+ * @return 4 bytes as an int, each representing the error state of 1 leg.
+ */
+int Quadruped_setAllEndpoints(quadruped_t* qped,
+    double X, double Y, double Z)
+{
+    //for each leg, create a delta and try a change
+    rot_vector_t* v = rot_vector_alloc();
+    int i;
+    unsigned int error = 0;
+    for(i=0;i<USBDEV_LEGNO;i++){
+        rot_vector_setAll(v,
+            X - qped->dev->legs[i]->legSolver->params->X,
+            Y - qped->dev->legs[i]->legSolver->params->Y,
+            Z - qped->dev->legs[i]->legSolver->params->Z);
+        error +=
+            ( (unsigned int)
+                (-Leg_tryEndpointChange(qped->dev->legs[i], v) )
+            ) << i*4;
+    }
+     if(error == 0){
+        //no errors, commit everything.
+        for(i=0;i<USBDEV_LEGNO;i++){
+            Leg_commitEndpointChange(qped->dev->legs[i]);
+        }
+    }
+    update_servoAction(qped);
+    rot_free(v);
+    return(error);
+}
 
 
 /*======================= CHANGE SERVO ======================================*/

@@ -107,7 +107,7 @@ class QpImage(gtk.DrawingArea):
     def get_single_selected(self):
         for block in self.blocks:
             if block.selected: return(block.n)
-    
+        return(-1)
         
     def getItemByXY(self, x, y):
         #check mainbody first

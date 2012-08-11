@@ -35,4 +35,11 @@
         <servo n="2" offset="-1.5708" orientation="xz" />
         <offset x="-4" y="-7" z="0"/>
     </leg>
+    <position name="base">
+        <!--xyz relative to respective servo 0 -->
+        <endpoint n="0" x="9.3" y="0" z="-6.0"/>
+        <endpoint n="1" x="9.3" y="0" z="-6.0"/>
+        <endpoint n="2" x="9.3" y="0" z="-6.0"/>
+        <endpoint n="3" x="9.3" y="0" z="-6.0"/>
+    </position>
 </crobot>

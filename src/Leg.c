@@ -203,7 +203,7 @@ void Leg_resyncSolverParams(leg_t* leg){
  * @param delta The change in xyz coords of the endpoint.
  * retval 0 Success, Valid coordinates can be set with 
  Leg_commitEndpointChange.
- * @retval -4 Error, no valid solution, no changes were made. Please not that 
+ * @retval -4 Error, no valid solution, no changes were made. Please note that 
  the lastResult vector in the solver is not valid now.
  * @retval -1..3 A valid solution was found but one of the servo's couldn't
  handle the angle. It's number-1 (negative) is returned.
@@ -248,7 +248,6 @@ int Leg_tryEndpointChange(leg_t* leg, rot_vector_t* delta){
     return(returnCode);
 
 }
-
 
 /*================= COMMIT CHANGE ===========================================*/
 /** Commit the previously calculated angles to the servos.

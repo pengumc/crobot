@@ -90,6 +90,8 @@ int Quadruped_changeLegEndpoint(quadruped_t* qped, uint8_t legNo,
     double X, double Y, double Z);
 int Quadruped_changeAllEndpoints(quadruped_t* qped,
     double X, double Y, double Z);
+int Quadruped_setAllEndpoints(quadruped_t* qped,
+    double X, double Y, double Z);
 int Quadruped_getPsAxis(quadruped_t* qped, pscontroller_axis axis);
 int Quadruped_getServoData(quadruped_t* qp);
 void Quadruped_updateServoinfo(quadruped_t* qp);

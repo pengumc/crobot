@@ -32,6 +32,7 @@ class Screen:
     SERVOCOUNT = 12
     DOF = 3
     LEGCOUNT = 4
+    SPEED = 0.5
     #--------------------------------------------------------------------------    
     def __init__(self, crobot):
         self.timeout_active = False
@@ -181,6 +182,14 @@ class Screen:
             self.change_selected(0.1)
         elif (keyname == 'minus' or keyname == 'kp_subtract'):
             self.change_selected(-0.1)
+        elif (keyname == 'up' or keyname == 'w'):
+            self.change_selected((0, self.SPEED, 0))
+        elif (keyname == 'down' or keyname == 's'):
+            self.change_selected((0, -self.SPEED, 0))
+        elif (keyname == 'left' or keyname == 'a'):
+            self.change_selected((self.SPEED, 0.0, 0))
+        elif (keyname == 'right' or keyname == 'd'):
+            self.change_selected((-self.SPEED, 0, 0))
         else:
             #print("unhandled: " + str(keyname) + " - " + str(event.keyval))
             pass
@@ -210,13 +219,18 @@ class Screen:
                 info.endpoints.z[i])
     #--------------------------------------------------------------------------
     def change_selected(self, amount):
+        try:
+            value = amount[0]
+        except TypeError:
+            value = amount
+            amount = (0,0,value)
         #if not self.crobot.con: return
         selection = self.robotdisp.get_single_selected()
         if selection == -1: return
         if selection < self.SERVOCOUNT:
             l = int(selection) / self.DOF
             s = int(selection) % self.DOF
-            result = self.crobot.changeServo(l, s, amount)
+            result = self.crobot.changeServo(l, s, value)
             print("move result: " + str(result))
             if result != 1:
                 self.robotdisp.blink(selection)
@@ -226,14 +240,14 @@ class Screen:
                 self.update_servoinfo()
         elif selection < (self.SERVOCOUNT + self.LEGCOUNT):
              l = int(selection) - self.SERVOCOUNT
-             result = self.crobot.changeLeg(l, 0, 0, amount)
+             result = self.crobot.changeLeg(l, *amount)
              print('move result: ' + str(result))
              if result == 0:
                 self.crobot.commit()
                 self.robotdisp.blinknone()
                 self.update_servoinfo()
         elif selection == self.SERVOCOUNT + self.LEGCOUNT:
-            result = self.crobot.changeAllLegs(0,0,amount)
+            result = self.crobot.changeAllLegs(*amount)
             if result == 0:
                 self.crobot.commit()
                 self.robotdisp.blinknone()
