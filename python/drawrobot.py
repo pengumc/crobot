@@ -80,7 +80,9 @@ class RobotMainViewArea(gtk.Table):
     #--------------------------------------------------------------
     def setangle(self, n, angle):
         self.servoboxes[n].data[1] = angle
-    
+    #--------------------------------------------------------------
+    def select(self, n):
+        self.click_callback(n)
                 
     
 #ROBOT LEG VIEW

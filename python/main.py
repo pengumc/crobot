@@ -33,6 +33,7 @@ class Screen:
     DOF = 3
     LEGCOUNT = 4
     SPEED = 0.5
+    STICKTHRES = 50
     #--------------------------------------------------------------------------    
     def __init__(self, crobot):
         self.timeout_active = False
@@ -148,17 +149,45 @@ class Screen:
             return(False)
         self.update_buttons()
         self.update_sticks()
+        self.controller_actions()
         return(True)
     #--------------------------------------------------------------------------
     def update_buttons(self):
         for name, button in self.buttonbar.buttons.iteritems():
-            button.set(self.crobot.getButtonEdge(button.buttonNo))
+            edge = self.crobot.getButtonEdge(button.buttonNo)
+            button.set(edge)
+            if edge == 1:
+                self.psbutton_action(name)
     #--------------------------------------------------------------------------            
     def update_sticks(self):
         self.buttonbar.sticks['right'].update(
             self.crobot.getStick(0), self.crobot.getStick(1))
         self.buttonbar.sticks['left'].update(
             self.crobot.getStick(2), self.crobot.getStick(3))
+    #--------------------------------------------------------------------------
+    def controller_actions(self):
+        leftx = self.buttonbar.sticks['left'].X
+        if abs(leftx) > self.STICKTHRES:
+            self.change_selected((float(leftx)/128.0*self.SPEED, 0, 0))
+        lefty = self.buttonbar.sticks['left'].Y
+        if abs(lefty) > self.STICKTHRES:
+            self.change_selected((0, -float(lefty)/128.0*self.SPEED, 0))
+        righty = self.buttonbar.sticks['right'].Y
+        if abs(righty) > self.STICKTHRES:
+            self.change_selected((0, 0, -float(righty)/128.0*self.SPEED))
+    #--------------------------------------------------------------------------
+    def psbutton_action(self, name):
+        print(name)
+        if name == 'select':
+            self.robotdisp.select(self.SERVOCOUNT + self.LEGCOUNT)
+        elif name == 'r1':
+            self.robotdisp.select(self.SERVOCOUNT + 0)
+        elif name == 'r2':
+            self.robotdisp.select(self.SERVOCOUNT + 2)
+        elif name == 'l1':
+            self.robotdisp.select(self.SERVOCOUNT + 1)
+        elif name == 'l2':
+            self.robotdisp.select(self.SERVOCOUNT + 3)
     #--------------------------------------------------------------------------
     def do_scroll(self, widget, event):
         handled = False
@@ -198,9 +227,7 @@ class Screen:
     def update_servoinfo(self):
         info = self.crobot.com
         for i in range(Crobot.SERVOCOUNT):
-            #self.robotdrawing.servoboxes[i].data[0] = info.pulsewidths[i]
             self.robotdisp.setpw(i, info.pulsewidths[i])
-            #self.robotdrawing.servoboxes[i].data[1] = info.angles[i]
             self.robotdisp.setangle(i, info.angles[i])
         self.robotdisp.redraw()
         if self.vp.isAlive(): self.update_servoinfo_3d()

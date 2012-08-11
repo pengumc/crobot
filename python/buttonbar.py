@@ -6,7 +6,7 @@ import math
 #playstation analog stick drawing
 #==================================
 class Psanalog(gtk.DrawingArea):
-    
+    #x and y are expected between -128 and 127
     SIZE = 48
     ARCSIZE = 5
     SCALE = SIZE/255.0

@@ -74,7 +74,9 @@ class QpImage(gtk.DrawingArea):
         self.clearSelected()
         self.blocks[blockno].on()
         self.do_expose_event()
-
+    def select(self, n):
+        self.select_block(n)
+        
     def blink(self, blockno):
         self.blocks[blockno].blinking += 1
         self.do_expose_event()

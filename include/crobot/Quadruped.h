@@ -106,7 +106,9 @@ void Quadruped_configureLegLengths(quadruped_t* qped,
 void Quadruped_debugLegs(quadruped_t* qp);
 void Quadruped_enableCommunication(quadruped_t* qp, communication_t* com);
 int Quadruped_loadStartPos(quadruped_t* qped);
-
+int Quadruped_getPsButton(quadruped_t* qped, pscontroller_button button);
+int Quadruped_getPsButtonEdge(quadruped_t* qped, pscontroller_button button);
+int Quadruped_getPsAxis(quadruped_t* qped, pscontroller_axis axis);
 
 //COM------------------------------------------------------
 communication_t* Communication_alloc();
