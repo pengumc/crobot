@@ -253,7 +253,9 @@ int Quadruped_rotate(quadruped_t* qped,
     for(i=0;i<USBDEV_LEGNO;i++){
         //grab absolute position
         rot_vector_copy(qped->dev->legs[i]->servoLocations[LEG_DOF], v);
-        rot_vector_add(v, qped->dev->legs[i]->offsetFromCOB);
+        rot_matrix_dot_vector(
+            qped->R, qped->dev->legs[i]->offsetFromCOB, tempOffset);
+        rot_vector_add(v, tempOffset);
         //rotate back
         rot_matrix_dot_vector(qped->R, v, tempv);
         //get difference 
@@ -281,6 +283,7 @@ int Quadruped_rotate(quadruped_t* qped,
     
     rot_free(v);
     rot_free(tempv);
+    rot_free(tempOffset);
     rot_free(old_angles);
     return(error);
 }
