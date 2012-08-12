@@ -33,7 +33,7 @@ class Screen:
     DOF = 3
     LEGCOUNT = 4
     SPEED = 0.5
-    STICKTHRES = 50
+    STICKTHRES = 20
     #--------------------------------------------------------------------------    
     def __init__(self, crobot):
         self.timeout_active = False
@@ -106,7 +106,7 @@ class Screen:
     #--------------------------------------------------------------------------
     def connect_click(self, event):
         self.connect_to_device()
-        result = self.crobot.setAllLegs(-6)
+        result = self.crobot.setAllLegs(-3)
         if result == 0:
             self.crobot.commit()
             
@@ -173,13 +173,13 @@ class Screen:
     def controller_actions(self):
         leftx = self.buttonbar.sticks['left'].X
         if abs(leftx) > self.STICKTHRES:
-            self.change_selected((float(leftx)/128.0*self.SPEED, 0, 0))
+            self.change_selected((-float(leftx)/128.0*self.SPEED, 0, 0))
         lefty = self.buttonbar.sticks['left'].Y
         if abs(lefty) > self.STICKTHRES:
-            self.change_selected((0, -float(lefty)/128.0*self.SPEED, 0))
+            self.change_selected((0, float(lefty)/128.0*self.SPEED, 0))
         righty = self.buttonbar.sticks['right'].Y
         if abs(righty) > self.STICKTHRES:
-            self.change_selected((0, 0, -float(righty)/128.0*self.SPEED))
+            self.change_selected((0, 0, float(righty)/128.0*self.SPEED))
     #--------------------------------------------------------------------------
     def psbutton_action(self, name):
         print(name)
