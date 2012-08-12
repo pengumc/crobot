@@ -36,6 +36,7 @@ typedef struct{
 	servo_t* servos[LEG_DOF]; /**< Servo data for the servo in this leg.*/
 	rot_vector_t* servoLocations[LEG_DOF+1];/**< Location relative to servo0.*/
 	rot_vector_t* offsetFromCOB; /**< The vector from COB to servo 0*/
+    rot_vector_t* endpointRollback; /** Rollback coords for the last action.*/
 	solver_t* legSolver; /**< The solver that will be used by this leg */
 } leg_t;
 
@@ -52,6 +53,8 @@ void Leg_updateServoLocations(leg_t* leg);
 int Leg_changeServoAngle(leg_t* leg, uint8_t s, double value);
 void Leg_setLengths(leg_t * leg, double A, double B, double C);
 void Leg_resyncSolverParams(leg_t* leg);
+void Leg_performRollback(leg_t* leg);
+void Leg_setupRollback(leg_t* leg);
 
 #endif
 

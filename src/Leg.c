@@ -41,6 +41,7 @@ leg_t* Leg_alloc(){
 	//extra vectors
 	tempLeg->servoLocations[LEG_DOF] = rot_vector_alloc();
 	tempLeg->offsetFromCOB = rot_vector_alloc();
+    tempLeg->endpointRollback = rot_vector_alloc();
     //the solver
     
 	//TODO relocate solver to usbdevice (we only need one)
@@ -71,6 +72,7 @@ void Leg_initDefaults(leg_t* leg){
 void Leg_free(leg_t* leg){
 	Solver_free(leg->legSolver);
 	rot_free(leg->offsetFromCOB);
+    rot_free(leg->endpointRollback);
     char i;
 	for(i=0; i<LEG_DOF; i++){
 		rot_free(leg->servoLocations[i]);
@@ -193,7 +195,20 @@ void Leg_resyncSolverParams(leg_t* leg){
         rot_vector_get(leg->servoLocations[3], 2));
 }
 
+void Leg_setupRollback(leg_t* leg){
+    rot_vector_setAll(leg->endpointRollback,
+        leg->legSolver->params->X,
+        leg->legSolver->params->Y,
+        leg->legSolver->params->Z);
+}
 
+void Leg_performRollback(leg_t* leg){
+    Solver_setXYZ(leg->legSolver,
+        rot_vector_get(leg->endpointRollback, 0),
+        rot_vector_get(leg->endpointRollback, 1),
+        rot_vector_get(leg->endpointRollback, 2));
+    Leg_setupRollback(leg); //clears
+}
 /*============== TRY ENDPOINT change ========================================*/
 /** Check if there's a valid solution for a change.
  * After a successful try you should call Leg_commitEndpointChange to
@@ -209,6 +224,7 @@ void Leg_resyncSolverParams(leg_t* leg){
  handle the angle. It's number-1 (negative) is returned.
  */
 int Leg_tryEndpointChange(leg_t* leg, rot_vector_t* delta){
+    Leg_setupRollback(leg);
     //setup params
     Solver_changeXYZ(leg->legSolver, 
         rot_vector_get(delta, 0),
@@ -222,13 +238,13 @@ int Leg_tryEndpointChange(leg_t* leg, rot_vector_t* delta){
     //check if the solver can find a solution
 	int returnCode = 0;
     if(Solver_solve(leg->legSolver) == 0){
-        rot_vector_print(leg->legSolver->lastResult);
+        //rot_vector_print(leg->legSolver->lastResult);
         //successful solve
 		int8_t i;
 		for(i=0;i<LEG_DOF;i++){
 			//still, check the servos to see if they can handle the angle	
-            printf("checking servo %d for angle %.2f\n",
-                i, rot_vector_get(leg->legSolver->lastResult, i));
+            //printf("checking servo %d for angle %.2f\n",
+            //    i, rot_vector_get(leg->legSolver->lastResult, i));
 			if(Servo_checkAngle(leg->servos[i], 
 				rot_vector_get(leg->legSolver->lastResult, i)) == 0)
 			{
@@ -240,10 +256,13 @@ int Leg_tryEndpointChange(leg_t* leg, rot_vector_t* delta){
 	
 	if(returnCode != 0){
         //no solution, return params to previous state
-        Solver_changeXYZ(leg->legSolver,
+        printf("failed, rolling back\n");
+        /*Solver_changeXYZ(leg->legSolver,
             -rot_vector_get(delta, 0),
             -rot_vector_get(delta, 1),
             -rot_vector_get(delta, 2));
+         */
+        Leg_performRollback(leg);
     }
     return(returnCode);
 

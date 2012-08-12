@@ -48,12 +48,12 @@ quadruped_t* Quadruped_alloc(){
     tqped->invR = rot_matrix_alloc();
     tqped->angles = rot_vector_alloc();
     rot_vector_setAll(tqped->angles, 0.0, 0.0, 0.0);
-    Quadruped_updateMatricesFromAngles(tqped, tqped->angles);
-
     tqped->com = NULL;
     
-    //TODO remove
+    //TODO remove servoinfo stuff
     tqped->si = (servoinfo_t*)calloc(1, sizeof(servoinfo_t));
+    
+    Quadruped_updateMatricesFromAngles(tqped, tqped->angles);
     Quadruped_updateServoinfo(tqped);
     
     return(tqped);
@@ -227,12 +227,66 @@ int Quadruped_getServoData(quadruped_t* qp){
  z axis (in that order).
  */
 void Quadruped_updateMatricesFromAngles(quadruped_t* qped, rot_vector_t* a){
+    rot_vector_copy(a, qped->angles);
     rot_matrix_build_from_angles(qped->R, a);
     rot_matrix_invert(qped->R, qped->invR);
 }
 
+/*=================== ROTATE =================================================*/
+int Quadruped_rotate(quadruped_t* qped, 
+    double xaxis, double yaxis, double zaxis)
+{
+    //store angles as vector in v for a call to updateMatrices
+    rot_vector_t* v = rot_vector_alloc();
+    rot_vector_setAll(v, xaxis, yaxis, zaxis);
+    //store old angles for rollback 
+    rot_vector_t* old_angles = rot_vector_alloc();
+    rot_vector_copy(qped->angles, old_angles);
+    //update Matrices
+    Quadruped_updateMatricesFromAngles(qped, v);
+    
+    rot_vector_t* tempv = rot_vector_alloc();
+    rot_vector_t* tempOffset = rot_vector_alloc();
+    
+    int i;
+    unsigned int error = 0 ;
+    for(i=0;i<USBDEV_LEGNO;i++){
+        //grab absolute position
+        rot_vector_copy(qped->dev->legs[i]->servoLocations[LEG_DOF], v);
+        rot_vector_add(v, qped->dev->legs[i]->offsetFromCOB);
+        //rotate back
+        rot_matrix_dot_vector(qped->R, v, tempv);
+        //get difference 
+        rot_vector_minus(v, tempv);
+        //and Leg_tryEndpointChange
+        error += 
+            ( (unsigned int)
+                (-Leg_tryEndpointChange(qped->dev->legs[i], v) )
+            ) << i*4;
+    }
+    if(error == 0){
+        //no errors, commit everything.
+        for(i=0;i<USBDEV_LEGNO;i++){
+            Leg_commitEndpointChange(qped->dev->legs[i]);
+        }
+        update_servoAction(qped);        
+    }else{
+        //errors, do a rollback
+        for(i=0;i<USBDEV_LEGNO;i++){
+            Leg_performRollback(qped->dev->legs[i]);
+        }
+        //rollback rotation
+        Quadruped_updateMatricesFromAngles(qped, old_angles);
+    }
+    
+    rot_free(v);
+    rot_free(tempv);
+    rot_free(old_angles);
+    return(error);
+}
 
-/*================== CHANGE SINGE LEG ENDPOINT =============================+*/
+
+/*================== CHANGE SINGE LEG ENDPOINT ==============================*/
 /** Move a single leg.
  * The provided coordinates are for the endpoint (foot) of the leg. So 
  an increase in Z means servo 0 is going down. This is regardless of 
@@ -289,6 +343,9 @@ int Quadruped_changeAllEndpoints(quadruped_t* qped,
     */
     rot_vector_t* v = rot_vector_alloc();
     rot_vector_setAll(v, X, Y, Z);
+    //rotate to offset main body rotation
+    rot_matrix_dot_vector(qped->invR, v, v);
+
     uint8_t i;
     unsigned int error = 0;
     for(i=0;i<USBDEV_LEGNO;i++){
@@ -302,6 +359,11 @@ int Quadruped_changeAllEndpoints(quadruped_t* qped,
         //no errors, commit everything.
         for(i=0;i<USBDEV_LEGNO;i++){
             Leg_commitEndpointChange(qped->dev->legs[i]);
+        }
+    }else{
+        //errors, do a rollback
+        for(i=0;i<USBDEV_LEGNO;i++){
+            Leg_performRollback(qped->dev->legs[i]);
         }
     }
     update_servoAction(qped);
@@ -338,10 +400,15 @@ int Quadruped_setAllEndpoints(quadruped_t* qped,
                 (-Leg_tryEndpointChange(qped->dev->legs[i], v) )
             ) << i*4;
     }
-     if(error == 0){
+    if(error == 0){
         //no errors, commit everything.
         for(i=0;i<USBDEV_LEGNO;i++){
             Leg_commitEndpointChange(qped->dev->legs[i]);
+        }
+    }else{
+        //errors, do a rollback
+        for(i=0;i<USBDEV_LEGNO;i++){
+            Leg_performRollback(qped->dev->legs[i]);
         }
     }
     update_servoAction(qped);

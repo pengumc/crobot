@@ -106,6 +106,8 @@ class Screen:
     #--------------------------------------------------------------------------
     def connect_click(self, event):
         self.connect_to_device()
+        self.configure()
+        self.update_servoinfo()
     #--------------------------------------------------------------------------
     def debug_click(self, event):
         self.crobot.printLegs();
@@ -219,6 +221,12 @@ class Screen:
             self.change_selected((self.SPEED, 0.0, 0))
         elif (keyname == 'right' or keyname == 'd'):
             self.change_selected((-self.SPEED, 0, 0))
+        elif keyname == 'q': 
+            self.crobot.rotate(0, 0.1, 0)
+            self.update_servoinfo()
+        elif keyname == 'e':
+            self.crobot.rotate(0, -0.1, 0)
+            self.update_servoinfo()
         else:
             #print("unhandled: " + str(keyname) + " - " + str(event.keyval))
             pass

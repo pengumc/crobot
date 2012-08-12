@@ -71,6 +71,7 @@ class Crobot:
         result = self.lib.Quadruped_changeAllEndpoints(
             self.qped, c_double(dX), c_double(dY), c_double(dZ))
         #TODO parse return value
+        print("changeAll: " +str(result))
         return(result)
     #--------------------------------------------------------------------------
     def printLegs(self):
@@ -90,8 +91,13 @@ class Crobot:
     def set_leg_offset(self, legno, X, Y, Z):
         self.lib.Quadruped_configureLegOffset(
             self.qped, c_byte(legno), c_double(X), c_double(Y), c_double(Z))
-    
-                
+    #--------------------------------------------------------------------------
+    def rotate(self, xaxis, yaxis, zaxis):
+        result = self.lib.Quadruped_rotate(self.qped,
+            c_double(xaxis), c_double(yaxis), c_double(zaxis))
+        #TODO parse return value
+        print("rotate: " + str(result))
+        return(result)
                 
 class SERVOPOS (Structure):
     _fields_ = [("x", c_double*Crobot.SERVOCOUNT),

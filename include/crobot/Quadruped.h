@@ -86,6 +86,8 @@ void Quadruped_setGraphPointers(quadruped_t* qped,
 void Quadruped_configureServoOffset(quadruped_t* qped,
     uint8_t legNo, uint8_t servoNo, angle_t offset);
 void Quadruped_updateMatricesFromAngles(quadruped_t* qped, rot_vector_t* a);
+int Quadruped_rotate(quadruped_t* qped, 
+    double xaxis, double yaxis, double zaxis);
 int Quadruped_changeLegEndpoint(quadruped_t* qped, uint8_t legNo,
     double X, double Y, double Z);
 int Quadruped_changeAllEndpoints(quadruped_t* qped,
