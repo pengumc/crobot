@@ -47,7 +47,7 @@ class Screen:
         #self.robotdisp = drawrobot.RobotMainViewArea()
         self.robotdisp = qpimage.QpImage()
         self.maintable.attach(self.robotdisp, 0,1, 0,1, gtk.FILL,gtk.FILL|gtk.EXPAND) 
-        self.robotdisp.set_size_request(440,200)
+        self.robotdisp.set_size_request(500,220)
         #=============
         #buttonlist
         self.buttontable = gtk.Table(1,4)
@@ -106,7 +106,10 @@ class Screen:
     #--------------------------------------------------------------------------
     def connect_click(self, event):
         self.connect_to_device()
-        self.configure()
+        result = self.crobot.setAllLegs(-6)
+        if result == 0:
+            self.crobot.commit()
+            
         self.update_servoinfo()
     #--------------------------------------------------------------------------
     def debug_click(self, event):
@@ -221,12 +224,12 @@ class Screen:
             self.change_selected((self.SPEED, 0.0, 0))
         elif (keyname == 'right' or keyname == 'd'):
             self.change_selected((-self.SPEED, 0, 0))
-        elif keyname == 'q': 
-            self.crobot.rotate(0, 0.1, 0)
-            self.update_servoinfo()
-        elif keyname == 'e':
-            self.crobot.rotate(0, -0.1, 0)
-            self.update_servoinfo()
+        elif keyname == 'q': self.rotate(0, 0.1, 0)
+        elif keyname == 'e': self.rotate(0, -0.1, 0)
+        elif keyname == 'r': self.rotate(0.1, 0, 0)
+        elif keyname == 'f': self.rotate(-0.1,0, 0)
+        elif keyname == 'z': self.rotate(0, 0, .1)
+        elif keyname == 'c': self.rotate(0, 0, -.1)
         else:
             #print("unhandled: " + str(keyname) + " - " + str(event.keyval))
             pass
@@ -287,6 +290,13 @@ class Screen:
                 self.crobot.commit()
                 self.robotdisp.blinknone()
                 self.update_servoinfo()
+    #--------------------------------------------------------------------------
+    def rotate(self, x, y, z):
+        result = self.crobot.rotate(x, y, z)
+        if result == 0:
+            self.crobot.commit()
+            self.robotdisp.blinknone()
+            self.update_servoinfo()
     #--------------------------------------------------------------------------
     def configure(self):
         self.config = configuration.Configuration()

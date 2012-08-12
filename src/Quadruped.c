@@ -227,7 +227,6 @@ int Quadruped_getServoData(quadruped_t* qp){
  z axis (in that order).
  */
 void Quadruped_updateMatricesFromAngles(quadruped_t* qped, rot_vector_t* a){
-    rot_vector_copy(a, qped->angles);
     rot_matrix_build_from_angles(qped->R, a);
     rot_matrix_invert(qped->R, qped->invR);
 }
@@ -236,34 +235,38 @@ void Quadruped_updateMatricesFromAngles(quadruped_t* qped, rot_vector_t* a){
 int Quadruped_rotate(quadruped_t* qped, 
     double xaxis, double yaxis, double zaxis)
 {
-    //store angles as vector in v for a call to updateMatrices
-    rot_vector_t* v = rot_vector_alloc();
-    rot_vector_setAll(v, xaxis, yaxis, zaxis);
-    //store old angles for rollback 
-    rot_vector_t* old_angles = rot_vector_alloc();
-    rot_vector_copy(qped->angles, old_angles);
-    //update Matrices
-    Quadruped_updateMatricesFromAngles(qped, v);
+    /*
+     * v = delta angles
+     * build R and invR from v
+     * V = absolute nonrotated position of endpoint
+     * newV = invR * endpoint
+     * change to newV - V
+     * add delta angles to angles and update matrices
+     */
     
+    //store angles as vector in v for a call to updateMatrices
+    rot_vector_t* dangles = rot_vector_alloc();
+    rot_vector_setAll(dangles, xaxis, yaxis, zaxis);
+    //update Matrices
+    Quadruped_updateMatricesFromAngles(qped, dangles);
+    
+    rot_vector_t* v  = rot_vector_alloc();
     rot_vector_t* tempv = rot_vector_alloc();
-    rot_vector_t* tempOffset = rot_vector_alloc();
     
     int i;
     unsigned int error = 0 ;
     for(i=0;i<USBDEV_LEGNO;i++){
         //grab absolute position
         rot_vector_copy(qped->dev->legs[i]->servoLocations[LEG_DOF], v);
-        rot_matrix_dot_vector(
-            qped->R, qped->dev->legs[i]->offsetFromCOB, tempOffset);
-        rot_vector_add(v, tempOffset);
-        //rotate back
-        rot_matrix_dot_vector(qped->R, v, tempv);
+        rot_vector_add(v, qped->dev->legs[i]->offsetFromCOB); //unrotated 
+        //rotate backwards
+        rot_matrix_dot_vector(qped->invR, v, tempv);
         //get difference 
-        rot_vector_minus(v, tempv);
+        rot_vector_minus(tempv, v);
         //and Leg_tryEndpointChange
         error += 
             ( (unsigned int)
-                (-Leg_tryEndpointChange(qped->dev->legs[i], v) )
+                (-Leg_tryEndpointChange(qped->dev->legs[i], tempv) )
             ) << i*4;
     }
     if(error == 0){
@@ -271,20 +274,19 @@ int Quadruped_rotate(quadruped_t* qped,
         for(i=0;i<USBDEV_LEGNO;i++){
             Leg_commitEndpointChange(qped->dev->legs[i]);
         }
-        update_servoAction(qped);        
+        update_servoAction(qped);
+        rot_vector_add(qped->angles, dangles);
+        Quadruped_updateMatricesFromAngles(qped, qped->angles);
     }else{
         //errors, do a rollback
         for(i=0;i<USBDEV_LEGNO;i++){
             Leg_performRollback(qped->dev->legs[i]);
         }
-        //rollback rotation
-        Quadruped_updateMatricesFromAngles(qped, old_angles);
     }
-    
+    Quadruped_updateMatricesFromAngles(qped, qped->angles);
     rot_free(v);
     rot_free(tempv);
-    rot_free(tempOffset);
-    rot_free(old_angles);
+    rot_free(dangles);
     return(error);
 }
 
@@ -386,17 +388,15 @@ int Quadruped_changeAllEndpoints(quadruped_t* qped,
  * @param Z the z coordinate.
  * @return 4 bytes as an int, each representing the error state of 1 leg.
  */
-int Quadruped_setAllEndpoints(quadruped_t* qped,
-    double X, double Y, double Z)
-{
+int Quadruped_setAllEndpointZs(quadruped_t* qped, double Z){
     //for each leg, create a delta and try a change
     rot_vector_t* v = rot_vector_alloc();
     int i;
     unsigned int error = 0;
     for(i=0;i<USBDEV_LEGNO;i++){
         rot_vector_setAll(v,
-            X - qped->dev->legs[i]->legSolver->params->X,
-            Y - qped->dev->legs[i]->legSolver->params->Y,
+            0.0,
+            0.0,
             Z - qped->dev->legs[i]->legSolver->params->Z);
         error +=
             ( (unsigned int)

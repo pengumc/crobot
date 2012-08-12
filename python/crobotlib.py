@@ -74,6 +74,11 @@ class Crobot:
         print("changeAll: " +str(result))
         return(result)
     #--------------------------------------------------------------------------
+    def setAllLegs(self, Z):
+        result = self.lib.Quadruped_setAllEndpointZs(self.qped, c_double(Z))
+        print("setall: " + str(result))
+        return(result)
+    #--------------------------------------------------------------------------
     def printLegs(self):
         self.lib.Quadruped_debugLegs(self.qped)
     #--------------------------------------------------------------------------

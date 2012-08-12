@@ -248,7 +248,7 @@ class ServoBlock:
             cr.stroke()
             self.set_color(cr, QpImage.BLACK)
             cr.move_to(x -18 ,y-5)
-            cr.show_text(str(self.n) + ":  " + str(self.pw))
+            cr.show_text(str(self.n) + ": " + str(self.pw))
             cr.move_to(x -18, y+10)
             cr.show_text("{:.2f}".format(self.angle))
             cr.stroke()
