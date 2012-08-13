@@ -33,6 +33,18 @@ void Communication_free(communication_t* com){
     free(com);
 }
 
+void Communication_connectGraphData(communication_t* com,
+    accelerometer_t* acc)
+{
+    //we're not actively using the graph data, we only write to it
+    //so we can freely give away the pointers.
+    com->graphs->inX = qped->dev->acc->filter[0]->inputData;
+    com->graphs->inY = qped->dev->acc->filter[1]->inputData;
+    com->graphs->inZ = qped->dev->acc->filter[2]->inputData;
+    com->graphs->outX = qped->dev->acc->filter[0]->outputData;
+    com->graphs->outY = qped->dev->acc->filter[1]->outputData;
+    com->graphs->outZ = qped->dev->acc->filter[2]->outputData;
+}
 
 void Communication_updatePWA(communication_t* com, quadruped_t* qp){
     char leg, servo, i;
@@ -75,3 +87,4 @@ void Communication_updateEndpoints(communication_t* com, quadruped_t* qp){
     }
     rot_free(v);
 }
+

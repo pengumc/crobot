@@ -482,7 +482,7 @@ void Quadruped_printServoDetails(quadruped_t* qp,
  * @param outY output value array for Y filter.
  * @param outZ output value array for Z filter.
  */
-void Quadruped_setGraphPointers(quadruped_t* qped,
+/*void Quadruped_setGraphPointers(quadruped_t* qped,
     double* inX, 
     double* inY, 
     double* inZ, 
@@ -494,7 +494,7 @@ void Quadruped_setGraphPointers(quadruped_t* qped,
    Filter_changeGraphPointers(qped->dev->acc->filters[1], inY, outY);
    Filter_changeGraphPointers(qped->dev->acc->filters[2], inZ, outZ);
 }
-
+*/
 
 /*================== GRAB SERVOINFO =========================================*/
 /** Fill the provided servoinfo with current data.

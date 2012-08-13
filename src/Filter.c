@@ -38,10 +38,10 @@ filter_t* Filter_alloc(){
  * @param f The filter data to free.
  */
 void Filter_free(filter_t* f){
-    if(f->dataset_changed == 0){
+    //if(f->dataset_changed == 0){
         free(f->inputData);
         free(f->outputData);
-    }
+    //}
     free(f);
 }
 
@@ -51,7 +51,7 @@ void Filter_free(filter_t* f){
  * @param f The filter data to reset.
  */ 
 void Filter_init(filter_t* f){
-    f->dataset_changed = 0;
+    //f->dataset_changed = 0;
     f->x = 0.0;
     f->_x_last = 0.0;
     f->_P = 0.0;
@@ -95,9 +95,9 @@ uint16_t Filter_addPoints(filter_t* f, double in, double out){
 }
 
 /** Add a value to the dataset.
+ * index is not changed.
  * @param f The filter data to use.
  * @param value The value to add.
- * @return The new dataIndex.
  */
 void Filter_addInputPoint(filter_t* f, double value){
     f->inputData[f->dataIndex] = value;
@@ -116,7 +116,7 @@ void Filter_addOutputPoint(filter_t* f, double value){
  * @param in The pointer to use for inputData.
  * @param out The pointer to use for outputData.
  */
-void Filter_changeGraphPointers(filter_t* f, double* in, double* out){
+/*void Filter_changeGraphPointers(filter_t* f, double* in, double* out){
     if(f->dataset_changed == 0){
         free(f->inputData);
         free(f->outputData);
@@ -127,4 +127,4 @@ void Filter_changeGraphPointers(filter_t* f, double* in, double* out){
     f->dataset_changed = 1;
     Filter_init(f);
 }
-
+*/

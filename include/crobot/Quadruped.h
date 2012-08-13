@@ -43,6 +43,16 @@ typedef struct{
     double z[USBDEV_LEGNO];
 } com_endpoints_t;
 
+/**Graphing data.*/
+typedef struct{
+    double* inX;
+    double* inY;
+    double* inZ;
+    double* outX;
+    double* outY;
+    double* outZ;
+    uint16_t index;
+}com_graph_t;
 
 /**Main communication struct.*/
 typedef struct DATATRANSFER{
@@ -50,9 +60,10 @@ typedef struct DATATRANSFER{
     double angles[USBDEV_LEGNO*LEG_DOF];
     com_servopos_t servopos;
     com_endpoints_t endpoints;
+    com_graph_t graphs;
 } communication_t;
 
-
+//===to be deleted
 typedef struct SERVOINFO{
     uint8_t pulsewidths[BUFLEN_SERVO_DATA];
     double angles[BUFLEN_SERVO_DATA];

@@ -36,13 +36,13 @@
 
 /** Filter data.*/
 typedef struct FILTER_T {
-    double Sz; /**<Sz (or R cov of observation noise) parameter of the filter.*/
+    double Sz; /**<Sz(or R cov of observation noise)parameter of the filter.*/
     double Sw; /**<Sw (or Q cov of process noise) parameter of the filter.*/
     
     double* inputData; /**<Remembered input points.*/
     double* outputData;/**<Remembered output points.*/
     uint16_t dataIndex; /**<Index of input/output Data.*/
-    uint8_t dataset_changed;/**<Indication we should not free Data.*/
+    //uint8_t dataset_changed;/**<Indication we should not free Data.*/
 
     double x; /**<Filter output.*/
     double _x_last; /**<Previous filter output.*/
@@ -60,7 +60,7 @@ uint16_t Filter_addPoints(filter_t* f, double in, double out);
 void Filter_addInputPoint(filter_t* f, double value);
 void Filter_addOutputPoint(filter_t* f, double value);
 
-void Filter_changeGraphPointers(filter_t* f, double* in, double* out);
+//void Filter_changeGraphPointers(filter_t* f, double* in, double* out);
 
 /* do not want
 void Filter_setSz(filter_t* f, double sz);
@@ -71,6 +71,4 @@ double Filter_getSz(filter_t* f);
 double Filter_getSw(filter_t* f);
 */
 
-
 #endif
-
