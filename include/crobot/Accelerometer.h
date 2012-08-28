@@ -1,4 +1,6 @@
 /**
+ * @addtogroup Accelerometer
+ * @{
  * @file Accelerometer.h
  */
  /* Copyright (c) 2012 Michiel van der Coelen
@@ -56,3 +58,4 @@ void _Accelerometer_updateFilters(accelerometer_t* acc);
 //time_t _Accelerometer_getTimeDelta(accelerometer_t* acc);
 
 #endif
+/** @}*/

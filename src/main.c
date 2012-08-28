@@ -1,3 +1,4 @@
+
 /* Copyright (c) 2012 Michiel van der Coelen
 
     This file is part of Crobot
@@ -34,7 +35,7 @@ int main(int argc, char* argv[]){
     Quadruped_configureLegLengths(myQ, 0,  3.2, 6.1, 6.2);
     Leg_updateServoLocations(myQ->dev->legs[0]);
     Quadruped_debugLegs(myQ);
-    
+    Servo_printDetails(myQ->dev->legs[3]->servos[0], NULL);
 
     
     Quadruped_free(myQ);

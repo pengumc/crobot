@@ -1,5 +1,10 @@
 /**
+ * @addtogroup Accelerometer
+ * @{
  * @file Accelerometer.c
+ * @brief Accelerometer data handling.
+ * 
+ * Tilt calculation are done here.
  */
  /* Copyright (c) 2012 Michiel van der Coelen
 
@@ -97,3 +102,4 @@ void _Accelerometer_updateFilters(accelerometer_t* acc){
     }
 }
 
+/**@}*/

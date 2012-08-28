@@ -383,9 +383,7 @@ int Quadruped_changeAllEndpoints(quadruped_t* qped,
  * level after calling this.
  Changes are send to the device if they're acceptable.
  * @param qped The quadruped to use.
- * @param X the x coordinate.
- * @param Y the y coordinate.
- * @param Z the z coordinate.
+ * @param Z the z coordinate (main body height).
  * @return 4 bytes as an int, each representing the error state of 1 leg.
  */
 int Quadruped_setAllEndpointZs(quadruped_t* qped, double Z){
@@ -425,9 +423,9 @@ int Quadruped_setAllEndpointZs(quadruped_t* qped, double Z){
  * @param qped The quadruped to use.
  * @param l The leg number (0..3).
  * @param s The servo to change (0..2).
+ * @param angle The amount to change the servo angle by.
  * @retval 1 success.
  * @retval 0 Angle was out of bounds for this servo. nothing was changed.
- * @retval 
  */
 int Quadruped_changeSingleServo(
     quadruped_t* qped, uint8_t l, uint8_t s, double angle)
@@ -501,8 +499,7 @@ void Quadruped_setGraphPointers(quadruped_t* qped,
  * Data is angles and pulsewidths for all servos. You need to call this
  * each time you want new data. This is the only function that changes values
  * in the servoinfo structure.
- * @param qped The quadruped to use.
- * @param si Pointer to servoinfo to fill.
+ * @param qp The quadruped to use.
  */
 void Quadruped_updateServoinfo(quadruped_t* qp){
     char leg, servo, i;

@@ -1,7 +1,3 @@
-/**
- * @file Angle.h
- * @brief angles are always in radians
- */
 /* Copyright (c) 2012 Michiel van der Coelen
 
     This file is part of Crobot
@@ -19,6 +15,12 @@
     You should have received a copy of the GNU General Public License
     along with Crobot.  If not, see <http://www.gnu.org/licenses/>.
 */
+/**
+ * @addtogroup Angle
+ * Utility Functions for angles
+ * @{
+ * @file Angle.h
+ */
 
 
 #ifndef __ANGLE__
@@ -43,3 +45,4 @@ int Angle_rangeCheck(angle_t test, angle_t min, angle_t max);
 
 #endif
 
+/**@}*/

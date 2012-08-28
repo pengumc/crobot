@@ -1,10 +1,3 @@
-/**
- * @file Leg.c
- * @brief leg data is unaware of the main body. The origin point is servo 0,
- servoLocations uses this as origin.
- The plane of rotation is the same as the mainbody plate.
- 
- */
 /* Copyright (c) 2012 Michiel van der Coelen
 
     This file is part of Crobot
@@ -22,6 +15,14 @@
     You should have received a copy of the GNU General Public License
     along with Crobot.  If not, see <http://www.gnu.org/licenses/>.
 */
+/**
+ * @addtogroup Leg
+ * @{
+ * @file Leg.c
+ * @brief leg data is unaware of the main body. The origin point is servo 0,
+ servoLocations uses this as origin.
+ The plane of rotation is the same as the mainbody plate.
+ */
 
 #include "Leg.h"
 
@@ -121,7 +122,7 @@ double Leg_getServoAngle(leg_t* leg, uint8_t servoNo){
 /*=============================== CALC COORDS ===============================*/
 /** Calculate coordinates of all servos relative to servo 0.
  * The calculated locations are stored in leg->servoLocations.
- * @param solver The solver to use.
+ * @param leg The leg to use.
  */
 void Leg_updateServoLocations(leg_t* leg){
     /*create a vector x that represents the offset to the next servo
@@ -337,3 +338,4 @@ void Leg_setLengths(leg_t * leg, double A, double B, double C){
     leg->legSolver->params->Y = rot_vector_get(leg->servoLocations[LEG_DOF], 1);
     leg->legSolver->params->Z = rot_vector_get(leg->servoLocations[LEG_DOF], 2);
 }
+/**@}*/

@@ -1,7 +1,8 @@
 /** 
+ * @addtogroup Angle
+ * @{
  * @file Angle.c
  * @date 2012-03
- * @brief angle functions
  */
 /* Copyright (c) 2012 Michiel van der Coelen
 
@@ -29,6 +30,18 @@
 /** Fix the range of [value] to -PI..PI.
  * @param value The input value to fix.
  * @return the value winded down to -PI..PI.
+ * 
+ * Example:
+ * @code
+ * angle_t myAngle = 7.8539816; // 2.5 * Pi
+ * 
+ * // correct the range of the angle for (-Pi..Pi)
+ * myAngle = Angle_normalize(myAngle);
+ * 
+ * printf("corrected angle: %.2f\n", myAngle); 
+ * // corrected angle: 1.57
+ * // or 0.5 * pi
+ * @endcode
  */
 angle_t Angle_normalize(angle_t value){
     while(value > M_PI) value -= M_PI * 2;
@@ -50,8 +63,14 @@ angle_t Angle_normalize(angle_t value){
  *
  * Examples:
  * @code
- *  Angle_rangeCheck(0.1, -1.0, 1.0); //will return 1.
- *  Angle_rangeCheck(3.1, 1.57, -1.57); //checks if 3.1 is on the left half of the unity circle. (it is)  
+ *  Angle_rangeCheck(0.1, -1.0, 1.0); 
+ * // will return 1.
+ * 
+ *  Angle_rangeCheck(3.1, 1.57, -1.57);
+ *  //checks if 3.1 is on the left half of the unity circle. (it is)  
+ * 
+ *  Angle_rangeCheck(-0.1, 1.0, -1.0);
+ *  //will return 0 since 0.1 is not between 1 and -1
  * @endcode
  *
  * @see Angle_normalize
@@ -71,3 +90,4 @@ int Angle_rangeCheck(angle_t test, angle_t min, angle_t max){
         return((test >= min && test <= M_PI));
     }
 }
+/**@}*/
