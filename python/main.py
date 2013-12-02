@@ -27,7 +27,7 @@ def handleSigTERM():
 class Screen:
 
     NUMBER_OF_BUTTONS = 6
-    TIMEOUT = 40
+    TIMEOUT = 4000
     TIMEOUT_GRAPH = 500
     SERVOCOUNT = 12
     DOF = 3

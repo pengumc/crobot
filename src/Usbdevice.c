@@ -130,6 +130,7 @@ int _Usbdevice_sendCtrlMsg(
     usbdevice_t* usbdevice, int request, usbdevice_reqType reqType,
     int wval, int wind, char* buffer)
 {
+    printf("usb send: msg = %d\n",request);
     int cnt = 0;
     int i;
     //only send if we're connected
@@ -141,10 +142,12 @@ int _Usbdevice_sendCtrlMsg(
             BUFLEN_SERVO_DATA,
             USBDEV_TIMEOUT_MS
         );
+        printf("cnt = %d\n", cnt);
         if(cnt < 0){
             //horrible error occured, disconnect, abandon all hope
             printf("usb_control_msg: %s\n", usb_strerror());
             usbdevice->connected = 0;
+            usb_close(usbdevice->handle);
         }else{
             //success full msg
             usbdevice->connected = USBDEV_RETRY;
@@ -153,11 +156,12 @@ int _Usbdevice_sendCtrlMsg(
     }else{
         //we're not connected
         usbdevice->connected--;
+        printf("minus one\n");
         return(0);
     }
     //DEBUG
-    //printf("usb send: msg = %d, cnt = %d\n", request, cnt);
-    //printBuffer(buffer);
+
+    printBuffer(buffer);
     return(cnt);
 }
 
